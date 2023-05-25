@@ -1,0 +1,152 @@
+package view;
+
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import java.awt.FlowLayout;
+import java.text.ParseException;
+import java.util.List;
+
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.text.MaskFormatter;
+
+import controller.ClienteController;
+import model.exception.CampoInvalidoException;
+import model.exception.CpfJaUtilizadoException;
+import model.vo.Cliente;
+
+import javax.swing.JFormattedTextField;
+import javax.swing.JComboBox;
+import javax.swing.JButton;
+import java.awt.Color;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+public class TelaCadastroCliente {
+
+	private JFrame frmNovoCliente;
+	private JLabel lblNome;
+	private JLabel lblCpf;
+	private JTextField txtNome;
+	private JFormattedTextField txtCpf;
+
+	private MaskFormatter mascaraCpf;
+	private JButton btnSalvar;
+	private JTextField txtTelefone;
+	private JTextField txtEmail;
+	private JLabel lblEmail;
+	private JLabel lblTelefone;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					TelaCadastroCliente window = new TelaCadastroCliente();
+					window.frmNovoCliente.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 * 
+	 * @throws ParseException
+	 */
+	public TelaCadastroCliente() throws ParseException {
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 * 
+	 * @throws ParseException
+	 */
+	private void initialize() throws ParseException {
+		frmNovoCliente = new JFrame();
+		frmNovoCliente.setTitle("Novo Cliente");
+		frmNovoCliente.setBounds(100, 100, 460, 274);
+		// Fecha apenas a janela atual, sem destruir as demais abertas
+		frmNovoCliente.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frmNovoCliente.getContentPane().setLayout(null);
+
+		mascaraCpf = new MaskFormatter("###.###.###-##");
+		mascaraCpf.setValueContainsLiteralCharacters(false);
+
+		txtCpf = new JFormattedTextField(mascaraCpf);
+		txtCpf.setBounds(85, 60, 300, 20);
+		frmNovoCliente.getContentPane().add(txtCpf);
+
+		lblNome = new JLabel("Nome:");
+		lblNome.setBounds(25, 20, 50, 14);
+		frmNovoCliente.getContentPane().add(lblNome);
+
+		lblCpf = new JLabel("CPF:");
+		lblCpf.setBounds(25, 60, 50, 14);
+		frmNovoCliente.getContentPane().add(lblCpf);
+
+		txtNome = new JTextField();
+		txtNome.setBounds(85, 20, 300, 20);
+		frmNovoCliente.getContentPane().add(txtNome);
+		txtNome.setColumns(10);
+
+		lblTelefone = new JLabel("Telefone:");
+		lblTelefone.setBounds(25, 95, 46, 14);
+		frmNovoCliente.getContentPane().add(lblTelefone);
+
+		txtTelefone = new JTextField();
+		txtTelefone.setBounds(85, 91, 300, 20);
+		frmNovoCliente.getContentPane().add(txtTelefone);
+		txtTelefone.setColumns(10);
+
+		lblEmail = new JLabel("Email:");
+		lblEmail.setBounds(25, 132, 46, 14);
+		frmNovoCliente.getContentPane().add(lblEmail);
+
+		txtEmail = new JTextField();
+		txtEmail.setBounds(85, 129, 300, 20);
+		frmNovoCliente.getContentPane().add(txtEmail);
+		txtEmail.setColumns(10);
+
+		btnSalvar = new JButton("Salvar");
+		btnSalvar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Cliente novoCliente = new Cliente();
+				novoCliente.setNome(txtNome.getText());
+				novoCliente.setCpf(txtCpf.getText());
+				novoCliente.setEmail(txtEmail.getText());
+				novoCliente.setTelefone(txtTelefone.getText());
+				try {
+					String cpfSemMascara = (String) mascaraCpf.stringToValue(txtCpf.getText());
+					novoCliente.setCpf(cpfSemMascara);
+				} catch (ParseException e1) {
+					JOptionPane.showMessageDialog(null, "Erro ao converter o CPF", "Erro", JOptionPane.ERROR_MESSAGE);
+				}
+
+				ClienteController controller = new ClienteController();
+
+				try {
+					controller.inserir(novoCliente);
+
+					JOptionPane.showMessageDialog(null, "Cliente salvo com sucesso!", "Sucesso",
+							JOptionPane.INFORMATION_MESSAGE);
+				} catch (CpfJaUtilizadoException | CampoInvalidoException excecao) {
+					JOptionPane.showMessageDialog(null, excecao.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+		btnSalvar.setForeground(new Color(255, 0, 128));
+		btnSalvar.setOpaque(true); // forçando a mudança de cor
+		btnSalvar.setBackground(Color.WHITE);
+		btnSalvar.setBounds(85, 194, 300, 30);
+		frmNovoCliente.getContentPane().add(btnSalvar);
+
+	}
+}
