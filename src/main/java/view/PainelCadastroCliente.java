@@ -38,8 +38,8 @@ public class PainelCadastroCliente extends JPanel {
 	private JButton btnVoltar;
 	private JLabel lblEmail;
 	private JTextField txtEmail;
-	private JLabel lblTelefone;
-	private JTextField txtTelefone;
+	private JLabel lblSenha;
+	private JTextField txtSenha;
 	
 	public PainelCadastroCliente(Cliente clienteParaEditar) {
 		if(clienteParaEditar != null) {
@@ -58,12 +58,10 @@ public class PainelCadastroCliente extends JPanel {
 				FormSpecs.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("default:grow"),
 				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("default:grow"),
+				ColumnSpec.decode("max(82dlu;default):grow"),
 				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,},
+				ColumnSpec.decode("max(52dlu;default)"),},
 			new RowSpec[] {
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
 				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,
 				FormSpecs.RELATED_GAP_ROWSPEC,
@@ -113,12 +111,12 @@ public class PainelCadastroCliente extends JPanel {
 		add(txtEmail, "8, 8, 3, 1, fill, default");
 		txtEmail.setColumns(10);
 		
-		lblTelefone = new JLabel("Telefone");
-		add(lblTelefone, "4, 10, right, default");
+		lblSenha = new JLabel("Senha");
+		add(lblSenha, "4, 10, right, default");
 		
-		txtTelefone = new JTextField();
-		add(txtTelefone, "8, 10, 3, 1, fill, default");
-		txtTelefone.setColumns(10);
+		txtSenha = new JTextField();
+		add(txtSenha, "8, 10, 3, 1, fill, default");
+		txtSenha.setColumns(10);
 		add(btnSalvar, "8, 14");
 		
 		btnSalvar = new JButton("Salvar");
@@ -152,7 +150,7 @@ public class PainelCadastroCliente extends JPanel {
 		
 		
 		btnVoltar = new JButton("Voltar");
-		add(btnVoltar, "10, 14");
+		add(btnVoltar, "8, 14, 3, 1");
 		
 		if(this.cliente.getId() != null) {
 			preencherCamposDaTela();
@@ -163,7 +161,7 @@ public class PainelCadastroCliente extends JPanel {
 		this.txtCPF.setText(this.cliente.getCpf());
 		this.txtNome.setText(this.cliente.getNome());
 		this.txtEmail.setText(this.cliente.getEmail());
-		this.txtTelefone.setText(this.cliente.getTelefone());
+		this.txtSenha.setText(this.cliente.getTelefone());
 	}
 	
 	//Usado para tornar o btnVoltar acessível externamente (por exemplo, pelo MenuTelefonia)
