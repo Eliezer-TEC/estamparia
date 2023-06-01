@@ -34,10 +34,10 @@ public class TelaCadastroCliente {
 
 	private MaskFormatter mascaraCpf;
 	private JButton btnSalvar;
-	private JTextField txtTelefone;
+	private JTextField txtSenha;
 	private JTextField txtEmail;
 	private JLabel lblEmail;
-	private JLabel lblTelefone;
+	private JLabel lblSenha;
 
 	/**
 	 * Launch the application.
@@ -97,14 +97,14 @@ public class TelaCadastroCliente {
 		frmNovoCliente.getContentPane().add(txtNome);
 		txtNome.setColumns(10);
 
-		lblTelefone = new JLabel("Telefone:");
-		lblTelefone.setBounds(25, 95, 46, 14);
-		frmNovoCliente.getContentPane().add(lblTelefone);
+		lblSenha = new JLabel("Senha:");
+		lblSenha.setBounds(25, 95, 46, 14);
+		frmNovoCliente.getContentPane().add(lblSenha);
 
-		txtTelefone = new JTextField();
-		txtTelefone.setBounds(85, 91, 300, 20);
-		frmNovoCliente.getContentPane().add(txtTelefone);
-		txtTelefone.setColumns(10);
+		txtSenha = new JTextField();
+		txtSenha.setBounds(85, 91, 300, 20);
+		frmNovoCliente.getContentPane().add(txtSenha);
+		txtSenha.setColumns(10);
 
 		lblEmail = new JLabel("Email:");
 		lblEmail.setBounds(25, 132, 46, 14);
@@ -122,7 +122,7 @@ public class TelaCadastroCliente {
 				novoCliente.setNome(txtNome.getText());
 				novoCliente.setCpf(txtCpf.getText());
 				novoCliente.setEmail(txtEmail.getText());
-				novoCliente.setTelefone(txtTelefone.getText());
+				novoCliente.setSenha(txtSenha.getText());
 				try {
 					String cpfSemMascara = (String) mascaraCpf.stringToValue(txtCpf.getText());
 					novoCliente.setCpf(cpfSemMascara);

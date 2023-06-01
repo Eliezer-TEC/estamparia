@@ -161,7 +161,7 @@ public class PainelCadastroCliente extends JPanel {
 		this.txtCPF.setText(this.cliente.getCpf());
 		this.txtNome.setText(this.cliente.getNome());
 		this.txtEmail.setText(this.cliente.getEmail());
-		this.txtSenha.setText(this.cliente.getTelefone());
+		this.txtSenha.setText(this.cliente.getSenha());
 	}
 	
 	//Usado para tornar o btnVoltar acessível externamente (por exemplo, pelo MenuTelefonia)
