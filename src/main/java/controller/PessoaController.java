@@ -6,7 +6,7 @@ import model.exception.CampoInvalidoException;
 import model.exception.CpfJaUtilizadoException;
 import model.vo.Pessoa;
 
-public class ClienteController {
+public class PessoaController {
 	
 	private PessoaBO bo = new PessoaBO();
 	

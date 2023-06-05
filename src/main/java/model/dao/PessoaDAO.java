@@ -5,17 +5,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
+import model.seletor.PessoaSeletor;
 import model.vo.Pessoa;
 
 public class PessoaDAO {
 
-	
-
 	public Pessoa inserir(Pessoa novoUsuario) {
 		Connection conexao = Banco.getConnection();
-		String sql = " INSERT INTO PESSOA(NOME, CPF, EMAIL, SENHA, FUNCIOARIO) "
-				+ " VALUES (?,?,?,?) ";
+		String sql = " INSERT INTO PESSOA(NOME, CPF, EMAIL, SENHA, FUNCIOARIO) " + " VALUES (?,?,?,?) ";
 		PreparedStatement stmt = Banco.getPreparedStatementWithPk(conexao, sql);
 		try {
 			stmt.setString(1, novoUsuario.getNome());
@@ -25,25 +25,24 @@ public class PessoaDAO {
 			stmt.setBoolean(5, novoUsuario.isFuncionario());
 
 			stmt.execute();
-			
-			//Preencher o id gerado no banco no objeto
+
+			// Preencher o id gerado no banco no objeto
 			ResultSet resultado = stmt.getGeneratedKeys();
-			if(resultado.next()) {
+			if (resultado.next()) {
 				novoUsuario.setId(resultado.getInt(1));
 			}
-			
+
 		} catch (SQLException e) {
 			System.out.println("Erro ao inserir novo Usuário.");
 			System.out.println("Erro: " + e.getMessage());
 		}
-		
+
 		return novoUsuario;
 	}
 
 	public boolean atualizar(Pessoa pessoa) {
 		Connection conexao = Banco.getConnection();
-		String sql = " UPDATE PESSOA SET NOME=?, CPF=?, EMAIL=?, SENHA=?, FUNCIONARIO=? "
-				+ " WHERE ID = ?";
+		String sql = " UPDATE PESSOA SET NOME=?, CPF=?, EMAIL=?, SENHA=?, FUNCIONARIO=? " + " WHERE ID = ?";
 		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
 		int registrosAlterados = 0;
 		try {
@@ -58,15 +57,15 @@ public class PessoaDAO {
 			System.out.println("Erro ao inserir novo Usuário.");
 			System.out.println("Erro: " + e.getMessage());
 		}
-		
+
 		return registrosAlterados > 0;
 	}
-	
+
 	public boolean excluir(int id) {
 		Connection conn = Banco.getConnection();
 		String sql = "DELETE FROM PESSOA WHERE ID= " + id;
 		Statement stmt = Banco.getStatement(conn);
-		
+
 		int quantidadeLinhasAfetadas = 0;
 		try {
 			quantidadeLinhasAfetadas = stmt.executeUpdate(sql);
@@ -74,39 +73,108 @@ public class PessoaDAO {
 			System.out.println("Erro ao excluir usuário.");
 			System.out.println("Erro: " + e.getMessage());
 		}
-		
+
 		boolean excluiu = quantidadeLinhasAfetadas > 0;
 
 		return excluiu;
 	}
-	
-	
-	public Pessoa consultarPorTipo(int id) {
-		Pessoa clienteBuscado = null;
+
+	public List<Pessoa> consultarComFiltros(PessoaSeletor seletor) {
+		List<Pessoa> pessoa = new ArrayList<Pessoa>();
 		Connection conexao = Banco.getConnection();
-		String sql = " select * from pessoa "
-				   + " where funcioNario = ? ";
+		String sql = " select * from pessoa ";
+
+		if (seletor.temFiltro()) {
+			sql = preencherFiltros(sql, seletor);
+		}
+
 		
+
 		PreparedStatement query = Banco.getPreparedStatement(conexao, sql);
 		try {
-			query.setInt(1, id);
 			ResultSet resultado = query.executeQuery();
-			
-			if(resultado.next()) {
-				clienteBuscado = montarClienteComResultadoDoBanco(resultado);
+
+			while (resultado.next()) {
+				Pessoa pessoaBuscado = montarClienteComResultadoDoBanco(resultado);
+				pessoa.add(pessoaBuscado);
 			}
-			
-		}catch (Exception e) {
-			System.out.println("Erro ao buscar cliente com id: " + id 
-					+ "\n Causa:" + e.getMessage());
-		}finally {
+
+		} catch (Exception e) {
+			System.out.println("Erro ao buscar todos os clientes. \n Causa:" + e.getMessage());
+		} finally {
 			Banco.closePreparedStatement(query);
 			Banco.closeConnection(conexao);
 		}
-		
-		return clienteBuscado;
+
+		return pessoa;
 	}
-	
+
+	private String preencherFiltros(String sql, PessoaSeletor seletor) {
+
+		boolean primeiro = true;
+		if (seletor.getNome() != null && !seletor.getNome().trim().isEmpty()) {
+			if (primeiro) {
+				sql += " WHERE ";
+			} else {
+				sql += " AND ";
+			}
+
+			sql += " nome LIKE '%" + seletor.getNome() + "%'";
+			primeiro = false;
+		}
+
+		if (seletor.getCpf() != null && !seletor.getCpf().trim().isEmpty()) {
+			if (primeiro) {
+				sql += " WHERE ";
+			} else {
+				sql += " AND ";
+			}
+			sql += " cpf LIKE '%" + seletor.getCpf() + "%'";
+			primeiro = false;
+		}
+
+		if (seletor.getCpf() != null && !seletor.getCpf().trim().isEmpty()) {
+			if (primeiro) {
+				sql += " WHERE ";
+			} else {
+				sql += " AND ";
+			}
+			sql += " cpf LIKE '%" + seletor.getCpf() + "%'";
+			primeiro = false;
+		}
+
+		if (seletor.getEmail() != null && !seletor.getEmail().trim().isEmpty()) {
+			if (primeiro) {
+				sql += " WHERE ";
+			} else {
+				sql += " AND ";
+			}
+			sql += " email LIKE '%" + seletor.getEmail() + "%'";
+			primeiro = false;
+		}
+
+		if (seletor.getSenha() != null && !seletor.getSenha().trim().isEmpty()) {
+			if (primeiro) {
+				sql += " WHERE ";
+			} else {
+				sql += " AND ";
+			}
+			sql += " senha LIKE '%" + seletor.getSenha() + "%'";
+			primeiro = false;
+		}
+
+		if (seletor.isFuncionario() != null ) {
+			if (primeiro) {
+				sql += " WHERE ";
+			} else {
+				sql += " AND ";
+			}
+			sql += " funcioario LIKE '%" + seletor.isFuncionario() + "%'";
+			primeiro = false;
+		}
+		return sql;
+	}
+
 	private Pessoa montarClienteComResultadoDoBanco(ResultSet resultado) throws SQLException {
 		Pessoa pessoaBuscada = new Pessoa();
 		pessoaBuscada.setId(resultado.getInt("id"));
@@ -115,32 +183,30 @@ public class PessoaDAO {
 		pessoaBuscada.setEmail(resultado.getString("email"));
 		pessoaBuscada.setSenha(resultado.getString("senha"));
 		pessoaBuscada.setFuncionario(resultado.getBoolean("funcionario"));
-	
-		
+
 		return pessoaBuscada;
 	}
+
 	public boolean cpfJaUtilizado(String cpfBuscado) {
 		boolean cpfJaUtilizado = false;
 		Connection conexao = Banco.getConnection();
-		String sql = " select count(*) from cliente "
-				   + " where cpf = ? ";
-		
+		String sql = " select count(*) from pessoa " + " where cpf = ? ";
+
 		PreparedStatement query = Banco.getPreparedStatement(conexao, sql);
 		try {
 			query.setString(1, cpfBuscado);
 			ResultSet resultado = query.executeQuery();
-			
-			if(resultado.next()) {
+
+			if (resultado.next()) {
 				cpfJaUtilizado = resultado.getInt(1) > 0;
 			}
-		}catch (Exception e) {
-			System.out.println("Erro ao verificar uso do CPF " + cpfBuscado 
-					+ "\n Causa:" + e.getMessage());
-		}finally {
+		} catch (Exception e) {
+			System.out.println("Erro ao verificar uso do CPF " + cpfBuscado + "\n Causa:" + e.getMessage());
+		} finally {
 			Banco.closePreparedStatement(query);
 			Banco.closeConnection(conexao);
 		}
-		
+
 		return cpfJaUtilizado;
 	}
 }

@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
-import controller.ClienteController;
+import controller.PessoaController;
 import model.vo.Pessoa;
 import model.exception.CampoInvalidoException;
 import model.exception.CpfJaUtilizadoException;
@@ -130,7 +130,7 @@ public class TelaCadastroCliente {
 					JOptionPane.showMessageDialog(null, "Erro ao converter o CPF", "Erro", JOptionPane.ERROR_MESSAGE);
 				}
 
-				ClienteController controller = new ClienteController();
+				PessoaController controller = new PessoaController();
 
 				try {
 					controller.inserir(novoCliente);

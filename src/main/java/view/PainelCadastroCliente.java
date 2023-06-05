@@ -8,8 +8,7 @@ import com.jgoodies.forms.layout.RowSpec;
 import model.exception.CampoInvalidoException;
 import model.exception.CpfJaUtilizadoException;
 import model.vo.Pessoa;
-import controller.ClienteController;
-
+import controller.PessoaController;
 
 import com.jgoodies.forms.layout.FormSpecs;
 import javax.swing.JLabel;
@@ -40,119 +39,93 @@ public class PainelCadastroCliente extends JPanel {
 	private JTextField txtEmail;
 	private JLabel lblSenha;
 	private JTextField txtSenha;
-	
+
 	public PainelCadastroCliente(Pessoa clienteParaEditar) {
-		if(clienteParaEditar != null) {
+		if (clienteParaEditar != null) {
 			this.pessoa = clienteParaEditar;
-		}else {
+		} else {
 			this.pessoa = new Pessoa();
 		}
-		
-		setLayout(new FormLayout(new ColumnSpec[] {
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("max(47dlu;default)"),
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("default:grow"),
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("max(82dlu;default):grow"),
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("max(52dlu;default)"),},
-			new RowSpec[] {
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,}));
-		
-		lblTitulo = new JLabel(pessoa.getId() == null ? "NOVO CLIENTE": "EDIÇÃO DE CLIENTE");
+
+		setLayout(new FormLayout(new ColumnSpec[] { FormSpecs.RELATED_GAP_COLSPEC, FormSpecs.DEFAULT_COLSPEC,
+				FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("max(47dlu;default)"), FormSpecs.RELATED_GAP_COLSPEC,
+				FormSpecs.DEFAULT_COLSPEC, FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("default:grow"),
+				FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("max(82dlu;default):grow"),
+				FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("max(52dlu;default)"), },
+				new RowSpec[] { FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC,
+						FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC,
+						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC,
+						FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC,
+						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC,
+						FormSpecs.DEFAULT_ROWSPEC, }));
+
+		lblTitulo = new JLabel(pessoa.getId() == null ? "NOVO CLIENTE" : "EDIÇÃO DE CLIENTE");
 		lblTitulo.setFont(new Font("Calibri", Font.BOLD, 18));
 		lblTitulo.setHorizontalAlignment(SwingConstants.LEFT);
 		add(lblTitulo, "4, 2, 7, 1, center, default");
-		
+
 		lblNome = new JLabel("Nome");
 		add(lblNome, "4, 4, right, default");
-		
+
 		txtNome = new JTextField();
 		add(txtNome, "8, 4, 3, 1, fill, default");
 		txtNome.setColumns(10);
-		
+
 		lblCpf = new JLabel("CPF");
 		add(lblCpf, "4, 6, right, default");
-		
+
 		try {
 			mascaraCpf = new MaskFormatter("###.###.###-##");
 			mascaraCpf.setValueContainsLiteralCharacters(false);
 		} catch (ParseException e) {
-			//silent
+			// silent
 		}
-		
+
 		txtCPF = new JFormattedTextField(mascaraCpf);
 		add(txtCPF, "8, 6, 3, 1, fill, default");
-		
+
 		lblEmail = new JLabel("Email");
 		add(lblEmail, "4, 8, right, default");
-		
+
 		txtEmail = new JTextField();
 		add(txtEmail, "8, 8, 3, 1, fill, default");
 		txtEmail.setColumns(10);
-		
+
 		lblSenha = new JLabel("Senha");
 		add(lblSenha, "4, 10, right, default");
-		
+
 		txtSenha = new JTextField();
 		add(txtSenha, "8, 10, 3, 1, fill, default");
 		txtSenha.setColumns(10);
 		add(btnSalvar, "8, 14");
-		
+
 		btnSalvar = new JButton("Salvar");
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				pessoa.setNome(txtNome.getText());
-				
+
 				try {
-					String cpfSemMascara = (String) mascaraCpf.stringToValue(
-							txtCPF.getText());
+					String cpfSemMascara = (String) mascaraCpf.stringToValue(txtCPF.getText());
 					pessoa.setCpf(cpfSemMascara);
 				} catch (ParseException e1) {
-					JOptionPane.showMessageDialog(null, "Erro ao converter o CPF", 
-							"Erro", JOptionPane.ERROR_MESSAGE); 
+					JOptionPane.showMessageDialog(null, "Erro ao converter o CPF", "Erro", JOptionPane.ERROR_MESSAGE);
 				}
-		
-				
-				ClienteController controller = new ClienteController();
+
+				PessoaController controller = new PessoaController();
 				try {
 					controller.inserir(pessoa);
-					JOptionPane.showMessageDialog(null, "Cliente salvo com sucesso!", 
-							"Sucesso", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Cliente salvo com sucesso!", "Sucesso",
+							JOptionPane.INFORMATION_MESSAGE);
 				} catch (CpfJaUtilizadoException | CampoInvalidoException excecao) {
-					JOptionPane.showMessageDialog(null, excecao.getMessage(), 
-							"Erro", JOptionPane.ERROR_MESSAGE); 
+					JOptionPane.showMessageDialog(null, excecao.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
-		
-		
-		
-		
+
 		btnVoltar = new JButton("Voltar");
 		add(btnVoltar, "8, 14, 3, 1");
-		
-		if(this.pessoa.getId() != null) {
+
+		if (this.pessoa.getId() != null) {
 			preencherCamposDaTela();
 		}
 	}
@@ -163,8 +136,9 @@ public class PainelCadastroCliente extends JPanel {
 		this.txtEmail.setText(this.pessoa.getEmail());
 		this.txtSenha.setText(this.pessoa.getSenha());
 	}
-	
-	//Usado para tornar o btnVoltar acessível externamente (por exemplo, pelo MenuTelefonia)
+
+	// Usado para tornar o btnVoltar acessível externamente (por exemplo, pelo
+	// MenuTelefonia)
 	public JButton getBtnVoltar() {
 		return btnVoltar;
 	}
