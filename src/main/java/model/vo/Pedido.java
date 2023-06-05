@@ -2,14 +2,16 @@ package model.vo;
 
 public class Pedido {
 	private Integer id;
-	private Integer idCliente;
-	private Integer idProduto;
+	private Integer IdPessoa;
+	private Integer idCamisa;
+	private SituacaoPedido situacaoPedido;
 
-	public Pedido(Integer id, Integer idCliente, Integer idProduto) {
+	public Pedido(Integer id, Integer idPessoa, Integer idCamisa, SituacaoPedido situacaoPedido) {
 		super();
 		this.id = id;
-		this.idCliente = idCliente;
-		this.idProduto = idProduto;
+		IdPessoa = idPessoa;
+		this.idCamisa = idCamisa;
+		this.situacaoPedido = situacaoPedido;
 	}
 
 	public Pedido() {
@@ -24,25 +26,34 @@ public class Pedido {
 		this.id = id;
 	}
 
-	public Integer getIdCliente() {
-		return idCliente;
+	public Integer getIdPessoa() {
+		return IdPessoa;
 	}
 
-	public void setIdCliente(Integer idCliente) {
-		this.idCliente = idCliente;
+	public void setIdPessoa(Integer idPessoa) {
+		IdPessoa = idPessoa;
 	}
 
-	public Integer getIdProduto() {
-		return idProduto;
+	public Integer getIdCamisa() {
+		return idCamisa;
 	}
 
-	public void setIdProduto(Integer idProduto) {
-		this.idProduto = idProduto;
+	public void setIdCamisa(Integer idCamisa) {
+		this.idCamisa = idCamisa;
+	}
+
+	public SituacaoPedido getSituacaoPedido() {
+		return situacaoPedido;
+	}
+
+	public void setSituacaoPedido(SituacaoPedido situacaoPedido) {
+		this.situacaoPedido = situacaoPedido;
 	}
 
 	@Override
 	public String toString() {
-		return "Pedido [id=" + id + ", idCliente=" + idCliente + ", idProduto=" + idProduto + "]";
+		return "Pedido [id=" + id + ", IdPessoa=" + IdPessoa + ", idCamisa=" + idCamisa + ", situacaoPedido="
+				+ situacaoPedido + "]";
 	}
 
 }

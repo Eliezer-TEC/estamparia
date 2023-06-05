@@ -88,8 +88,6 @@ public class PessoaDAO {
 			sql = preencherFiltros(sql, seletor);
 		}
 
-		
-
 		PreparedStatement query = Banco.getPreparedStatement(conexao, sql);
 		try {
 			ResultSet resultado = query.executeQuery();
@@ -163,13 +161,13 @@ public class PessoaDAO {
 			primeiro = false;
 		}
 
-		if (seletor.isFuncionario() != null ) {
+		if (seletor.isFuncionario() != null) {
 			if (primeiro) {
 				sql += " WHERE ";
 			} else {
 				sql += " AND ";
 			}
-			sql += " funcioario LIKE '%" + seletor.isFuncionario() + "%'";
+			sql += " funcionario LIKE '%" + seletor.isFuncionario() + "%'";
 			primeiro = false;
 		}
 		return sql;

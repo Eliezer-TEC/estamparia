@@ -1,21 +1,23 @@
 package model.vo;
 
+import java.sql.Blob;
+
 public class Camisa {
 	private Integer id;
 	private String tamanho;
 	private String cor;
-	private String estampa;
+	private Blob estampa;
 
-	public Camisa(Integer id, String tamanho, String cor, String estampa) {
+	public Camisa() {
+		super();
+	}
+
+	public Camisa(Integer id, String tamanho, String cor, Blob estampa) {
 		super();
 		this.id = id;
 		this.tamanho = tamanho;
 		this.cor = cor;
 		this.estampa = estampa;
-	}
-
-	public Camisa() {
-		super();
 	}
 
 	public Integer getId() {
@@ -42,11 +44,11 @@ public class Camisa {
 		this.cor = cor;
 	}
 
-	public String getEstampa() {
+	public Blob getEstampa() {
 		return estampa;
 	}
 
-	public void setEstampa(String estampa) {
+	public void setEstampa(Blob estampa) {
 		this.estampa = estampa;
 	}
 

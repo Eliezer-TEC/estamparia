@@ -12,12 +12,8 @@ public class PessoaBO {
 			throw new CpfJaUtilizadoException("CPF informado já foi utilizado");
 		}
 
-		
-
 //Caso CPF não utilizado -> salvar e devolver o cliente
 		return dao.inserir(novoUsuario);
 	}
-
-
 
 }
