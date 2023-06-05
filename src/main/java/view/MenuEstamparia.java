@@ -87,6 +87,9 @@ public class MenuEstamparia {
 		mntmCadastroCliente.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0));
 		mntmCadastroCliente.setIcon(new ImageIcon(MenuEstamparia.class.getResource("/icones/icons8-cadastro-20.png")));
 		mnCliente.add(mntmCadastroCliente);
+		
+		JMenuBar menuBar_1 = new JMenuBar();
+		menuBar.add(menuBar_1);
 }
 	
 }

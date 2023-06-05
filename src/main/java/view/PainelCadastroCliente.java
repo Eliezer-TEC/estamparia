@@ -7,7 +7,7 @@ import com.jgoodies.forms.layout.RowSpec;
 
 import model.exception.CampoInvalidoException;
 import model.exception.CpfJaUtilizadoException;
-import model.vo.Cliente;
+import model.vo.Pessoa;
 import controller.ClienteController;
 
 
@@ -27,7 +27,7 @@ import java.awt.event.ActionListener;
 import java.text.ParseException;
 
 public class PainelCadastroCliente extends JPanel {
-	private Cliente cliente;
+	private Pessoa pessoa;
 	private JTextField txtNome;
 	private JLabel lblTitulo;
 	private JLabel lblNome;
@@ -41,11 +41,11 @@ public class PainelCadastroCliente extends JPanel {
 	private JLabel lblSenha;
 	private JTextField txtSenha;
 	
-	public PainelCadastroCliente(Cliente clienteParaEditar) {
+	public PainelCadastroCliente(Pessoa clienteParaEditar) {
 		if(clienteParaEditar != null) {
-			this.cliente = clienteParaEditar;
+			this.pessoa = clienteParaEditar;
 		}else {
-			this.cliente = new Cliente();
+			this.pessoa = new Pessoa();
 		}
 		
 		setLayout(new FormLayout(new ColumnSpec[] {
@@ -79,7 +79,7 @@ public class PainelCadastroCliente extends JPanel {
 				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,}));
 		
-		lblTitulo = new JLabel(cliente.getId() == null ? "NOVO CLIENTE": "EDIÇÃO DE CLIENTE");
+		lblTitulo = new JLabel(pessoa.getId() == null ? "NOVO CLIENTE": "EDIÇÃO DE CLIENTE");
 		lblTitulo.setFont(new Font("Calibri", Font.BOLD, 18));
 		lblTitulo.setHorizontalAlignment(SwingConstants.LEFT);
 		add(lblTitulo, "4, 2, 7, 1, center, default");
@@ -122,12 +122,12 @@ public class PainelCadastroCliente extends JPanel {
 		btnSalvar = new JButton("Salvar");
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cliente.setNome(txtNome.getText());
+				pessoa.setNome(txtNome.getText());
 				
 				try {
 					String cpfSemMascara = (String) mascaraCpf.stringToValue(
 							txtCPF.getText());
-					cliente.setCpf(cpfSemMascara);
+					pessoa.setCpf(cpfSemMascara);
 				} catch (ParseException e1) {
 					JOptionPane.showMessageDialog(null, "Erro ao converter o CPF", 
 							"Erro", JOptionPane.ERROR_MESSAGE); 
@@ -136,7 +136,7 @@ public class PainelCadastroCliente extends JPanel {
 				
 				ClienteController controller = new ClienteController();
 				try {
-					controller.inserir(cliente);
+					controller.inserir(pessoa);
 					JOptionPane.showMessageDialog(null, "Cliente salvo com sucesso!", 
 							"Sucesso", JOptionPane.INFORMATION_MESSAGE);
 				} catch (CpfJaUtilizadoException | CampoInvalidoException excecao) {
@@ -152,16 +152,16 @@ public class PainelCadastroCliente extends JPanel {
 		btnVoltar = new JButton("Voltar");
 		add(btnVoltar, "8, 14, 3, 1");
 		
-		if(this.cliente.getId() != null) {
+		if(this.pessoa.getId() != null) {
 			preencherCamposDaTela();
 		}
 	}
 
 	private void preencherCamposDaTela() {
-		this.txtCPF.setText(this.cliente.getCpf());
-		this.txtNome.setText(this.cliente.getNome());
-		this.txtEmail.setText(this.cliente.getEmail());
-		this.txtSenha.setText(this.cliente.getSenha());
+		this.txtCPF.setText(this.pessoa.getCpf());
+		this.txtNome.setText(this.pessoa.getNome());
+		this.txtEmail.setText(this.pessoa.getEmail());
+		this.txtSenha.setText(this.pessoa.getSenha());
 	}
 	
 	//Usado para tornar o btnVoltar acessível externamente (por exemplo, pelo MenuTelefonia)

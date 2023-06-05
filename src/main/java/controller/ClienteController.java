@@ -1,22 +1,23 @@
 package controller;
 
-import model.bo.ClienteBO;
+import model.bo.PessoaBO;
+
 import model.exception.CampoInvalidoException;
 import model.exception.CpfJaUtilizadoException;
-import model.vo.Cliente;
+import model.vo.Pessoa;
 
 public class ClienteController {
 	
-	private ClienteBO bo = new ClienteBO();
+	private PessoaBO bo = new PessoaBO();
 	
-	public Cliente inserir(Cliente novoCliente)
+	public Pessoa inserir(Pessoa novoUsuario)
 			throws CpfJaUtilizadoException, CampoInvalidoException {
 
-		this.validarCamposObrigatorios(novoCliente);
-		return bo.inserir(novoCliente);
+		this.validarCamposObrigatorios(novoUsuario);
+		return bo.inserir(novoUsuario);
 	}
 
-	private void validarCamposObrigatorios(Cliente c) throws CampoInvalidoException {
+	private void validarCamposObrigatorios(Pessoa c) throws CampoInvalidoException {
 		String mensagemValidacao = "";
 		
 		if(c.getNome() == null || c.getNome().trim().length() < 2) {

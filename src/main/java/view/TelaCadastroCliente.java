@@ -13,9 +13,9 @@ import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
 import controller.ClienteController;
+import model.vo.Pessoa;
 import model.exception.CampoInvalidoException;
 import model.exception.CpfJaUtilizadoException;
-import model.vo.Cliente;
 
 import javax.swing.JFormattedTextField;
 import javax.swing.JComboBox;
@@ -118,7 +118,7 @@ public class TelaCadastroCliente {
 		btnSalvar = new JButton("Salvar");
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Cliente novoCliente = new Cliente();
+				Pessoa novoCliente = new Pessoa();
 				novoCliente.setNome(txtNome.getText());
 				novoCliente.setCpf(txtCpf.getText());
 				novoCliente.setEmail(txtEmail.getText());
