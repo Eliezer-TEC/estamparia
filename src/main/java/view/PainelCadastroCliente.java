@@ -97,9 +97,10 @@ public class PainelCadastroCliente extends JPanel {
 		txtSenha = new JTextField();
 		add(txtSenha, "8, 10, 3, 1, fill, default");
 		txtSenha.setColumns(10);
-		add(btnSalvar, "8, 14");
+		
 
 		btnSalvar = new JButton("Salvar");
+		add(btnSalvar, "8, 14");
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				pessoa.setNome(txtNome.getText());
