@@ -1,7 +1,6 @@
 package model.bo;
 
 import model.dao.PedidoDAO;
-import model.exception.PedidoInvalidoException;
 import model.vo.Pedido;
 
 public class PedidoBO {
