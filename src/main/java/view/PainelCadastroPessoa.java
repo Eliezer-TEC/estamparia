@@ -25,7 +25,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 
-public class PainelCadastroCliente extends JPanel {
+public class PainelCadastroPessoa extends JPanel {
 	private Pessoa pessoa;
 	private JTextField txtNome;
 	private JLabel lblTitulo;
@@ -40,7 +40,7 @@ public class PainelCadastroCliente extends JPanel {
 	private JLabel lblSenha;
 	private JTextField txtSenha;
 
-	public PainelCadastroCliente(Pessoa clienteParaEditar) {
+	public PainelCadastroPessoa(Pessoa clienteParaEditar) {
 		if (clienteParaEditar != null) {
 			this.pessoa = clienteParaEditar;
 		} else {
