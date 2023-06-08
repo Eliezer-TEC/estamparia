@@ -15,7 +15,7 @@ public class PessoaDAO {
 
 	public Pessoa inserir(Pessoa novoUsuario) {
 		Connection conexao = Banco.getConnection();
-		String sql = " INSERT INTO PESSOA(NOME, CPF, EMAIL, SENHA, FUNCIOARIO) " + " VALUES (?,?,?,?) ";
+		String sql = " INSERT INTO PESSOA(NOME, CPF, EMAIL, SENHA, FUNCIONARIO) " + " VALUES (?,?,?,?,?) ";
 		PreparedStatement stmt = Banco.getPreparedStatementWithPk(conexao, sql);
 		try {
 			stmt.setString(1, novoUsuario.getNome());

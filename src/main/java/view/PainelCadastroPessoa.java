@@ -104,6 +104,9 @@ public class PainelCadastroPessoa extends JPanel {
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				pessoa.setNome(txtNome.getText());
+				pessoa.setFuncionario(false);
+				pessoa.setEmail(txtEmail.getText());
+				pessoa.setSenha(txtSenha.getText());
 
 				try {
 					String cpfSemMascara = (String) mascaraCpf.stringToValue(txtCPF.getText());
