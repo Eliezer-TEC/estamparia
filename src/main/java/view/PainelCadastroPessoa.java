@@ -25,7 +25,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 
-public class PainelCadastroCliente extends JPanel {
+public class PainelCadastroPessoa extends JPanel {
 	private Pessoa pessoa;
 	private JTextField txtNome;
 	private JLabel lblTitulo;
@@ -40,7 +40,7 @@ public class PainelCadastroCliente extends JPanel {
 	private JLabel lblSenha;
 	private JTextField txtSenha;
 
-	public PainelCadastroCliente(Pessoa clienteParaEditar) {
+	public PainelCadastroPessoa(Pessoa clienteParaEditar) {
 		if (clienteParaEditar != null) {
 			this.pessoa = clienteParaEditar;
 		} else {
@@ -97,12 +97,16 @@ public class PainelCadastroCliente extends JPanel {
 		txtSenha = new JTextField();
 		add(txtSenha, "8, 10, 3, 1, fill, default");
 		txtSenha.setColumns(10);
-		add(btnSalvar, "8, 14");
+		
 
 		btnSalvar = new JButton("Salvar");
+		add(btnSalvar, "8, 14");
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				pessoa.setNome(txtNome.getText());
+				pessoa.setFuncionario(false);
+				pessoa.setEmail(txtEmail.getText());
+				pessoa.setSenha(txtSenha.getText());
 
 				try {
 					String cpfSemMascara = (String) mascaraCpf.stringToValue(txtCPF.getText());

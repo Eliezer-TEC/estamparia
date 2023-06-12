@@ -11,12 +11,13 @@ import model.vo.Camisa;
 public class CamisaDAO {
 	public Camisa inserir(Camisa novaCamisa) {
 		Connection conexao = Banco.getConnection();
-		String sql = " INSERT INTO CAMISA(TAMANHO, COR, ESTAMPA) " + " VALUES (?,?,?) ";
+		String sql = " INSERT INTO CAMISA(TAMANHO, COR, ESTAMPA, ID_PEDIDO) " + " VALUES (?,?,?,?) ";
 		PreparedStatement stmt = Banco.getPreparedStatementWithPk(conexao, sql);
 		try {
 			stmt.setString(1, novaCamisa.getTamanho());
 			stmt.setString(2, novaCamisa.getCor());
 			stmt.setBlob(3, novaCamisa.getEstampa());
+			stmt.setInt(3, novaCamisa.getIdPedido());
 
 			stmt.execute();
 

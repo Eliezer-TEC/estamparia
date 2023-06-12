@@ -1,21 +1,25 @@
 package model.vo;
 
+import java.util.ArrayList;
+
 public class Pedido {
+	
 	private Integer id;
-	private Integer IdPessoa;
-	private Integer idCamisa;
+	private Pessoa pessoa;
+	private ArrayList<Camisa> camisas;
 	private SituacaoPedido situacaoPedido;
-
-	public Pedido(Integer id, Integer idPessoa, Integer idCamisa, SituacaoPedido situacaoPedido) {
-		super();
-		this.id = id;
-		IdPessoa = idPessoa;
-		this.idCamisa = idCamisa;
-		this.situacaoPedido = situacaoPedido;
-	}
-
+	
 	public Pedido() {
 		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Pedido(Integer id, Pessoa pessoa, ArrayList<Camisa> camisas, SituacaoPedido situacaoPedido) {
+		super();
+		this.id = id;
+		this.pessoa = pessoa;
+		this.camisas = camisas;
+		this.situacaoPedido = situacaoPedido;
 	}
 
 	public Integer getId() {
@@ -26,20 +30,20 @@ public class Pedido {
 		this.id = id;
 	}
 
-	public Integer getIdPessoa() {
-		return IdPessoa;
+	public Pessoa getPessoa() {
+		return pessoa;
 	}
 
-	public void setIdPessoa(Integer idPessoa) {
-		IdPessoa = idPessoa;
+	public void setPessoa(Pessoa pessoa) {
+		this.pessoa = pessoa;
 	}
 
-	public Integer getIdCamisa() {
-		return idCamisa;
+	public ArrayList<Camisa> getCamisas() {
+		return camisas;
 	}
 
-	public void setIdCamisa(Integer idCamisa) {
-		this.idCamisa = idCamisa;
+	public void setCamisas(ArrayList<Camisa> camisas) {
+		this.camisas = camisas;
 	}
 
 	public SituacaoPedido getSituacaoPedido() {
@@ -49,11 +53,5 @@ public class Pedido {
 	public void setSituacaoPedido(SituacaoPedido situacaoPedido) {
 		this.situacaoPedido = situacaoPedido;
 	}
-
-	@Override
-	public String toString() {
-		return "Pedido [id=" + id + ", IdPessoa=" + IdPessoa + ", idCamisa=" + idCamisa + ", situacaoPedido="
-				+ situacaoPedido + "]";
-	}
-
+	
 }

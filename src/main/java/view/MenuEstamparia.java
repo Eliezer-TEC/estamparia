@@ -13,14 +13,14 @@ import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 
-import view.PainelCadastroCliente;
+import view.PainelCadastroPessoa;
 
 
 
 public class MenuEstamparia {
 
 	private JFrame frmSistemaDeEstamparia;
-	private PainelCadastroCliente painelCadastroCliente;
+	private PainelCadastroPessoa painelCadastroCliente;
 	/**
 	 * Launch the application.
 	 */
@@ -76,7 +76,7 @@ public class MenuEstamparia {
 		JMenuItem mntmCadastroCliente = new JMenuItem("Cadastro");
 		mntmCadastroCliente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				painelCadastroCliente = new PainelCadastroCliente(null);
+				painelCadastroCliente = new PainelCadastroPessoa(null);
 				painelCadastroCliente.setVisible(true);
 				
 				//Atualiza a tela principal
