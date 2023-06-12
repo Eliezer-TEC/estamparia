@@ -207,4 +207,27 @@ public class PessoaDAO {
 
 		return cpfJaUtilizado;
 	}
+
+	public boolean emailJaUtilizado(String emailBuscado) {
+		boolean emailJaUtilizado = false;
+		Connection conexao = Banco.getConnection();
+		String sql = " select count(*) from pessoa " + " where email = ? ";
+
+		PreparedStatement query = Banco.getPreparedStatement(conexao, sql);
+		try {
+			query.setString(1, emailBuscado);
+			ResultSet resultado = query.executeQuery();
+
+			if (resultado.next()) {
+				emailJaUtilizado = resultado.getInt(1) > 0;
+			}
+		} catch (Exception e) {
+			System.out.println("Erro ao verificar uso do CPF " + emailJaUtilizado + "\n Causa:" + e.getMessage());
+		} finally {
+			Banco.closePreparedStatement(query);
+			Banco.closeConnection(conexao);
+		}
+
+		return emailJaUtilizado;
+	}
 }

@@ -4,6 +4,7 @@ import model.bo.PessoaBO;
 
 import model.exception.CampoInvalidoException;
 import model.exception.CpfJaUtilizadoException;
+import model.exception.EmailJaUtilizadoException;
 import model.vo.Pessoa;
 
 public class PessoaController {
@@ -11,7 +12,7 @@ public class PessoaController {
 	private PessoaBO bo = new PessoaBO();
 	
 	public Pessoa inserir(Pessoa novoUsuario)
-			throws CpfJaUtilizadoException, CampoInvalidoException {
+			throws CpfJaUtilizadoException, CampoInvalidoException, EmailJaUtilizadoException {
 
 		this.validarCamposObrigatorios(novoUsuario);
 		return bo.inserir(novoUsuario);
@@ -26,7 +27,15 @@ public class PessoaController {
 		
 		if(c.getCpf() == null ) {
 			mensagemValidacao += "Informe um cpf\n";
-		}		
+		}	
+		
+		if(c.getEmail() == null ) {
+			mensagemValidacao += "Informe um email\n";
+		}
+		
+		if(c.getSenha() == null ) {
+			mensagemValidacao += "Infrome uma senha\n";
+		}
 		
 	
 		
