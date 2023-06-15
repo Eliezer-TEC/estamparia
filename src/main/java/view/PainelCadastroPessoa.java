@@ -127,7 +127,7 @@ public class PainelCadastroPessoa extends JPanel {
 		});
 
 		btnVoltar = new JButton("Voltar");
-		add(btnVoltar, "8, 14, 3, 1");
+		add(btnVoltar, "10, 14");
 
 		if (this.pessoa.getId() != null) {
 			preencherCamposDaTela();
