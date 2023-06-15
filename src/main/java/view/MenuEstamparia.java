@@ -88,6 +88,18 @@ public class MenuEstamparia {
 		mntmCadastroCliente.setIcon(new ImageIcon(MenuEstamparia.class.getResource("/icones/icons8-cadastro-20.png")));
 		mnCliente.add(mntmCadastroCliente);
 		
+		JMenu mnNewMenu = new JMenu("Pedidos");
+		mnNewMenu.setIcon(new ImageIcon(MenuEstamparia.class.getResource("/icones/icons8-comprar.png")));
+		menuBar.add(mnNewMenu);
+		
+		JMenuItem mntmNewMenuItem = new JMenuItem("Novo Pedido");
+		mntmNewMenuItem.setIcon(new ImageIcon(MenuEstamparia.class.getResource("/icones/icons8-mais-20.png")));
+		mnNewMenu.add(mntmNewMenuItem);
+		
+		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Meus Pedidos");
+		mntmNewMenuItem_1.setIcon(new ImageIcon(MenuEstamparia.class.getResource("/icones/icons8-menu-do-usuário-male-skin-type-7-20.png")));
+		mnNewMenu.add(mntmNewMenuItem_1);
+		
 		JMenuBar menuBar_1 = new JMenuBar();
 		menuBar.add(menuBar_1);
 }
