@@ -1,26 +1,18 @@
 package view;
 
 import java.awt.EventQueue;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.KeyStroke;
 import javax.swing.UIManager;
-
-import view.PainelCadastroPessoa;
-
-
 
 public class MenuEstamparia {
 
 	private JFrame frmSistemaDeEstamparia;
 	private PainelCadastroPessoa painelCadastroCliente;
+	private PainelLogin painelLogin;
 	/**
 	 * Launch the application.
 	 */
@@ -38,13 +30,13 @@ public class MenuEstamparia {
 	}
 	public static void setUIFont (java.awt.Font f){
 		//FONTE: https://stackoverflow.com/questions/30479695/how-to-change-fonts-of-all-components
-	    java.util.Enumeration keys = UIManager.getDefaults().keys();
-	    while (keys.hasMoreElements()) {
-	      Object key = keys.nextElement();
-	      Object value = UIManager.get (key);
-	      if (value != null && value instanceof java.awt.Font)
-	        UIManager.put (key, f);
-	      }
+		java.util.Enumeration keys = UIManager.getDefaults().keys();
+		while (keys.hasMoreElements()) {
+			Object key = keys.nextElement();
+			Object value = UIManager.get (key);
+			if (value != null && value instanceof java.awt.Font)
+				UIManager.put (key, f);
+		}
 	}
 	/**
 	 * Create the application.
@@ -63,33 +55,29 @@ public class MenuEstamparia {
 		frmSistemaDeEstamparia.setTitle("Sistema de Estamparia");
 		frmSistemaDeEstamparia.setBounds(100, 100, 579, 300);
 		frmSistemaDeEstamparia.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+		frmSistemaDeEstamparia.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
 		JMenuBar menuBar = new JMenuBar();
-		//Como alterar a orientação da barra de menus
-		//menuBar.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 		frmSistemaDeEstamparia.setJMenuBar(menuBar);
-		
-		JMenu mnCliente = new JMenu("Cliente");
-		mnCliente.setIcon(new ImageIcon(MenuEstamparia.class.getResource("/icones/icons8-hanging-up-man-48.png")));
-		menuBar.add(mnCliente);
-		
-		JMenuItem mntmCadastroCliente = new JMenuItem("Cadastro");
-		mntmCadastroCliente.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				painelCadastroCliente = new PainelCadastroPessoa(null);
-				painelCadastroCliente.setVisible(true);
-				
-				//Atualiza a tela principal
-				frmSistemaDeEstamparia.setContentPane(painelCadastroCliente);
-				frmSistemaDeEstamparia.revalidate();
-			}
-		});
-		mntmCadastroCliente.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0));
-		mntmCadastroCliente.setIcon(new ImageIcon(MenuEstamparia.class.getResource("/icones/icons8-cadastro-20.png")));
-		mnCliente.add(mntmCadastroCliente);
-		
-		JMenuBar menuBar_1 = new JMenuBar();
-		menuBar.add(menuBar_1);
-}
-	
+
+		JMenu mnHome = new JMenu("Home");
+		mnHome.setEnabled(false);
+		mnHome.setIcon(new ImageIcon(PainelHomeCliente.class.getResource("/icones/iconeCasa.png")));
+		menuBar.add(mnHome);
+
+		JMenu mnPedidos = new JMenu("Pedidos");
+		mnPedidos.setEnabled(false);
+		mnPedidos.setIcon(new ImageIcon(PainelHomeCliente.class.getResource("/icones/Pedidos.png")));
+		menuBar.add(mnPedidos);
+
+		JMenu mnNovoPedido = new JMenu("Novo pedido");
+		mnNovoPedido.setEnabled(false);
+		mnNovoPedido.setIcon(new ImageIcon(PainelHomeCliente.class.getResource("/icones/Comprar.png")));
+		menuBar.add(mnNovoPedido);
+
+		painelLogin = new PainelLogin();
+		frmSistemaDeEstamparia.setContentPane(painelLogin);
+		frmSistemaDeEstamparia.revalidate();
+	}
+
 }
