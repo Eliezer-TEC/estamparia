@@ -42,12 +42,8 @@ public class PainelCadastroPessoa extends JPanel {
 	private JLabel lblSenha;
 	private JPasswordField passwordField;
 
-	public PainelCadastroPessoa(Pessoa clienteParaEditar) {
-		if (clienteParaEditar != null) {
-			this.pessoa = clienteParaEditar;
-		} else {
-			this.pessoa = new Pessoa();
-		}
+	public PainelCadastroPessoa() {
+		
 
 		setLayout(new FormLayout(new ColumnSpec[] {
 				FormSpecs.RELATED_GAP_COLSPEC,

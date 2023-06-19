@@ -49,4 +49,20 @@ public class PessoaController {
 			throw new CampoInvalidoException(mensagemValidacao);
 		}
 	}
+
+	public Pessoa consultarPorLoginSenha(String login, String senha)throws CampoInvalidoException {
+		PessoaBO bo =  new PessoaBO();
+		Pessoa usuarioConsultado = null;
+		boolean valido = (login != null && !login.isEmpty()) && (senha != null && !senha.isEmpty());
+		if (valido) {
+			usuarioConsultado = bo.consultarPorLoginSenha(login, senha);
+		} else {
+
+			throw new CampoInvalidoException("Login ou senha inválidos!");
+
+		}
+
+		return usuarioConsultado;
+	}
+	
 }

@@ -3,7 +3,6 @@ package model.bo;
 import model.dao.PessoaDAO;
 import model.exception.CpfJaUtilizadoException;
 import model.exception.EmailJaUtilizadoException;
-import model.exception.SenhaIncorreta;
 import model.vo.Pessoa;
 
 public class PessoaBO {
@@ -24,6 +23,13 @@ public class PessoaBO {
 	
 		
 		return dao.RealizarLoginDAO(usuario);
+	}
+
+	public Pessoa consultarPorLoginSenha(String login, String senha) {
+		PessoaDAO dao = new PessoaDAO();
+		Pessoa usuarioConsultado = dao.consultarPorLoginSenha(login, senha);  
+		
+		return usuarioConsultado;
 	}
 
 }
