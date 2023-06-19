@@ -230,4 +230,36 @@ public class PessoaDAO {
 
 		return emailJaUtilizado;
 	}
+
+	public Pessoa RealizarLoginDAO(Pessoa usuario) {
+		Connection conn = Banco.getConnection();
+		Statement stmt = Banco.getStatement(conn);
+		ResultSet resultado = null;
+
+		String query = "SELECT ID, EMAIL, CPF, SENHA, FUNCIONARIO from pessoa where email LIKE '" + usuario.getEmail() + "' " + "AND senha like '" + usuario.getSenha() + "'";
+		
+		try {
+
+			resultado = stmt.executeQuery(query);
+			if (resultado.next()) {
+				usuario.setId(Integer.parseInt(resultado.getString(1)));
+				usuario.setEmail(resultado.getString(2));
+				usuario.setCpf(resultado.getString(3));
+				usuario.setSenha(resultado.getString(4));
+				usuario.setFuncionario(resultado.getBoolean(5));
+				
+				}
+			}
+		 catch (SQLException erro) {
+			System.out.println("Erro ao executar e query do método realizarLoginDAO");
+			System.out.println("Erro: " + erro.getMessage());
+		} finally {
+			Banco.closeResultSet(resultado);
+			Banco.closeStatement(stmt);
+			Banco.closeConnection(conn);
+		}
+
+		return usuario;
+	}
 }
+

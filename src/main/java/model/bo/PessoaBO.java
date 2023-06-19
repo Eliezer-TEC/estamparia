@@ -3,6 +3,7 @@ package model.bo;
 import model.dao.PessoaDAO;
 import model.exception.CpfJaUtilizadoException;
 import model.exception.EmailJaUtilizadoException;
+import model.exception.SenhaIncorreta;
 import model.vo.Pessoa;
 
 public class PessoaBO {
@@ -17,6 +18,12 @@ public class PessoaBO {
 		}
 //Caso CPF não utilizado -> salvar e devolver o cliente
 		return dao.inserir(novoUsuario);
+	}
+
+	public Pessoa realizarLoginBO(Pessoa usuario) {
+	
+		
+		return dao.RealizarLoginDAO(usuario);
 	}
 
 }
