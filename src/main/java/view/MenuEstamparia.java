@@ -1,26 +1,33 @@
 package view;
 
+import java.awt.Container;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.KeyStroke;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
-import view.PainelCadastroPessoa;
-
-
+import model.exception.CampoInvalidoException;
+import model.vo.Pessoa;
 
 public class MenuEstamparia {
 
 	private JFrame frmSistemaDeEstamparia;
-	private PainelCadastroPessoa painelCadastroCliente;
+	private PainelCadastroPessoa painelCadastroPessoa;
+	private PainelLogin painelLogin;
+	private PainelHomeCliente painelHome;
+	private JMenuBar menuBar;
+	private JMenu mnHome;
+	private JMenu mnPedidos;
+	private JMenu mnNovoPedido;
+	private JMenu mnCadastro;
+
 	/**
 	 * Launch the application.
 	 */
@@ -36,16 +43,19 @@ public class MenuEstamparia {
 			}
 		});
 	}
-	public static void setUIFont (java.awt.Font f){
-		//FONTE: https://stackoverflow.com/questions/30479695/how-to-change-fonts-of-all-components
-	    java.util.Enumeration keys = UIManager.getDefaults().keys();
-	    while (keys.hasMoreElements()) {
-	      Object key = keys.nextElement();
-	      Object value = UIManager.get (key);
-	      if (value != null && value instanceof java.awt.Font)
-	        UIManager.put (key, f);
-	      }
+
+	public static void setUIFont(java.awt.Font f) {
+		// FONTE:
+		// https://stackoverflow.com/questions/30479695/how-to-change-fonts-of-all-components
+		java.util.Enumeration keys = UIManager.getDefaults().keys();
+		while (keys.hasMoreElements()) {
+			Object key = keys.nextElement();
+			Object value = UIManager.get(key);
+			if (value != null && value instanceof java.awt.Font)
+				UIManager.put(key, f);
+		}
 	}
+
 	/**
 	 * Create the application.
 	 */
@@ -57,51 +67,85 @@ public class MenuEstamparia {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		//Altera a fonte de toda a aplicação
+		// Altera a fonte de toda a aplicação
 		setUIFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 12));
 		frmSistemaDeEstamparia = new JFrame();
 		frmSistemaDeEstamparia.setTitle("Sistema de Estamparia");
 		frmSistemaDeEstamparia.setBounds(100, 100, 579, 300);
 		frmSistemaDeEstamparia.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		JMenuBar menuBar = new JMenuBar();
-		//Como alterar a orientação da barra de menus
-		//menuBar.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+		frmSistemaDeEstamparia.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
+		menuBar = new JMenuBar();
 		frmSistemaDeEstamparia.setJMenuBar(menuBar);
-		
-		JMenu mnCliente = new JMenu("Cliente");
-		mnCliente.setIcon(new ImageIcon(MenuEstamparia.class.getResource("/icones/icons8-hanging-up-man-48.png")));
-		menuBar.add(mnCliente);
-		
-		JMenuItem mntmCadastroCliente = new JMenuItem("Cadastro");
-		mntmCadastroCliente.addActionListener(new ActionListener() {
+
+		mnHome = new JMenu("Home");
+		mnHome.setEnabled(false);
+		mnHome.setIcon(new ImageIcon(PainelHomeCliente.class.getResource("/icones/iconeCasa.png")));
+		menuBar.add(mnHome);
+
+		mnPedidos = new JMenu("Pedidos");
+		mnPedidos.setEnabled(false);
+		mnPedidos.setIcon(new ImageIcon(PainelHomeCliente.class.getResource("/icones/Pedidos.png")));
+		menuBar.add(mnPedidos);
+
+		mnNovoPedido = new JMenu("Novo pedido");
+		mnNovoPedido.setEnabled(false);
+		mnNovoPedido.setIcon(new ImageIcon(PainelHomeCliente.class.getResource("/icones/Comprar.png")));
+		menuBar.add(mnNovoPedido);
+
+		mnCadastro = new JMenu("Cadastro");
+		mnCadastro.setEnabled(false);
+		mnCadastro.setIcon(new ImageIcon(MenuEstamparia.class.getResource("/icones/icons8-hanging-up-man-48.png")));
+		menuBar.add(mnCadastro);
+
+		painelLogin = new PainelLogin();
+		frmSistemaDeEstamparia.setContentPane(painelLogin);
+		frmSistemaDeEstamparia.revalidate();
+
+		bloquearTodoMenu();
+
+		painelLogin = new PainelLogin();
+		painelLogin.getBtnLogar().addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent e) {
-				painelCadastroCliente = new PainelCadastroPessoa(null);
-				painelCadastroCliente.setVisible(true);
-				
-				//Atualiza a tela principal
-				frmSistemaDeEstamparia.setContentPane(painelCadastroCliente);
-				frmSistemaDeEstamparia.revalidate();
+				try {
+					Pessoa usuarioAutenticado = painelLogin.autenticar();
+					bloquearTodoMenu();
+					if (usuarioAutenticado != null && usuarioAutenticado.isFuncionario() == true) {
+						mnCadastro.setEnabled(true);
+						mnHome.setEnabled(true);
+						mnPedidos.setEnabled(true);
+						mnNovoPedido.setEnabled(true);
+						painelHome = new PainelHomeCliente();
+						frmSistemaDeEstamparia.setContentPane(painelHome);
+						frmSistemaDeEstamparia.revalidate();
+
+					}else {
+						mnCadastro.setEnabled(false);
+						mnHome.setEnabled(true);
+						mnNovoPedido.setEnabled(true);
+						mnPedidos.setEnabled(true);
+						painelHome = new PainelHomeCliente();
+						frmSistemaDeEstamparia.setContentPane(painelHome);
+						frmSistemaDeEstamparia.revalidate();
+					}
+
+				} catch (CampoInvalidoException exception) {
+					JOptionPane.showMessageDialog(null, exception.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+
+				}
+
 			}
 		});
-		mntmCadastroCliente.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0));
-		mntmCadastroCliente.setIcon(new ImageIcon(MenuEstamparia.class.getResource("/icones/icons8-cadastro-20.png")));
-		mnCliente.add(mntmCadastroCliente);
-		
-		JMenu mnNewMenu = new JMenu("Pedidos");
-		mnNewMenu.setIcon(new ImageIcon(MenuEstamparia.class.getResource("/icones/icons8-comprar.png")));
-		menuBar.add(mnNewMenu);
-		
-		JMenuItem mntmNewMenuItem = new JMenuItem("Novo Pedido");
-		mntmNewMenuItem.setIcon(new ImageIcon(MenuEstamparia.class.getResource("/icones/icons8-mais-20.png")));
-		mnNewMenu.add(mntmNewMenuItem);
-		
-		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Meus Pedidos");
-		mntmNewMenuItem_1.setIcon(new ImageIcon(MenuEstamparia.class.getResource("/icones/icons8-menu-do-usuário-male-skin-type-7-20.png")));
-		mnNewMenu.add(mntmNewMenuItem_1);
-		
-		JMenuBar menuBar_1 = new JMenuBar();
-		menuBar.add(menuBar_1);
-}
-	
+
+
+		frmSistemaDeEstamparia.setContentPane(painelLogin);
+	}
+
+	private void bloquearTodoMenu() {
+		mnHome.setEnabled(false);
+		mnPedidos.setEnabled(false);
+		mnNovoPedido.setEnabled(false);
+		mnCadastro.setEnabled(false);
+	}
 }

@@ -207,4 +207,112 @@ public class PessoaDAO {
 
 		return cpfJaUtilizado;
 	}
+
+	public boolean emailJaUtilizado(String emailBuscado) {
+		boolean emailJaUtilizado = false;
+		Connection conexao = Banco.getConnection();
+		String sql = " select count(*) from pessoa " + " where email = ? ";
+
+		PreparedStatement query = Banco.getPreparedStatement(conexao, sql);
+		try {
+			query.setString(1, emailBuscado);
+			ResultSet resultado = query.executeQuery();
+
+			if (resultado.next()) {
+				emailJaUtilizado = resultado.getInt(1) > 0;
+			}
+		} catch (Exception e) {
+			System.out.println("Erro ao verificar uso do CPF " + emailJaUtilizado + "\n Causa:" + e.getMessage());
+		} finally {
+			Banco.closePreparedStatement(query);
+			Banco.closeConnection(conexao);
+		}
+
+		return emailJaUtilizado;
+	}
+
+	public Pessoa RealizarLoginDAO(Pessoa usuario) {
+		Connection conn = Banco.getConnection();
+		Statement stmt = Banco.getStatement(conn);
+		ResultSet resultado = null;
+
+		String query = "SELECT ID, EMAIL, CPF, SENHA, FUNCIONARIO from pessoa where email LIKE '" + usuario.getEmail() + "' " + "AND senha like '" + usuario.getSenha() + "'";
+		
+		try {
+
+			resultado = stmt.executeQuery(query);
+			if (resultado.next()) {
+				usuario.setId(Integer.parseInt(resultado.getString(1)));
+				usuario.setEmail(resultado.getString(2));
+				usuario.setCpf(resultado.getString(3));
+				usuario.setSenha(resultado.getString(4));
+				usuario.setFuncionario(resultado.getBoolean(5));
+				
+				}
+			}
+		 catch (SQLException erro) {
+			System.out.println("Erro ao executar e query do método realizarLoginDAO");
+			System.out.println("Erro: " + erro.getMessage());
+		} finally {
+			Banco.closeResultSet(resultado);
+			Banco.closeStatement(stmt);
+			Banco.closeConnection(conn);
+		}
+
+		return usuario;
+	}
+
+	public Pessoa consultarPorLoginSenha(String login, String senha) {
+		Pessoa usuarioConsultado = null;
+		Connection conexao = Banco.getConnection();
+		String sql =  " SELECT * FROM PESSOA "
+				    + " WHERE EMAIL = ? AND SENHA = ?";
+		PreparedStatement query = Banco.getPreparedStatement(conexao, sql);
+		
+		try {
+			query.setString(1, login);
+			query.setString(2, senha);
+			ResultSet resultado = query.executeQuery();
+			
+			if(resultado.next()) {
+				usuarioConsultado = montarClienteComResultadoDoBanco(resultado);
+			}
+		} catch (SQLException e) {
+			System.out.println("Erro ao buscar usuario com login: + " + login
+								+ "\n Causa: " + e.getMessage());	
+		}finally {
+			Banco.closePreparedStatement(query);
+			Banco.closeConnection(conexao);
+		}
+		
+		return usuarioConsultado;
+	}
+	
+
+	
+	public Pessoa consultarPorId(int id) {
+		Pessoa pessoaConsultada = null;
+		Connection conexao = Banco.getConnection();
+		String sql =  " SELECT * FROM PESSOA "
+				    + " WHERE ID = ?";
+		PreparedStatement query = Banco.getPreparedStatement(conexao, sql);
+		
+		try {
+			query.setInt(1, id);
+			ResultSet resultado = query.executeQuery();
+			
+			if(resultado.next()) {
+				pessoaConsultada = montarClienteComResultadoDoBanco(resultado);
+			}
+		} catch (SQLException e) {
+			System.out.println("Erro ao buscar pessoa com id: + " + id 
+								+ "\n Causa: " + e.getMessage());	
+		}finally {
+			Banco.closePreparedStatement(query);
+			Banco.closeConnection(conexao);
+		}
+		
+		return pessoaConsultada;
+	}
 }
+
