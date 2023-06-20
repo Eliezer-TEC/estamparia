@@ -1,6 +1,7 @@
 package model.bo;
 
 import model.dao.PessoaDAO;
+import model.exception.CampoInvalidoException;
 import model.exception.CpfJaUtilizadoException;
 import model.exception.EmailJaUtilizadoException;
 import model.vo.Pessoa;
@@ -19,15 +20,10 @@ public class PessoaBO {
 		return dao.inserir(novoUsuario);
 	}
 
-	public Pessoa realizarLoginBO(Pessoa usuario) {
-	
-		
-		return dao.RealizarLoginDAO(usuario);
-	}
 
-	public Pessoa consultarPorLoginSenha(String login, String senha) {
+	public Pessoa consultarPorLoginSenha(String email, String senha) throws CampoInvalidoException {
 		PessoaDAO dao = new PessoaDAO();
-		Pessoa usuarioConsultado = dao.consultarPorLoginSenha(login, senha);  
+		Pessoa usuarioConsultado = dao.consultarPorLoginSenha(email, senha);  
 		
 		return usuarioConsultado;
 	}

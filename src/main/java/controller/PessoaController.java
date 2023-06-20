@@ -11,10 +11,7 @@ public class PessoaController {
 	private PessoaBO bo = new PessoaBO();
 
 
-	public Pessoa realizarLoginController(Pessoa usuario) throws CampoInvalidoException {
-		this.validarCamposObrigatorios(usuario);
-		return bo.realizarLoginBO(usuario);
-	}
+
 	
 	public Pessoa inserir(Pessoa novoUsuario)
 			throws CpfJaUtilizadoException, CampoInvalidoException, EmailJaUtilizadoException {
@@ -53,12 +50,12 @@ public class PessoaController {
 
 	}
 
-	public Pessoa consultarPorLoginSenha(String login, String senha)throws CampoInvalidoException {
-		PessoaBO bo =  new PessoaBO();
+	public Pessoa consultarPorLoginSenha(String email, String senha)throws CampoInvalidoException {
 		Pessoa usuarioConsultado = null;
-		boolean valido = (login != null && !login.isEmpty()) && (senha != null && !senha.isEmpty());
+		boolean valido = (email != null && !email.isEmpty())
+				&& (senha != null && !senha.isEmpty());
 		if (valido) {
-			usuarioConsultado = bo.consultarPorLoginSenha(login, senha);
+			usuarioConsultado = bo.consultarPorLoginSenha(email, senha);
 		} else {
 
 			throw new CampoInvalidoException("Login ou senha inválidos!");

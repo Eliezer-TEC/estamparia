@@ -80,10 +80,6 @@ public class PainelCadastroPessoa extends JPanel {
 				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,}));
 
-		lblTitulo = new JLabel(pessoa.getId() == null ? "NOVO CLIENTE" : "EDIÇÃO DE CLIENTE");
-		lblTitulo.setFont(new Font("Calibri", Font.BOLD, 18));
-		lblTitulo.setHorizontalAlignment(SwingConstants.LEFT);
-		add(lblTitulo, "4, 2, 7, 1, center, default");
 
 		lblNome = new JLabel("Nome");
 		add(lblNome, "4, 4, right, default");

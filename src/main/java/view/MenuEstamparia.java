@@ -2,24 +2,29 @@ package view;
 
 import java.awt.Container;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
 import model.exception.CampoInvalidoException;
 import model.vo.Pessoa;
+import javax.swing.JMenuItem;
 
 public class MenuEstamparia {
 
 	private JFrame frmSistemaDeEstamparia;
 	private PainelCadastroPessoa painelCadastroPessoa;
+
 	private PainelLogin painelLogin;
 	private PainelHomeCliente painelHome;
 	private JMenuBar menuBar;
@@ -27,6 +32,7 @@ public class MenuEstamparia {
 	private JMenu mnPedidos;
 	private JMenu mnNovoPedido;
 	private JMenu mnCadastro;
+	private JMenuItem mnAtualizar;
 
 	/**
 	 * Launch the application.
@@ -98,6 +104,14 @@ public class MenuEstamparia {
 		mnCadastro.setIcon(new ImageIcon(MenuEstamparia.class.getResource("/icones/icons8-hanging-up-man-48.png")));
 		menuBar.add(mnCadastro);
 
+		mnAtualizar = new JMenuItem("Atualizar");
+		mnAtualizar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		mnCadastro.add(mnAtualizar);
+
 		painelLogin = new PainelLogin();
 		frmSistemaDeEstamparia.setContentPane(painelLogin);
 		frmSistemaDeEstamparia.revalidate();
@@ -120,7 +134,8 @@ public class MenuEstamparia {
 						frmSistemaDeEstamparia.setContentPane(painelHome);
 						frmSistemaDeEstamparia.revalidate();
 
-					}else {
+					}
+					if (usuarioAutenticado != null && usuarioAutenticado.isFuncionario() == false) {
 						mnCadastro.setEnabled(false);
 						mnHome.setEnabled(true);
 						mnNovoPedido.setEnabled(true);
@@ -128,6 +143,7 @@ public class MenuEstamparia {
 						painelHome = new PainelHomeCliente();
 						frmSistemaDeEstamparia.setContentPane(painelHome);
 						frmSistemaDeEstamparia.revalidate();
+					} else {
 					}
 
 				} catch (CampoInvalidoException exception) {
@@ -137,11 +153,9 @@ public class MenuEstamparia {
 
 			}
 		});
-
-
 		frmSistemaDeEstamparia.setContentPane(painelLogin);
 	}
-
+	
 	private void bloquearTodoMenu() {
 		mnHome.setEnabled(false);
 		mnPedidos.setEnabled(false);

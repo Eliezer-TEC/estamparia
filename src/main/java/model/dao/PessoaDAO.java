@@ -231,46 +231,16 @@ public class PessoaDAO {
 		return emailJaUtilizado;
 	}
 
-	public Pessoa RealizarLoginDAO(Pessoa usuario) {
-		Connection conn = Banco.getConnection();
-		Statement stmt = Banco.getStatement(conn);
-		ResultSet resultado = null;
 
-		String query = "SELECT ID, EMAIL, CPF, SENHA, FUNCIONARIO from pessoa where email LIKE '" + usuario.getEmail() + "' " + "AND senha like '" + usuario.getSenha() + "'";
-		
-		try {
-
-			resultado = stmt.executeQuery(query);
-			if (resultado.next()) {
-				usuario.setId(Integer.parseInt(resultado.getString(1)));
-				usuario.setEmail(resultado.getString(2));
-				usuario.setCpf(resultado.getString(3));
-				usuario.setSenha(resultado.getString(4));
-				usuario.setFuncionario(resultado.getBoolean(5));
-				
-				}
-			}
-		 catch (SQLException erro) {
-			System.out.println("Erro ao executar e query do método realizarLoginDAO");
-			System.out.println("Erro: " + erro.getMessage());
-		} finally {
-			Banco.closeResultSet(resultado);
-			Banco.closeStatement(stmt);
-			Banco.closeConnection(conn);
-		}
-
-		return usuario;
-	}
-
-	public Pessoa consultarPorLoginSenha(String login, String senha) {
+	public Pessoa consultarPorLoginSenha(String email, String senha) {
 		Pessoa usuarioConsultado = null;
 		Connection conexao = Banco.getConnection();
 		String sql =  " SELECT * FROM PESSOA "
-				    + " WHERE EMAIL = ? AND SENHA = ?";
+				    + " WHERE EMAIL = ? AND SENHA = ? ";
 		PreparedStatement query = Banco.getPreparedStatement(conexao, sql);
 		
 		try {
-			query.setString(1, login);
+			query.setString(1, email);
 			query.setString(2, senha);
 			ResultSet resultado = query.executeQuery();
 			
@@ -278,7 +248,7 @@ public class PessoaDAO {
 				usuarioConsultado = montarClienteComResultadoDoBanco(resultado);
 			}
 		} catch (SQLException e) {
-			System.out.println("Erro ao buscar usuario com login: + " + login
+			System.out.println("Erro ao buscar usuario com login: + " + email
 								+ "\n Causa: " + e.getMessage());	
 		}finally {
 			Banco.closePreparedStatement(query);
