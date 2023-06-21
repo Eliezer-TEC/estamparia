@@ -3,16 +3,15 @@ package model.bo;
 import model.dao.CamisaDAO;
 import model.exception.EstampaJaUtilizadoException;
 import model.vo.Camisa;
+import model.vo.SituacaoPedido;
 
 public class CamisaBO {
 	private CamisaDAO dao = new CamisaDAO();
 
-	public Camisa inserir(Camisa novaCamisa) throws EstampaJaUtilizadoException {
-		if (dao.estampaJaUtilizada(novaCamisa.getEstampa())) {
-			throw new EstampaJaUtilizadoException("Estampa informado já foi utilizado");
-		}
-
+	public Camisa inserir(Camisa camisa) throws EstampaJaUtilizadoException {
+		
+	
 //Caso Estampa não utilizado -> salvar e devolver o cliente
-		return dao.inserir(novaCamisa);
+		return dao.inserir(camisa);
 	}
 }

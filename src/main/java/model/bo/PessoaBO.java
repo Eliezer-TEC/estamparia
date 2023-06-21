@@ -1,9 +1,13 @@
 package model.bo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import model.dao.PessoaDAO;
 import model.exception.CampoInvalidoException;
 import model.exception.CpfJaUtilizadoException;
 import model.exception.EmailJaUtilizadoException;
+import model.seletor.PessoaSeletor;
 import model.vo.Pessoa;
 
 public class PessoaBO {
@@ -26,6 +30,41 @@ public class PessoaBO {
 		Pessoa usuarioConsultado = dao.consultarPorLoginSenha(email, senha);  
 		
 		return usuarioConsultado;
+	}
+
+
+	public boolean verificarEmail(Pessoa pessoa) {
+
+		return dao.emailJaUtilizado(pessoa.getEmail());
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	public boolean excluir(Integer id) {
+		// TODO Auto-generated method stub
+		return dao.excluir(id);
+	}
+
+
+	public List<Pessoa> consultarTodos() {
+		// TODO Auto-generated method stub
+		return dao.consultarTodos();
+	}
+
+
+	public Pessoa consultarPorId(int id) {
+		// TODO Auto-generated method stub
+		return dao.consultarPorId(id);	}
+
+
+	public int contarTotalRegistrosComFiltros(PessoaSeletor seletor) {
+		return dao.contarTotalRegistrosComFiltros(seletor);
+	}
+
+
+	public List<Pessoa> consultarComFiltros(PessoaSeletor seletor) {
+		return dao.consultarComFiltros(seletor);
 	}
 
 }

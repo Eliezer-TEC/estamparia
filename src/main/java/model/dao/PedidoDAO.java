@@ -15,9 +15,9 @@ public class PedidoDAO {
 		String sql = " INSERT INTO PEDIDO(STATUS_PEDIDO, ID_PESSOA) " + " VALUES (?,?) ";
 		PreparedStatement stmt = Banco.getPreparedStatementWithPk(conexao, sql);
 		try {
-			stmt.setInt(1, novoPedido.getSituacaoPedido().getValor());
-			stmt.setInt(2, novoPedido.getPessoa().getId());
-			
+			stmt.setInt(1, novoPedido.getIdPessoa());
+			stmt.setInt(2, novoPedido.getSituacaoPedido().getValor());
+
 			stmt.execute();
 
 			// Preencher o id gerado no banco no objeto
@@ -27,10 +27,7 @@ public class PedidoDAO {
 			}
 
 			CamisaDAO camisaDao = new CamisaDAO();
-			for(Camisa c: novoPedido.getCamisas()) {
-				c.setIdPedido(novoPedido.getId());
-				camisaDao.inserir(c);
-			}
+			
 			
 		} catch (SQLException e) {
 			System.out.println("Erro ao inserir novo pedido.");

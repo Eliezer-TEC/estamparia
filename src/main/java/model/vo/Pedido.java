@@ -3,21 +3,21 @@ package model.vo;
 import java.util.ArrayList;
 
 public class Pedido {
-	
+
 	private Integer id;
-	private Pessoa pessoa;
+	private Integer idPessoa;
 	private ArrayList<Camisa> camisas;
 	private SituacaoPedido situacaoPedido;
-	
+
 	public Pedido() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Pedido(Integer id, Pessoa pessoa, ArrayList<Camisa> camisas, SituacaoPedido situacaoPedido) {
+	public Pedido(Integer id, Integer idPessoa, ArrayList<Camisa> camisas, SituacaoPedido situacaoPedido) {
 		super();
 		this.id = id;
-		this.pessoa = pessoa;
+		this.idPessoa = idPessoa;
 		this.camisas = camisas;
 		this.situacaoPedido = situacaoPedido;
 	}
@@ -30,12 +30,12 @@ public class Pedido {
 		this.id = id;
 	}
 
-	public Pessoa getPessoa() {
-		return pessoa;
+	public Integer getIdPessoa() {
+		return idPessoa;
 	}
 
-	public void setPessoa(Pessoa pessoa) {
-		this.pessoa = pessoa;
+	public void setIdPessoa(Integer idPessoa) {
+		this.idPessoa = idPessoa;
 	}
 
 	public ArrayList<Camisa> getCamisas() {
@@ -53,5 +53,5 @@ public class Pedido {
 	public void setSituacaoPedido(SituacaoPedido situacaoPedido) {
 		this.situacaoPedido = situacaoPedido;
 	}
-	
+
 }

@@ -284,5 +284,57 @@ public class PessoaDAO {
 		
 		return pessoaConsultada;
 	}
+
+	public List<Pessoa> consultarTodos() {
+		List<Pessoa> usuarios = new ArrayList<Pessoa>();
+		Connection conexao = Banco.getConnection();
+		String sql = " select * from pessoa ";
+		
+		PreparedStatement query = Banco.getPreparedStatement(conexao, sql);
+		try {
+			ResultSet resultado = query.executeQuery();
+			
+			while(resultado.next()) {
+				Pessoa pessoaBuscada = montarClienteComResultadoDoBanco(resultado);
+				usuarios.add(pessoaBuscada);
+			}
+			
+		}catch (Exception e) {
+			System.out.println("Erro ao buscar todos os clientes. \n Causa:" + e.getMessage());
+		}finally {
+			Banco.closePreparedStatement(query);
+			Banco.closeConnection(conexao);
+		}
+		
+		return usuarios;
+	}
+
+	public int contarTotalRegistrosComFiltros(PessoaSeletor seletor) {
+		int total = 0;
+		Connection conexao = Banco.getConnection();
+		String sql = " select count(*) from pessoa ";
+		
+		if(seletor.temFiltro()) {
+			sql = preencherFiltros(sql, seletor);
+		}
+		
+		PreparedStatement query = Banco.getPreparedStatement(conexao, sql);
+		try {
+			ResultSet resultado = query.executeQuery();
+			
+			if(resultado.next()) {
+				total = resultado.getInt(1);
+			}
+		}catch (Exception e) {
+			System.out.println("Erro contar o total de clientes" 
+					+ "\n Causa:" + e.getMessage());
+		}finally {
+			Banco.closePreparedStatement(query);
+			Banco.closeConnection(conexao);
+		}
+		
+		return total;
+	}
+
 }
 

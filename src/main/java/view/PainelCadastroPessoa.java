@@ -129,9 +129,11 @@ public class PainelCadastroPessoa extends JPanel {
 		btnVoltar = new JButton("Voltar");
 		add(btnVoltar, "10, 14, center, center");
 		
-		
+		if(this.pessoa.getId() != null) {
+			preencherCamposDaTela();
+		}
 	}
-
+	
 	private void preencherCamposDaTela() {
 		this.txtCPF.setText(this.pessoa.getCpf());
 		this.txtNome.setText(this.pessoa.getNome());
@@ -141,6 +143,10 @@ public class PainelCadastroPessoa extends JPanel {
 
 	// Usado para tornar o btnVoltar acessível externamente (por exemplo, pelo
 	// MenuTelefonia)
+	
+	public JButton getBtnCadastrar() {
+		return btnSalvar;
+	}
 	public JButton getBtnVoltar() {
 		return btnVoltar;
 	}

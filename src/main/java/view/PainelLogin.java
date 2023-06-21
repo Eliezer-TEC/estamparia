@@ -36,7 +36,8 @@ public class PainelLogin extends JPanel {
 	private Timer timerFim;
 	private Timer timerInicio;
 	private JLabel lblErro;
-	private PainelCadastroPessoa painelCadastro;
+	private PainelCadastroPessoa painelCadastroPessoa;
+	private PainelLogin painelLogin;
 	/**
 	 * Create the application.
 	 */
@@ -75,9 +76,10 @@ public class PainelLogin extends JPanel {
 		btnNovoUsuario = new JButton("Cadastrar-se");
 		btnNovoUsuario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				painelCadastro = new PainelCadastroPessoa(null);
-				painelCadastro.setVisible(true);
-				frmSistemaDeEstamparia.setContentPane(painelCadastro);
+				painelCadastroPessoa = new PainelCadastroPessoa(null);
+				painelCadastroPessoa.setVisible(true);
+				registrarCliqueBotaoVoltarDoPainelCadastroUsuario();
+				frmSistemaDeEstamparia.setContentPane(painelCadastroPessoa);
 				frmSistemaDeEstamparia.revalidate();
 			}
 		});
@@ -92,19 +94,40 @@ public class PainelLogin extends JPanel {
 		lblOu = new JLabel("ou");
 		lblOu.setBounds(200, 208, 31, 15);
 		this.add(lblOu);
-		
+
 		lblErro = new JLabel("Erro ao validar usuário!");
 		lblErro.setBounds(150, 252, 190, 14);
 		this.add(lblErro);
 		lblErro.setVisible(false);
-		
 
 	}
+
+	protected void registrarCliqueBotaoVoltarDoPainelCadastroUsuario() {
+		if (painelCadastroPessoa == null) {
+			painelCadastroPessoa = new PainelCadastroPessoa(null);
+		}
+
+		painelCadastroPessoa.getBtnVoltar().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Lógica do clique no botão Voltar
+				// Mostra o painel de listagem de clientes
+				painelLogin = new PainelLogin();
+				painelLogin.setVisible(true);
+				registrarCliqueBotaoVoltarDoPainelCadastroUsuario();
+
+				frmSistemaDeEstamparia.setContentPane(painelLogin);
+				frmSistemaDeEstamparia.revalidate();
+			}
+		});
+
+	}
+
 	public JButton getBtnNovoUsuario() {
 		return btnNovoUsuario;
 	}
-	
-	
+
 	public JButton getBtnLogar() {
 		return btnEntrarLogin;
 	}
@@ -113,15 +136,13 @@ public class PainelLogin extends JPanel {
 		Pessoa usuarioAutenticado = null;
 		usuarioAutenticado = new PessoaController().consultarPorLoginSenha(this.txtEmailLogin.getText(),
 				this.passwordField.getText());
-		if(usuarioAutenticado == null) {
+		if (usuarioAutenticado == null) {
 			timerErro();
 			limparTela();
 			timerLimpar();
 		}
 		return usuarioAutenticado;
 	}
-
-	
 
 	protected void limparTela() {
 		txtEmailLogin.setText("");

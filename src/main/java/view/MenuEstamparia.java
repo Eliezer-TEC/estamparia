@@ -25,7 +25,8 @@ public class MenuEstamparia {
 
 	private JFrame frmSistemaDeEstamparia;
 	private PainelCadastroPessoa painelCadastroPessoa;
-
+	private PainelListagemUsuario painelListagemUsuario;
+	
 	private PainelLogin painelLogin;
 	private PainelHomeCliente painelHome;
 	private JMenuBar menuBar;
@@ -102,7 +103,9 @@ public class MenuEstamparia {
 		mntmNovoPedido = new JMenuItem("Novo Pedido");
 		mntmNovoPedido.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				painelNovoPedido = new PainelNovoPedido();
+				painelNovoPedido = new PainelNovoPedido(null);
+				painelNovoPedido.setVisible(true);
+				registrarCliqueBotaoVoltarDoPainelNovoPedido();
 				frmSistemaDeEstamparia.setContentPane(painelNovoPedido);
 				frmSistemaDeEstamparia.revalidate();
 			}
@@ -118,10 +121,23 @@ public class MenuEstamparia {
 		menuBar.add(mnUsuario);
 
 		mntmListagemUsuario = new JMenuItem("Listagem Usuário");
+		mntmListagemUsuario.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				painelListagemUsuario = new PainelListagemUsuario();
+				painelListagemUsuario.setVisible(true); 
+				registrarCliqueBotaoVoltarDoPainelCadastroListagemUsuario();
+				frmSistemaDeEstamparia.setContentPane(painelListagemUsuario);
+				frmSistemaDeEstamparia.revalidate();
+			}
+
+		});
 		mnUsuario.add(mntmListagemUsuario);
 
 		mnAtualizar = new JMenuItem("Atualizar");
 		mnAtualizar.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent e) {
 				painelCadastroPessoa = new PainelCadastroPessoa(null);
 				painelCadastroPessoa.setVisible(true);
@@ -174,6 +190,49 @@ public class MenuEstamparia {
 
 		});
 		frmSistemaDeEstamparia.setContentPane(painelLogin);
+	}
+
+
+	protected void registrarCliqueBotaoVoltarDoPainelCadastroListagemUsuario() {
+		if (painelListagemUsuario == null) {
+			painelListagemUsuario = new PainelListagemUsuario();
+		}
+
+		painelListagemUsuario.getBtnVoltar().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Lógica do clique no botão Voltar
+				// Mostra o painel de listagem de clientes
+				painelHome = new PainelHomeCliente();
+				painelHome.setVisible(true);
+				registrarCliqueBotaoVoltarDoPainelCadastroUsuario();
+
+				frmSistemaDeEstamparia.setContentPane(painelHome);
+				frmSistemaDeEstamparia.revalidate();
+			}
+		});
+	}
+
+	protected void registrarCliqueBotaoVoltarDoPainelNovoPedido() {
+		if (painelNovoPedido == null) {
+			painelNovoPedido = new PainelNovoPedido(null);
+		}
+
+		painelNovoPedido.getBtnVoltar().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Lógica do clique no botão Voltar
+				// Mostra o painel de listagem de clientes
+				painelHome = new PainelHomeCliente();
+				painelHome.setVisible(true);
+				registrarCliqueBotaoVoltarDoPainelCadastroUsuario();
+
+				frmSistemaDeEstamparia.setContentPane(painelHome);
+				frmSistemaDeEstamparia.revalidate();
+			}
+		});
 	}
 
 	protected void registrarCliqueBotaoVoltarDoPainelCadastroUsuario() {
