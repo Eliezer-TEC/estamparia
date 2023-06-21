@@ -42,44 +42,26 @@ public class PainelCadastroPessoa extends JPanel {
 	private JLabel lblSenha;
 	private JPasswordField passwordField;
 
-	public PainelCadastroPessoa() {
-		
-
-		setLayout(new FormLayout(new ColumnSpec[] {
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("max(47dlu;default):grow"),
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("default:grow"),
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("max(82dlu;default):grow"),
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("max(52dlu;default)"),},
-			new RowSpec[] {
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,}));
-
+	public PainelCadastroPessoa(Pessoa pessoaParaEditar) {
+		if(pessoaParaEditar != null) {
+			this.pessoa = pessoaParaEditar;
+		} else {
+			this.pessoa = new Pessoa();
+		}
+		setLayout(new FormLayout(
+				new ColumnSpec[] { FormSpecs.RELATED_GAP_COLSPEC, FormSpecs.DEFAULT_COLSPEC,
+						FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("max(47dlu;default):grow"),
+						FormSpecs.RELATED_GAP_COLSPEC, FormSpecs.DEFAULT_COLSPEC, FormSpecs.RELATED_GAP_COLSPEC,
+						ColumnSpec.decode("default:grow"), FormSpecs.RELATED_GAP_COLSPEC,
+						ColumnSpec.decode("max(82dlu;default):grow"), FormSpecs.RELATED_GAP_COLSPEC,
+						ColumnSpec.decode("max(52dlu;default)"), },
+				new RowSpec[] { FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC,
+						FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC,
+						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC,
+						FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC,
+						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC,
+						FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC,
+						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, }));
 
 		lblNome = new JLabel("Nome");
 		add(lblNome, "4, 4, right, default");
@@ -110,13 +92,12 @@ public class PainelCadastroPessoa extends JPanel {
 
 		lblSenha = new JLabel("Senha");
 		add(lblSenha, "4, 10, right, default");
-		
+
 		passwordField = new JPasswordField();
 		add(passwordField, "8, 10, 3, 1, fill, default");
-		
 
 		btnSalvar = new JButton("Salvar");
-		add(btnSalvar, "8, 14");
+		
 		btnSalvar.addActionListener(new ActionListener() {
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
@@ -131,22 +112,24 @@ public class PainelCadastroPessoa extends JPanel {
 				} catch (ParseException e1) {
 					JOptionPane.showMessageDialog(null, "Erro ao converter o CPF", "Erro", JOptionPane.ERROR_MESSAGE);
 				}
-
 				PessoaController controller = new PessoaController();
 				try {
-					controller.inserir(pessoa);
-					JOptionPane.showMessageDialog(null, "Cliente salvo com sucesso!", "Sucesso",
-							JOptionPane.INFORMATION_MESSAGE);
-				} catch (CpfJaUtilizadoException | EmailJaUtilizadoException | CampoInvalidoException  excecao) {
+					if (pessoa.getId() == null) {
+						controller.inserir(pessoa);
+						JOptionPane.showMessageDialog(null, "Cliente salvo com sucesso!", "Sucesso",
+								JOptionPane.INFORMATION_MESSAGE);
+					}
+				} catch (CpfJaUtilizadoException | EmailJaUtilizadoException | CampoInvalidoException excecao) {
 					JOptionPane.showMessageDialog(null, excecao.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
-
-
-		if (this.pessoa.getId() != null) {
-			preencherCamposDaTela();
-		}
+		add(btnSalvar, "8, 14, center, default");
+		
+		btnVoltar = new JButton("Voltar");
+		add(btnVoltar, "10, 14, center, center");
+		
+		
 	}
 
 	private void preencherCamposDaTela() {

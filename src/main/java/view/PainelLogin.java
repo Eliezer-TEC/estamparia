@@ -75,7 +75,7 @@ public class PainelLogin extends JPanel {
 		btnNovoUsuario = new JButton("Cadastrar-se");
 		btnNovoUsuario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				painelCadastro = new PainelCadastroPessoa();
+				painelCadastro = new PainelCadastroPessoa(null);
 				painelCadastro.setVisible(true);
 				frmSistemaDeEstamparia.setContentPane(painelCadastro);
 				frmSistemaDeEstamparia.revalidate();

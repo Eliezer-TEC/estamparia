@@ -18,6 +18,7 @@ import javax.swing.UIManager;
 
 import model.exception.CampoInvalidoException;
 import model.vo.Pessoa;
+
 import javax.swing.JMenuItem;
 
 public class MenuEstamparia {
@@ -30,9 +31,13 @@ public class MenuEstamparia {
 	private JMenuBar menuBar;
 	private JMenu mnHome;
 	private JMenu mnPedidos;
-	private JMenu mnNovoPedido;
-	private JMenu mnCadastro;
+	private JMenu mnUsuario;
 	private JMenuItem mnAtualizar;
+	private JMenuItem mntmNovoPedido;
+	private JMenuItem mntmListagemPedidos;
+	private JMenuItem mntmListagemUsuario;
+
+	private PainelNovoPedido painelNovoPedido;
 
 	/**
 	 * Launch the application.
@@ -94,23 +99,39 @@ public class MenuEstamparia {
 		mnPedidos.setIcon(new ImageIcon(PainelHomeCliente.class.getResource("/icones/Pedidos.png")));
 		menuBar.add(mnPedidos);
 
-		mnNovoPedido = new JMenu("Novo pedido");
-		mnNovoPedido.setEnabled(false);
-		mnNovoPedido.setIcon(new ImageIcon(PainelHomeCliente.class.getResource("/icones/Comprar.png")));
-		menuBar.add(mnNovoPedido);
+		mntmNovoPedido = new JMenuItem("Novo Pedido");
+		mntmNovoPedido.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				painelNovoPedido = new PainelNovoPedido();
+				frmSistemaDeEstamparia.setContentPane(painelNovoPedido);
+				frmSistemaDeEstamparia.revalidate();
+			}
+		});
+		mnPedidos.add(mntmNovoPedido);
 
-		mnCadastro = new JMenu("Cadastro");
-		mnCadastro.setEnabled(false);
-		mnCadastro.setIcon(new ImageIcon(MenuEstamparia.class.getResource("/icones/icons8-hanging-up-man-48.png")));
-		menuBar.add(mnCadastro);
+		mntmListagemPedidos = new JMenuItem("Listagem Pedidos");
+		mnPedidos.add(mntmListagemPedidos);
+
+		mnUsuario = new JMenu("Usuário");
+		mnUsuario.setEnabled(false);
+		mnUsuario.setIcon(new ImageIcon(MenuEstamparia.class.getResource("/icones/icons8-hanging-up-man-48.png")));
+		menuBar.add(mnUsuario);
+
+		mntmListagemUsuario = new JMenuItem("Listagem Usuário");
+		mnUsuario.add(mntmListagemUsuario);
 
 		mnAtualizar = new JMenuItem("Atualizar");
 		mnAtualizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				painelCadastroPessoa = new PainelCadastroPessoa(null);
+				painelCadastroPessoa.setVisible(true);
+				registrarCliqueBotaoVoltarDoPainelCadastroUsuario();
+
+				frmSistemaDeEstamparia.setContentPane(painelCadastroPessoa);
+				frmSistemaDeEstamparia.revalidate();
 			}
 		});
-		mnCadastro.add(mnAtualizar);
+		mnUsuario.add(mnAtualizar);
 
 		painelLogin = new PainelLogin();
 		frmSistemaDeEstamparia.setContentPane(painelLogin);
@@ -126,19 +147,17 @@ public class MenuEstamparia {
 					Pessoa usuarioAutenticado = painelLogin.autenticar();
 					bloquearTodoMenu();
 					if (usuarioAutenticado != null && usuarioAutenticado.isFuncionario() == true) {
-						mnCadastro.setEnabled(true);
+						mnUsuario.setEnabled(true);
 						mnHome.setEnabled(true);
 						mnPedidos.setEnabled(true);
-						mnNovoPedido.setEnabled(true);
 						painelHome = new PainelHomeCliente();
 						frmSistemaDeEstamparia.setContentPane(painelHome);
 						frmSistemaDeEstamparia.revalidate();
 
 					}
 					if (usuarioAutenticado != null && usuarioAutenticado.isFuncionario() == false) {
-						mnCadastro.setEnabled(false);
+						mnUsuario.setEnabled(false);
 						mnHome.setEnabled(true);
-						mnNovoPedido.setEnabled(true);
 						mnPedidos.setEnabled(true);
 						painelHome = new PainelHomeCliente();
 						frmSistemaDeEstamparia.setContentPane(painelHome);
@@ -152,14 +171,35 @@ public class MenuEstamparia {
 				}
 
 			}
+
 		});
 		frmSistemaDeEstamparia.setContentPane(painelLogin);
 	}
-	
+
+	protected void registrarCliqueBotaoVoltarDoPainelCadastroUsuario() {
+		if (painelCadastroPessoa == null) {
+			painelCadastroPessoa = new PainelCadastroPessoa(null);
+		}
+
+		painelCadastroPessoa.getBtnVoltar().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Lógica do clique no botão Voltar
+				// Mostra o painel de listagem de clientes
+				painelHome = new PainelHomeCliente();
+				painelHome.setVisible(true);
+				registrarCliqueBotaoVoltarDoPainelCadastroUsuario();
+
+				frmSistemaDeEstamparia.setContentPane(painelHome);
+				frmSistemaDeEstamparia.revalidate();
+			}
+		});
+	}
+
 	private void bloquearTodoMenu() {
 		mnHome.setEnabled(false);
 		mnPedidos.setEnabled(false);
-		mnNovoPedido.setEnabled(false);
-		mnCadastro.setEnabled(false);
+		mnUsuario.setEnabled(false);
 	}
 }

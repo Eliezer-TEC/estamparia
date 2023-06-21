@@ -54,7 +54,7 @@ public class TelaComImagens extends JFrame {
 		
 		JButton btnProcurarImagem = new JButton("Procurar imagem");
 		btnProcurarImagem.addActionListener(new ActionListener() {
-			
+		
 
 			public void actionPerformed(ActionEvent arg0) {
 				JFileChooser fileChooser = new JFileChooser();
