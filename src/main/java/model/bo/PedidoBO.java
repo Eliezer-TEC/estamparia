@@ -1,6 +1,9 @@
 package model.bo;
 
+import java.util.ArrayList;
+
 import model.dao.PedidoDAO;
+import model.seletor.PessoaSeletor;
 import model.vo.Pedido;
 
 public class PedidoBO {
@@ -11,5 +14,7 @@ public class PedidoBO {
 		//o pedido deve possuir pessoa associada
 		return dao.inserir(novoPedido);
 	}
+
+
 
 }

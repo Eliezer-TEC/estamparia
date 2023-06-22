@@ -23,8 +23,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class PainelLogin extends JPanel {
-
-	private JFrame frmSistemaDeEstamparia;
 	private JTextField txtEmailLogin;
 	private JLabel lblEmailLogin;
 	private JLabel lblSenhaLogin;
@@ -74,15 +72,6 @@ public class PainelLogin extends JPanel {
 		this.add(btnEntrarLogin);
 
 		btnNovoUsuario = new JButton("Cadastrar-se");
-		btnNovoUsuario.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				painelCadastroPessoa = new PainelCadastroPessoa(null);
-				painelCadastroPessoa.setVisible(true);
-				registrarCliqueBotaoVoltarDoPainelCadastroUsuario();
-				frmSistemaDeEstamparia.setContentPane(painelCadastroPessoa);
-				frmSistemaDeEstamparia.revalidate();
-			}
-		});
 		btnNovoUsuario.setBounds(229, 203, 127, 25);
 		this.add(btnNovoUsuario);
 
@@ -116,9 +105,6 @@ public class PainelLogin extends JPanel {
 				painelLogin = new PainelLogin();
 				painelLogin.setVisible(true);
 				registrarCliqueBotaoVoltarDoPainelCadastroUsuario();
-
-				frmSistemaDeEstamparia.setContentPane(painelLogin);
-				frmSistemaDeEstamparia.revalidate();
 			}
 		});
 

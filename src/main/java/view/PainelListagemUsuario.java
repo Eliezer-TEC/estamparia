@@ -79,7 +79,7 @@ public class PainelListagemUsuario extends JPanel {
 		this.setLayout(null);
 
 		btnBuscar = new JButton("Buscar COM FILTROS");
-		btnBuscar.setBackground(new Color(255, 128, 192));
+		btnBuscar.setBackground(Color.GRAY);
 		btnBuscar.setForeground(new Color(0, 0, 0));
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

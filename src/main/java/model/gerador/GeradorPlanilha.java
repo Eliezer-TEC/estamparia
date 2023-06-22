@@ -11,6 +11,7 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
+import model.vo.Pedido;
 import model.vo.Pessoa;
 
 public class GeradorPlanilha {
@@ -69,5 +70,11 @@ public class GeradorPlanilha {
 		}
 
 		return mensagem;
+	}
+
+
+	public String gerarPlanilhaPedido(ArrayList<Pedido> pedido, String caminhoEscolhido) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

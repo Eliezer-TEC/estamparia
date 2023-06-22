@@ -162,14 +162,26 @@ public class MenuEstamparia {
 		mnUsuario.add(mnAtualizar);
 
 		painelLogin = new PainelLogin();
+		painelLogin.getBtnNovoUsuario().setBounds(229, 203, 127, 25);
+		painelLogin.getBtnLogar().setBounds(75, 203, 117, 25);
 		frmSistemaDeEstamparia.setContentPane(painelLogin);
+		painelLogin.setLayout(null);
 		frmSistemaDeEstamparia.revalidate();
-
+		
 		bloquearTodoMenu();
 
 		painelLogin = new PainelLogin();
+		painelLogin.getBtnNovoUsuario().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				painelCadastroPessoa = new PainelCadastroPessoa(null);
+				painelCadastroPessoa.setVisible(true);
+				registrarCliqueBotaoVoltarDoPainelCadastroUsuario();
+				frmSistemaDeEstamparia.setContentPane(painelCadastroPessoa);
+				frmSistemaDeEstamparia.revalidate();
+			}
+		});
+		
 		painelLogin.getBtnLogar().addActionListener(new ActionListener() {
-
 			public void actionPerformed(ActionEvent e) {
 				try {
 					usuarioAutenticado = painelLogin.autenticar();
@@ -201,6 +213,7 @@ public class MenuEstamparia {
 
 		});
 		frmSistemaDeEstamparia.setContentPane(painelLogin);
+		
 	}
 
 
@@ -257,11 +270,11 @@ public class MenuEstamparia {
 			public void actionPerformed(ActionEvent e) {
 				// Lógica do clique no botão Voltar
 				// Mostra o painel de listagem de clientes
-				painelHome = new PainelHomeCliente();
-				painelHome.setVisible(true);
+				painelLogin = new PainelLogin();
+				painelLogin.setVisible(true);
 				registrarCliqueBotaoVoltarDoPainelCadastroUsuario();
 
-				frmSistemaDeEstamparia.setContentPane(painelHome);
+				frmSistemaDeEstamparia.setContentPane(painelLogin);
 				frmSistemaDeEstamparia.revalidate();
 			}
 		});

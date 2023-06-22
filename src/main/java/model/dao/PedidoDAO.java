@@ -5,9 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
+import model.seletor.PessoaSeletor;
 import model.vo.Camisa;
 import model.vo.Pedido;
+import model.vo.Pessoa;
 
 public class PedidoDAO {
 	public Pedido inserir(Pedido novoPedido) {
@@ -27,8 +30,9 @@ public class PedidoDAO {
 			}
 
 			CamisaDAO camisaDao = new CamisaDAO();
-			
-			
+			if(!novoPedido.getCamisas().isEmpty()) {
+				camisaDao.inserirCamisa(novoPedido.getId(), novoPedido.getCamisas());
+			}
 		} catch (SQLException e) {
 			System.out.println("Erro ao inserir novo pedido.");
 			System.out.println("Erro: " + e.getMessage());
@@ -36,6 +40,6 @@ public class PedidoDAO {
 
 		return novoPedido;
 	}
+
 	
-		
 }

@@ -156,7 +156,9 @@ public class PainelNovoPedido extends JPanel {
 					String path = imagemSelecionada.getAbsolutePath();
 					ImageIcon icon = new ImageIcon(path);
 					lblImg.setIcon(icon);
+					
 				}
+				btnAdd.setEnabled(true);
 			}
 		});
 		add(btnProcurarImagem, "6, 10");
@@ -167,17 +169,19 @@ public class PainelNovoPedido extends JPanel {
 		add(cbCor, "6, 8");
 
 		btnAdd = new JButton("Adicionar Camiseta ao Pedido");
+		btnAdd.setEnabled(false);
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Camisa c = new Camisa();
 				c.setCor(cbCor.getSelectedItem().toString());
 				c.setTamanho(cbTamanho.getSelectedItem().toString());
-				try {
-					c.setEstampa(Files.readAllBytes(imagemSelecionada.toPath()));
-				} catch (IOException e1) {
-					JOptionPane.showMessageDialog(null, "Erro ao converter imagem", "Erro", JOptionPane.ERROR_MESSAGE);
-				}
+					try {
+						c.setEstampa(Files.readAllBytes(imagemSelecionada.toPath()));
+					} catch (IOException e1) {
+						JOptionPane.showMessageDialog(null, "Erro ao converter imagem", "Erro", JOptionPane.ERROR_MESSAGE);
+					}
 				camisas.add(c);
+				btnSalvar.setEnabled(true);
 				atualizarTabela();
 			}
 		});
@@ -193,6 +197,7 @@ public class PainelNovoPedido extends JPanel {
 		add(btnVoltar, "4, 24");
 
 		btnSalvar = new JButton("Finalizar Pedido");
+		btnSalvar.setEnabled(false);
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Pedido pedido = new Pedido();

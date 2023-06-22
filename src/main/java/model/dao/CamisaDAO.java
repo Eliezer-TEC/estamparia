@@ -5,13 +5,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+
 
 import model.vo.Camisa;
 
 public class CamisaDAO {
 	public Camisa inserir(Camisa novaCamisa) {
 		Connection conexao = Banco.getConnection();
-		String sql = " INSERT INTO CAMISA(ID_PEDIDO, TAMANHO, COR, ESTAMPA, ) " + " VALUES (?,?,?,?,?) ";
+		String sql = " INSERT INTO CAMISA(ID_PEDIDO, TAMANHO, COR, ESTAMPA ) " + " VALUES (?,?,?,?) ";
 		PreparedStatement stmt = Banco.getPreparedStatementWithPk(conexao, sql);
 		try {
 			stmt.setInt(1, novaCamisa.getIdPedido() == null ? 0 : novaCamisa.getIdPedido());
@@ -55,6 +57,17 @@ public class CamisaDAO {
 		}
 
 		return estampaJaUtilizada;
+	}
+
+	
+
+	public void inserirCamisa(Integer id, ArrayList<Camisa> camisas) {
+		for(Camisa camisaDoUsuarioCamisa : camisas) {
+			camisaDoUsuarioCamisa.setIdPedido(id);
+			this.inserir(camisaDoUsuarioCamisa);
+	
+		}
+		
 	}
 
 }
