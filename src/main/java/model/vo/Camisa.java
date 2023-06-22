@@ -5,10 +5,9 @@ import java.sql.Blob;
 public class Camisa {
 
 	private Integer id;
-
 	private String tamanho;
 	private String cor;
-	private Blob estampa;
+	private byte[] estampa; //TODO testar com byte[]
 	private Integer idPedido;
 
 	public Camisa() {
@@ -16,7 +15,7 @@ public class Camisa {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Camisa(Integer id, String tamanho, String cor, Blob estampa, Integer idPedido) {
+	public Camisa(Integer id, String tamanho, String cor, byte[] estampa, Integer idPedido) {
 		super();
 		this.id = id;
 		this.tamanho = tamanho;
@@ -49,12 +48,12 @@ public class Camisa {
 		this.cor = cor;
 	}
 
-	public Blob getEstampa() {
+	public byte[] getEstampa() {
 		return estampa;
 	}
 
-	public void setEstampa(Blob estampa) {
-		this.estampa = estampa;
+	public void setEstampa(byte[] bs) {
+		this.estampa = bs;
 	}
 
 	public Integer getIdPedido() {

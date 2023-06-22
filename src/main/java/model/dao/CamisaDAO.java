@@ -17,7 +17,7 @@ public class CamisaDAO {
 			stmt.setInt(1, novaCamisa.getIdPedido() == null ? 0 : novaCamisa.getIdPedido());
 			stmt.setString(2, novaCamisa.getTamanho());
 			stmt.setString(3, novaCamisa.getCor());
-			stmt.setBlob(4, novaCamisa.getEstampa());
+			stmt.setBytes(4, novaCamisa.getEstampa());
 			stmt.execute();
 
 			// Preencher o id gerado no banco no objeto

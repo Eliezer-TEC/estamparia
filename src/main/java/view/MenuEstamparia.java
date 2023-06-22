@@ -37,12 +37,24 @@ public class MenuEstamparia {
 	private JMenuItem mntmNovoPedido;
 	private JMenuItem mntmListagemPedidos;
 	private JMenuItem mntmListagemUsuario;
+	private Pessoa usuarioAutenticado;
+
+	public Pessoa getUsuarioAutenticado() {
+		return usuarioAutenticado;
+	}
+
+	public void setUsuarioAutenticado(Pessoa usarioAutenticado) {
+		this.usuarioAutenticado = usarioAutenticado;
+	}
 
 	private PainelNovoPedido painelNovoPedido;
 
 	/**
 	 * Launch the application.
 	 */
+	
+	
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -103,7 +115,7 @@ public class MenuEstamparia {
 		mntmNovoPedido = new JMenuItem("Novo Pedido");
 		mntmNovoPedido.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				painelNovoPedido = new PainelNovoPedido(null);
+				painelNovoPedido = new PainelNovoPedido(usuarioAutenticado);
 				painelNovoPedido.setVisible(true);
 				registrarCliqueBotaoVoltarDoPainelNovoPedido();
 				frmSistemaDeEstamparia.setContentPane(painelNovoPedido);
@@ -160,7 +172,7 @@ public class MenuEstamparia {
 
 			public void actionPerformed(ActionEvent e) {
 				try {
-					Pessoa usuarioAutenticado = painelLogin.autenticar();
+					usuarioAutenticado = painelLogin.autenticar();
 					bloquearTodoMenu();
 					if (usuarioAutenticado != null && usuarioAutenticado.isFuncionario() == true) {
 						mnUsuario.setEnabled(true);
@@ -169,7 +181,6 @@ public class MenuEstamparia {
 						painelHome = new PainelHomeCliente();
 						frmSistemaDeEstamparia.setContentPane(painelHome);
 						frmSistemaDeEstamparia.revalidate();
-
 					}
 					if (usuarioAutenticado != null && usuarioAutenticado.isFuncionario() == false) {
 						mnUsuario.setEnabled(false);
@@ -216,7 +227,7 @@ public class MenuEstamparia {
 
 	protected void registrarCliqueBotaoVoltarDoPainelNovoPedido() {
 		if (painelNovoPedido == null) {
-			painelNovoPedido = new PainelNovoPedido(null);
+			painelNovoPedido = new PainelNovoPedido(usuarioAutenticado);
 		}
 
 		painelNovoPedido.getBtnVoltar().addActionListener(new ActionListener() {

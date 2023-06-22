@@ -8,27 +8,34 @@ import com.jgoodies.forms.layout.RowSpec;
 import com.mysql.cj.jdbc.Blob;
 
 import controller.CamisaController;
+import controller.PedidoController;
 import controller.PessoaController;
 import model.exception.CampoInvalidoException;
 import model.exception.CpfJaUtilizadoException;
 import model.vo.Camisa;
 import model.vo.Pedido;
 import model.vo.Pessoa;
+import model.vo.SituacaoPedido;
 
 import com.jgoodies.forms.layout.FormSpecs;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.ArrayList;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFormattedTextField;
+import javax.swing.JTable;
 
 public class PainelNovoPedido extends JPanel {
 
@@ -43,73 +50,97 @@ public class PainelNovoPedido extends JPanel {
 	private JButton btnVoltar;
 	private JButton btnSalvar;
 	private java.io.File imagemSelecionada;
-	private JLabel lblImagem;
 	private Container contentPane;
-	private JButton btnMostrarImg;
 	private Pedido pedido;
 	private Camisa camisa;
 	private JLabel lblEmail;
 	private JTextField txtEmail;
+	private JLabel lblImg;
+	private JButton btnAdd;
+	private ArrayList<Camisa> camisas = new ArrayList<Camisa>();;
+	private JTable tableCamisas;
+	private String[] nomesColunas = {"Tamanho", "Cor", "Estampa"};
+
+	private void limparTabela() {
+		tableCamisas.setModel(new DefaultTableModel(new Object[][] { nomesColunas, }, nomesColunas));
+	}
+
+	private void atualizarTabela() {
+		this.limparTabela();
+
+
+		DefaultTableModel model = (DefaultTableModel) tableCamisas.getModel();
+		for (Camisa c : this.camisas) {
+
+			Object[] novaLinhaDaTabela = new Object[3];
+			novaLinhaDaTabela[0] = c.getTamanho();
+			novaLinhaDaTabela[1] = c.getCor();
+			novaLinhaDaTabela[2] = c.getEstampa().toString();
+
+			model.addRow(novaLinhaDaTabela);
+		}
+	}
 
 	/**
 	 * Create the panel.
 	 */
-	public PainelNovoPedido(Camisa camisaParaEditar) {
-		if (camisaParaEditar != null) {
-			this.camisa = camisaParaEditar;
-		} else {
-			this.camisa = new Camisa();
-		}
+	public PainelNovoPedido(final Pessoa usuarioAutenticado) {
+		this.camisa = new Camisa();
 		setLayout(new FormLayout(new ColumnSpec[] {
 				FormSpecs.RELATED_GAP_COLSPEC,
 				FormSpecs.DEFAULT_COLSPEC,
 				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("max(42dlu;default)"),
+				ColumnSpec.decode("max(65dlu;default)"),
 				FormSpecs.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("max(200dlu;default):grow"),
 				FormSpecs.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("max(285dlu;default)"),},
-			new RowSpec[] {
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,}));
+				new RowSpec[] {
+						FormSpecs.RELATED_GAP_ROWSPEC,
+						FormSpecs.DEFAULT_ROWSPEC,
+						FormSpecs.RELATED_GAP_ROWSPEC,
+						FormSpecs.DEFAULT_ROWSPEC,
+						FormSpecs.RELATED_GAP_ROWSPEC,
+						FormSpecs.DEFAULT_ROWSPEC,
+						FormSpecs.RELATED_GAP_ROWSPEC,
+						FormSpecs.DEFAULT_ROWSPEC,
+						FormSpecs.RELATED_GAP_ROWSPEC,
+						FormSpecs.DEFAULT_ROWSPEC,
+						FormSpecs.RELATED_GAP_ROWSPEC,
+						FormSpecs.DEFAULT_ROWSPEC,
+						FormSpecs.RELATED_GAP_ROWSPEC,
+						FormSpecs.DEFAULT_ROWSPEC,
+						FormSpecs.RELATED_GAP_ROWSPEC,
+						FormSpecs.DEFAULT_ROWSPEC,
+						FormSpecs.RELATED_GAP_ROWSPEC,
+						FormSpecs.DEFAULT_ROWSPEC,
+						FormSpecs.RELATED_GAP_ROWSPEC,
+						FormSpecs.DEFAULT_ROWSPEC,
+						FormSpecs.RELATED_GAP_ROWSPEC,
+						FormSpecs.DEFAULT_ROWSPEC,
+						FormSpecs.RELATED_GAP_ROWSPEC,
+						FormSpecs.DEFAULT_ROWSPEC,
+						FormSpecs.RELATED_GAP_ROWSPEC,
+						FormSpecs.DEFAULT_ROWSPEC,
+						FormSpecs.RELATED_GAP_ROWSPEC,
+						RowSpec.decode("default:grow"),}));
 
 		lblNovoPedido = new JLabel("Novo Pedido");
 		add(lblNovoPedido, "4, 4");
-		
-				lblTamanho = new JLabel("Tamanho");
-				add(lblTamanho, "4, 6, right, default");
-		
-				cbTamanho = new JComboBox();
-				cbTamanho.setToolTipText("\r\n");
-				cbTamanho.setModel(new DefaultComboBoxModel(new String[] { "PP", "P", "M", "G" }));
-				add(cbTamanho, "6, 6, fill, default");
-		
-				lblCor = new JLabel("Cor");
-				add(lblCor, "4, 8, right, default");
+
+		lblImg = new JLabel("imagem aqui");
+		add(lblImg, "8, 4, 1, 21");
+
+		lblTamanho = new JLabel("Tamanho");
+		add(lblTamanho, "4, 6, right, default");
+
+		cbTamanho = new JComboBox();
+		cbTamanho.setToolTipText("\r\n");
+		cbTamanho.setModel(new DefaultComboBoxModel(new String[] { "PP", "P", "M", "G" }));
+		add(cbTamanho, "6, 6, fill, default");
+
+		lblCor = new JLabel("Cor");
+		add(lblCor, "4, 8, right, default");
 
 		btnProcurarImagem = new JButton("Procurar Imagem");
 		btnProcurarImagem.addActionListener(new ActionListener() {
@@ -121,87 +152,60 @@ public class PainelNovoPedido extends JPanel {
 				if (returnValue == JFileChooser.APPROVE_OPTION) {
 					imagemSelecionada = fileChooser.getSelectedFile();
 				}
-			}
-		});
-		
-				cbCor = new JComboBox();
-				cbCor.setModel(new DefaultComboBoxModel(
-						new String[] { "VERMELO", "AZUL", "AMARELO", "VERDE", "BRANCO", "PRETO", "CINZA", "ROSA" }));
-				add(cbCor, "6, 8");
-		
-	
-		
-		
-		lblNomeImg = new JLabel("");
-		add(lblNomeImg, "6, 14");
-
-		btnMostrarImg = new JButton("Mostrar Imagem");
-		btnMostrarImg.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
 				if (imagemSelecionada != null) {
 					String path = imagemSelecionada.getAbsolutePath();
 					ImageIcon icon = new ImageIcon(path);
-					lblImagem.setIcon(icon);
+					lblImg.setIcon(icon);
 				}
 			}
 		});
-		add(btnMostrarImg, "6, 16");
+		add(btnProcurarImagem, "6, 10");
 
-		// PERGUNTA
-		// lblImagem = new JLabel();
-		// lblImagem.setBounds(10, 161, 493, 252);
-		// contentPane.add(lblImagem);
+		cbCor = new JComboBox();
+		cbCor.setModel(new DefaultComboBoxModel(
+				new String[] { "VERMELHO", "AZUL", "AMARELO", "VERDE", "BRANCO", "PRETO", "CINZA", "ROSA" }));
+		add(cbCor, "6, 8");
+
+		btnAdd = new JButton("Adicionar Camiseta ao Pedido");
+		btnAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Camisa c = new Camisa();
+				c.setCor(cbCor.getSelectedItem().toString());
+				c.setTamanho(cbTamanho.getSelectedItem().toString());
+				try {
+					c.setEstampa(Files.readAllBytes(imagemSelecionada.toPath()));
+				} catch (IOException e1) {
+					JOptionPane.showMessageDialog(null, "Erro ao converter imagem", "Erro", JOptionPane.ERROR_MESSAGE);
+				}
+				camisas.add(c);
+				atualizarTabela();
+			}
+		});
+		add(btnAdd, "6, 12");
 
 		lblItensDoPedido = new JLabel("Itens do Pedido");
-		add(lblItensDoPedido, "4, 18");
+		add(lblItensDoPedido, "4, 14");
 
-		btnSalvar = new JButton("Salvar");
+		lblNomeImg = new JLabel("");
+		add(lblNomeImg, "6, 14");
+
+		btnVoltar = new JButton("Voltar");
+		add(btnVoltar, "4, 24");
+
+		btnSalvar = new JButton("Finalizar Pedido");
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (cbTamanho.getSelectedIndex() == 0) {
-					camisa.setTamanho("PP");
-				}
-				if (cbTamanho.getSelectedIndex() == 1) {
-					camisa.setTamanho("P");
-				}
-				if (cbTamanho.getSelectedIndex() == 2) {
-					camisa.setTamanho("M");
-				}
-				if (cbTamanho.getSelectedIndex() == 3) {
-					camisa.setTamanho("G");
-				}
+				Pedido pedido = new Pedido();
 
-				if (cbCor.getSelectedIndex() == 0) {
-					camisa.setCor("VERMELO");
-				}
-				if (cbCor.getSelectedIndex() == 1) {
-					camisa.setCor("AZUL");
-				}
-				if (cbCor.getSelectedIndex() == 2) {
-					camisa.setCor("AMARELO");
-				}
-				if (cbCor.getSelectedIndex() == 3) {
-					camisa.setCor("VERDE");
-				}
-				if (cbCor.getSelectedIndex() == 4) {
-					camisa.setCor("BRANCO");
-				}
-				if (cbCor.getSelectedIndex() == 5) {
-					camisa.setCor("PRETO");
-				}
-				if (cbCor.getSelectedIndex() == 6) {
-					camisa.setCor("CINZA");
-				}
-				if (cbCor.getSelectedIndex() == 7) {
-					camisa.setCor("ROSA");
-				}
-			
-			
-				CamisaController controller = new CamisaController();
+				pedido.setCamisas(camisas);
+				pedido.setIdPessoa(usuarioAutenticado.getId());
+				pedido.setSituacaoPedido(SituacaoPedido.PEDIDO_REALIZADO);
+
+				PedidoController controller = new PedidoController();
 
 				try {
-					controller.inserir(camisa);
-					JOptionPane.showMessageDialog(null, "Cliente salvo com sucesso!", "Sucesso",
+					controller.inserir(pedido);
+					JOptionPane.showMessageDialog(null, "Camisa salva com sucesso!", "Sucesso",
 							JOptionPane.INFORMATION_MESSAGE);
 				} catch (Exception excecao) {
 					JOptionPane.showMessageDialog(null, excecao.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
@@ -209,10 +213,10 @@ public class PainelNovoPedido extends JPanel {
 
 			}
 		});
-		add(btnSalvar, "4, 22");
+		add(btnSalvar, "8, 26");
 
-		btnVoltar = new JButton("Voltar");
-		add(btnVoltar, "4, 24");
+		tableCamisas = new JTable();
+		add(tableCamisas, "4, 28, 3, 1, fill, fill");
 
 	}
 
