@@ -9,6 +9,15 @@ public class Camisa {
 	private String cor;
 	private byte[] estampa; //TODO testar com byte[]
 	private Integer idPedido;
+	private String nomeArquivo;
+
+	public String getNomeArquivo() {
+		return nomeArquivo;
+	}
+
+	public void setNomeArquivo(String nomeArquivo) {
+		this.nomeArquivo = nomeArquivo;
+	}
 
 	public Camisa() {
 		super();

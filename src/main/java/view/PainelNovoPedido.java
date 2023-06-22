@@ -75,7 +75,7 @@ public class PainelNovoPedido extends JPanel {
 			Object[] novaLinhaDaTabela = new Object[3];
 			novaLinhaDaTabela[0] = c.getTamanho();
 			novaLinhaDaTabela[1] = c.getCor();
-			novaLinhaDaTabela[2] = c.getEstampa().toString();
+			novaLinhaDaTabela[2] = c.getNomeArquivo();
 
 			model.addRow(novaLinhaDaTabela);
 		}
@@ -136,7 +136,7 @@ public class PainelNovoPedido extends JPanel {
 
 		cbTamanho = new JComboBox();
 		cbTamanho.setToolTipText("\r\n");
-		cbTamanho.setModel(new DefaultComboBoxModel(new String[] { "PP", "P", "M", "G" }));
+		cbTamanho.setModel(new DefaultComboBoxModel(new String[] { "PP", "P", "M", "G", "GG" }));
 		add(cbTamanho, "6, 6, fill, default");
 
 		lblCor = new JLabel("Cor");
@@ -180,6 +180,7 @@ public class PainelNovoPedido extends JPanel {
 					} catch (IOException e1) {
 						JOptionPane.showMessageDialog(null, "Erro ao converter imagem", "Erro", JOptionPane.ERROR_MESSAGE);
 					}
+				c.setNomeArquivo(imagemSelecionada.getName());
 				camisas.add(c);
 				btnSalvar.setEnabled(true);
 				atualizarTabela();

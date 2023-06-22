@@ -13,13 +13,14 @@ import model.vo.Camisa;
 public class CamisaDAO {
 	public Camisa inserir(Camisa novaCamisa) {
 		Connection conexao = Banco.getConnection();
-		String sql = " INSERT INTO CAMISA(ID_PEDIDO, TAMANHO, COR, ESTAMPA ) " + " VALUES (?,?,?,?) ";
+		String sql = " INSERT INTO CAMISA(ID_PEDIDO, TAMANHO, COR, ESTAMPA, NOMEARQUIVO ) " + " VALUES (?,?,?,?,?) ";
 		PreparedStatement stmt = Banco.getPreparedStatementWithPk(conexao, sql);
 		try {
 			stmt.setInt(1, novaCamisa.getIdPedido() == null ? 0 : novaCamisa.getIdPedido());
 			stmt.setString(2, novaCamisa.getTamanho());
 			stmt.setString(3, novaCamisa.getCor());
 			stmt.setBytes(4, novaCamisa.getEstampa());
+			stmt.setString(4, novaCamisa.getNomeArquivo());
 			stmt.execute();
 
 			// Preencher o id gerado no banco no objeto
