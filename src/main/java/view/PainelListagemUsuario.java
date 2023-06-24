@@ -87,7 +87,7 @@ public class PainelListagemUsuario extends JPanel {
 				atualizarTabelaClientes();
 			}
 		});
-		btnBuscar.setBounds(210, 127, 240, 35);
+		btnBuscar.setBounds(209, 95, 240, 35);
 		this.add(btnBuscar);
 
 		tblUsuarios = new JTable();
