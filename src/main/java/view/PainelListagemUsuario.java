@@ -37,23 +37,30 @@ public class PainelListagemUsuario extends JPanel {
 	private JTextField txtNome;
 	private MaskFormatter mascaraCpf;
 	private JFormattedTextField txtCPF;
-	
-	//componentes externos -> dependência "LGoodDatePicker" foi adicionada no pom.xml
+
+	// componentes externos -> dependência "LGoodDatePicker" foi adicionada no
+	// pom.xml
 	private JButton btnEditar;
 	private JButton btnBuscar;
 	private JButton btnGerarPlanilha;
 	private JButton btnExcluir;
 	private JLabel lblCpf;
 	private JLabel lblNome;
-	
+
 	private PessoaController controller = new PessoaController();
 	private Pessoa usuarioSelecionado;
-	
-	//Atributos para a PAGINAÇÃO
-	
+
+	// Atributos para a PAGINAÇÃO
+
 	private PessoaSeletor seletor = new PessoaSeletor();
 	private JButton btnVoltar;
-	
+	private final int TAMANHO_PAGINA = 5;
+	private int paginaAtual = 1;
+	private int totalPaginas = 0;
+	private JButton btnVoltarPagina;
+	private JButton btnAvancarPagina;
+	private JLabel lblPaginacao;
+
 	private void limparTabelaClientes() {
 		tblUsuarios.setModel(new DefaultTableModel(new Object[][] { nomesColunas, }, nomesColunas));
 	}
@@ -74,7 +81,7 @@ public class PainelListagemUsuario extends JPanel {
 			model.addRow(novaLinhaDaTabela);
 		}
 	}
-	
+
 	public PainelListagemUsuario() {
 		this.setLayout(null);
 
@@ -135,8 +142,6 @@ public class PainelListagemUsuario extends JPanel {
 			e1.printStackTrace();
 		}
 
-		
-
 		btnGerarPlanilha = new JButton("Gerar Planilha ");
 		btnGerarPlanilha.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -160,38 +165,21 @@ public class PainelListagemUsuario extends JPanel {
 		this.add(btnGerarPlanilha);
 
 		btnEditar = new JButton("Editar");
-		btnEditar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int opcaoSelecionada = JOptionPane.showConfirmDialog(null, "Deseja editar o usuário selecionado?");
-				
-				
-				if(opcaoSelecionada == JOptionPane.YES_OPTION) {
-					try {
-						
-						JOptionPane.showMessageDialog(null, "Cliente excluído com sucesso");
-						pessoas = (ArrayList<Pessoa>) controller.consultarTodos();
-						atualizarTabelaClientes();
-					} catch (Exception e1) {
-						JOptionPane.showConfirmDialog(null, e1.getMessage(), "Atenção", JOptionPane.WARNING_MESSAGE);
-					}
-				}
-			
-			}
-		});
 		btnEditar.setBounds(250, 375, 200, 45);
 		btnEditar.setEnabled(false);
 		this.add(btnEditar);
-		
+
 		btnExcluir = new JButton("Excluir");
 		btnExcluir.setEnabled(false);
 		btnExcluir.setBounds(475, 375, 200, 45);
 		btnExcluir.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int opcaoSelecionada = JOptionPane.showConfirmDialog(null, "Confirma a exclusão do usuário selecionado?");
-				
-				if(opcaoSelecionada == JOptionPane.YES_OPTION) {
+				int opcaoSelecionada = JOptionPane.showConfirmDialog(null,
+						"Confirma a exclusão do usuário selecionado?");
+
+				if (opcaoSelecionada == JOptionPane.YES_OPTION) {
 					try {
 						controller.excluir(usuarioSelecionado.getId());
 						JOptionPane.showMessageDialog(null, "Cliente excluído com sucesso");
@@ -204,38 +192,80 @@ public class PainelListagemUsuario extends JPanel {
 			}
 		});
 		this.add(btnExcluir);
-		
+
 		btnVoltar = new JButton("Voltar");
 		btnVoltar.setBounds(250, 469, 200, 45);
 		add(btnVoltar);
-		
-		
-		
-		
+
+		btnVoltarPagina = new JButton("<< Voltar");
+		btnVoltarPagina.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				paginaAtual--;
+				buscarClientesComFiltros();
+				lblPaginacao.setText(paginaAtual + " / " + totalPaginas);
+				btnVoltarPagina.setEnabled(paginaAtual > 1);
+				btnAvancarPagina.setEnabled(paginaAtual < totalPaginas);
+			}
+		});
+		btnVoltarPagina.setEnabled(false);
+		btnVoltarPagina.setBounds(175, 319, 111, 23);
+		add(btnVoltarPagina);
+
+		btnAvancarPagina = new JButton("Avançar >>");
+		btnAvancarPagina.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				paginaAtual++;
+				buscarClientesComFiltros();
+				lblPaginacao.setText(paginaAtual + " / " + totalPaginas);
+				btnVoltarPagina.setEnabled(paginaAtual > 1);
+				btnAvancarPagina.setEnabled(paginaAtual < totalPaginas);
+			}
+		});
+		btnAvancarPagina.setBounds(386, 319, 111, 23);
+		add(btnAvancarPagina);
+
+		lblPaginacao = new JLabel("1 / " + totalPaginas);
+		lblPaginacao.setHorizontalAlignment(SwingConstants.CENTER);
+		lblPaginacao.setBounds(283, 323, 105, 14);
+		add(lblPaginacao);
+
+		atualizarQuantidadePaginas();
+
 	}
-	
+
+	private void atualizarQuantidadePaginas() {
+		int totalRegistros = controller.contarTotalRegistrosComFiltros(seletor);
+
+		// QUOCIENTE da divisão inteira
+		totalPaginas = totalRegistros / TAMANHO_PAGINA;
+
+		// RESTO da divisão inteira
+		if (totalRegistros % TAMANHO_PAGINA > 0) {
+			totalPaginas++;
+		}
+
+		lblPaginacao.setText(paginaAtual + " / " + totalPaginas);
+	}
 
 	protected void buscarClientesComFiltros() {
 		seletor = new PessoaSeletor();
-		
+
 		seletor.setNome(txtNome.getText());
-		
+
 		String cpfSemMascara;
 		try {
-			cpfSemMascara = (String) mascaraCpf.stringToValue(
-					txtCPF.getText());
+			cpfSemMascara = (String) mascaraCpf.stringToValue(txtCPF.getText());
 			seletor.setCpf(cpfSemMascara);
 		} catch (ParseException e1) {
 			// TODO Auto-generated catch block
-			//e1.printStackTrace();
+			// e1.printStackTrace();
 		}
-		
-		
+
 		pessoas = (ArrayList<Pessoa>) controller.consultarComFiltros(seletor);
 		atualizarTabelaClientes();
 	}
 
-	//Torna o btnEditar acessível externamente à essa classe
+	// Torna o btnEditar acessível externamente à essa classe
 	public JButton getBtnEditar() {
 		return this.btnEditar;
 	}

@@ -51,6 +51,7 @@ public class PessoaDAO {
 			stmt.setString(3, pessoa.getEmail());
 			stmt.setString(4, pessoa.getSenha());
 			stmt.setBoolean(5, pessoa.isFuncionario());
+			stmt.setInt(6, pessoa.getId());
 			registrosAlterados = stmt.executeUpdate();
 
 		} catch (SQLException e) {

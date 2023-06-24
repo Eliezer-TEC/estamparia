@@ -20,7 +20,7 @@ public class CamisaDAO {
 			stmt.setString(2, novaCamisa.getTamanho());
 			stmt.setString(3, novaCamisa.getCor());
 			stmt.setBytes(4, novaCamisa.getEstampa());
-			stmt.setString(4, novaCamisa.getNomeArquivo());
+			stmt.setString(5, novaCamisa.getNomeArquivo());
 			stmt.execute();
 
 			// Preencher o id gerado no banco no objeto

@@ -25,7 +25,8 @@ public class PessoaController {
 	private void validarCamposObrigatorios(Pessoa c) throws CampoInvalidoException {
 
 		String mensagemValidacao = "";
-
+		
+		
 		if (c.getNome() == null || c.getNome().trim().length() < 2) {
 			mensagemValidacao += "Nome inválido \n";
 		}
@@ -105,6 +106,12 @@ public class PessoaController {
 	public List<Pessoa> consultarComFiltros(PessoaSeletor seletor) {
 		// TODO Auto-generated method stub
 		return bo.consultarComFiltros(seletor);
+	}
+
+	public boolean atualizar(Pessoa pessoa) throws CampoInvalidoException {
+		validarCamposObrigatorios(pessoa);
+		return bo.atualizar(pessoa);
+		
 	}
 
 }

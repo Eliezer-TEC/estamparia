@@ -5,6 +5,8 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -26,18 +28,19 @@ public class MenuEstamparia {
 	private JFrame frmSistemaDeEstamparia;
 	private PainelCadastroPessoa painelCadastroPessoa;
 	private PainelListagemUsuario painelListagemUsuario;
-	
+
 	private PainelLogin painelLogin;
 	private PainelHomeCliente painelHome;
 	private JMenuBar menuBar;
 	private JMenu mnHome;
 	private JMenu mnPedidos;
 	private JMenu mnUsuario;
-	private JMenuItem mnAtualizar;
 	private JMenuItem mntmNovoPedido;
 	private JMenuItem mntmListagemPedidos;
 	private JMenuItem mntmListagemUsuario;
 	private Pessoa usuarioAutenticado;
+
+	
 
 	public Pessoa getUsuarioAutenticado() {
 		return usuarioAutenticado;
@@ -48,13 +51,12 @@ public class MenuEstamparia {
 	}
 
 	private PainelNovoPedido painelNovoPedido;
+	private PainelAtualizarUsuario painelAtualizarUsuario;
 
 	/**
 	 * Launch the application.
 	 */
-	
-	
-	
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -103,6 +105,14 @@ public class MenuEstamparia {
 		frmSistemaDeEstamparia.setJMenuBar(menuBar);
 
 		mnHome = new JMenu("Home");
+		mnHome.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				painelHome = new PainelHomeCliente();
+				frmSistemaDeEstamparia.setContentPane(painelHome);
+				frmSistemaDeEstamparia.revalidate();
+			}
+		});
 		mnHome.setEnabled(false);
 		mnHome.setIcon(new ImageIcon(PainelHomeCliente.class.getResource("/icones/iconeCasa.png")));
 		menuBar.add(mnHome);
@@ -138,8 +148,9 @@ public class MenuEstamparia {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				painelListagemUsuario = new PainelListagemUsuario();
-				painelListagemUsuario.setVisible(true); 
-				registrarCliqueBotaoVoltarDoPainelCadastroListagemUsuario();
+				painelListagemUsuario.setVisible(true);
+				registrarCliqueBotaoEditarDoPainelListagemCliente();
+				registrarCliqueBotaoVoltarDoPainelListagemUsuario();
 				frmSistemaDeEstamparia.setContentPane(painelListagemUsuario);
 				frmSistemaDeEstamparia.revalidate();
 			}
@@ -147,30 +158,17 @@ public class MenuEstamparia {
 		});
 		mnUsuario.add(mntmListagemUsuario);
 
-		mnAtualizar = new JMenuItem("Atualizar");
-		mnAtualizar.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent e) {
-				painelCadastroPessoa = new PainelCadastroPessoa(null);
-				painelCadastroPessoa.setVisible(true);
-				registrarCliqueBotaoVoltarDoPainelCadastroUsuario();
-
-				frmSistemaDeEstamparia.setContentPane(painelCadastroPessoa);
-				frmSistemaDeEstamparia.revalidate();
-			}
-		});
-		mnUsuario.add(mnAtualizar);
-
 		painelLogin = new PainelLogin();
 		painelLogin.getBtnNovoUsuario().setBounds(229, 203, 127, 25);
 		painelLogin.getBtnLogar().setBounds(75, 203, 117, 25);
 		frmSistemaDeEstamparia.setContentPane(painelLogin);
 		painelLogin.setLayout(null);
 		frmSistemaDeEstamparia.revalidate();
-		
+
 		bloquearTodoMenu();
 
 		painelLogin = new PainelLogin();
+
 		painelLogin.getBtnNovoUsuario().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				painelCadastroPessoa = new PainelCadastroPessoa(null);
@@ -180,7 +178,7 @@ public class MenuEstamparia {
 				frmSistemaDeEstamparia.revalidate();
 			}
 		});
-		
+
 		painelLogin.getBtnLogar().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -212,12 +210,48 @@ public class MenuEstamparia {
 			}
 
 		});
+
 		frmSistemaDeEstamparia.setContentPane(painelLogin);
-		
 	}
 
+	protected void registrarCliqueBotaoEditarDoPainelListagemCliente() {
+		// Registro de ouvinte para o clique em um botão de um painel
+		painelListagemUsuario.getBtnEditar().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				painelAtualizarUsuario = new PainelAtualizarUsuario(painelListagemUsuario.getUsuarioSelecionado());
+				painelAtualizarUsuario.setVisible(true);
+				registrarCliqueBotaoVoltarDoPainelAtualizarUsuario();
 
-	protected void registrarCliqueBotaoVoltarDoPainelCadastroListagemUsuario() {
+				// Atualiza a tela principal
+				frmSistemaDeEstamparia.setContentPane(painelAtualizarUsuario);
+				frmSistemaDeEstamparia.revalidate();
+			}
+		});
+	}
+
+	protected void registrarCliqueBotaoVoltarDoPainelAtualizarUsuario() {
+		if (painelAtualizarUsuario == null) {
+			painelAtualizarUsuario = new PainelAtualizarUsuario(null);
+		}
+
+		// Registrar o evento de clique no voltar do PainelCadastroCliente
+		painelAtualizarUsuario.getBtnVoltar().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Lógica do clique no botão Voltar
+				// Mostra o painel de listagem de clientes
+				painelHome = new PainelHomeCliente();
+				painelHome.setVisible(true);
+				registrarCliqueBotaoEditarDoPainelListagemCliente();
+				frmSistemaDeEstamparia.setContentPane(painelHome);
+				frmSistemaDeEstamparia.revalidate();
+			}
+		});
+	}
+
+	protected void registrarCliqueBotaoVoltarDoPainelListagemUsuario() {
 		if (painelListagemUsuario == null) {
 			painelListagemUsuario = new PainelListagemUsuario();
 		}
@@ -271,7 +305,7 @@ public class MenuEstamparia {
 				// Lógica do clique no botão Voltar
 				// Mostra o painel de listagem de clientes
 				painelLogin = new PainelLogin();
-				painelLogin.setVisible(true);
+
 				registrarCliqueBotaoVoltarDoPainelCadastroUsuario();
 
 				frmSistemaDeEstamparia.setContentPane(painelLogin);

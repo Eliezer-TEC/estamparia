@@ -67,4 +67,10 @@ public class PessoaBO {
 		return dao.consultarComFiltros(seletor);
 	}
 
+
+	public boolean atualizar(Pessoa pessoa) {
+		
+		return dao.atualizar(pessoa);
+	}
+
 }
