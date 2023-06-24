@@ -128,7 +128,7 @@ public class PainelNovoPedido extends JPanel {
 		lblNovoPedido = new JLabel("Novo Pedido");
 		add(lblNovoPedido, "4, 4");
 
-		lblImg = new JLabel("imagem aqui");
+		lblImg = new JLabel("imagem de no máximo 300px X 300px");
 		add(lblImg, "8, 4, 1, 21");
 
 		lblTamanho = new JLabel("Tamanho");
@@ -213,6 +213,9 @@ public class PainelNovoPedido extends JPanel {
 					controller.inserir(pedido);
 					JOptionPane.showMessageDialog(null, "Camisa salva com sucesso!", "Sucesso",
 							JOptionPane.INFORMATION_MESSAGE);
+				camisas.clear();
+				atualizarTabela();
+				lblImg.setIcon(null);
 				} catch (Exception excecao) {
 					JOptionPane.showMessageDialog(null, excecao.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 				}

@@ -1,43 +1,26 @@
 package view;
 
-import java.awt.EventQueue;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
 
-import javax.swing.JFrame;
-
-public class PainelListagemPedido {
-
-	private JFrame frame;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					PainelListagemPedido window = new PainelListagemPedido();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+public class PainelListagemPedido extends JPanel {
+	private JTextField textField;
 
 	/**
-	 * Create the application.
+	 * Create the panel.
 	 */
 	public PainelListagemPedido() {
-		initialize();
-	}
+		setLayout(null);
+		
+		JLabel lblNewLabel = new JLabel("New label");
+		lblNewLabel.setBounds(34, 45, 45, 13);
+		add(lblNewLabel);
+		
+		textField = new JTextField();
+		textField.setBounds(234, 42, 96, 19);
+		add(textField);
+		textField.setColumns(10);
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
-
 }
