@@ -25,6 +25,7 @@ import java.text.ParseException;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JRadioButton;
+import java.awt.Font;
 
 public class PainelAtualizarUsuario extends JPanel {
 	private JTextField textNome;
@@ -54,20 +55,23 @@ public class PainelAtualizarUsuario extends JPanel {
 		setLayout(null);
 
 		lblAtualizarCadastro = new JLabel("Atualizar cadastro");
-		lblAtualizarCadastro.setBounds(139, 12, 172, 15);
+		lblAtualizarCadastro.setFont(new Font("Tahoma", Font.PLAIN, 25));
+		lblAtualizarCadastro.setBounds(518, 11, 246, 78);
 		add(lblAtualizarCadastro);
 
 		lblNome = new JLabel("Nome:");
-		lblNome.setBounds(59, 41, 70, 15);
+		lblNome.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNome.setBounds(453, 138, 70, 15);
 		add(lblNome);
 
 		textNome = new JTextField();
-		textNome.setBounds(119, 39, 208, 19);
+		textNome.setBounds(518, 131, 232, 29);
 		add(textNome);
 		textNome.setColumns(10);
 
 		JLabel lblCpf = new JLabel("CPF:");
-		lblCpf.setBounds(72, 80, 70, 15);
+		lblCpf.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblCpf.setBounds(463, 190, 70, 15);
 		add(lblCpf);
 
 		try {
@@ -78,37 +82,42 @@ public class PainelAtualizarUsuario extends JPanel {
 		}
 		textCPF = new JFormattedTextField(mascaraCpf);
 		textCPF.setColumns(10);
-		textCPF.setBounds(119, 78, 208, 19);
+		textCPF.setBounds(518, 185, 232, 29);
 		add(textCPF);
 
 		JLabel lblEmail = new JLabel("E-mail:");
-		lblEmail.setBounds(59, 116, 70, 15);
+		lblEmail.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblEmail.setBounds(453, 245, 70, 15);
 		add(lblEmail);
 
 		textEmail = new JTextField();
 		textEmail.setColumns(10);
-		textEmail.setBounds(119, 114, 208, 19);
+		textEmail.setBounds(518, 238, 232, 29);
 		add(textEmail);
 
 		JLabel lblSenha = new JLabel("Senha:");
-		lblSenha.setBounds(59, 157, 70, 15);
+		lblSenha.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblSenha.setBounds(453, 299, 70, 15);
 		add(lblSenha);
 
 		textSenha = new JPasswordField();
 		textSenha.setColumns(10);
-		textSenha.setBounds(119, 155, 208, 19);
+		textSenha.setBounds(518, 292, 232, 29);
 		add(textSenha);
 
 		JLabel lblTipo = new JLabel("Tipo:");
-		lblTipo.setBounds(72, 196, 70, 15);
+		lblTipo.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblTipo.setBounds(463, 343, 70, 15);
 		add(lblTipo);
 
 		rdnFuncionario = new JRadioButton("Funcionário");
-		rdnFuncionario.setBounds(119, 192, 109, 23);
+		rdnFuncionario.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		rdnFuncionario.setBounds(516, 339, 109, 23);
 		add(rdnFuncionario);
 
 		rdnCliente = new JRadioButton("Cliente");
-		rdnCliente.setBounds(230, 192, 109, 23);
+		rdnCliente.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		rdnCliente.setBounds(641, 339, 109, 23);
 		add(rdnCliente);
 
 		ButtonGroup grupo = new ButtonGroup();
@@ -147,11 +156,11 @@ public class PainelAtualizarUsuario extends JPanel {
 				}
 			}
 		});
-		btnSalvar.setBounds(83, 248, 117, 25);
+		btnSalvar.setBounds(441, 441, 172, 43);
 		add(btnSalvar);
 
 		btnVoltar = new JButton("Voltar");
-		btnVoltar.setBounds(222, 248, 117, 25);
+		btnVoltar.setBounds(670, 441, 177, 43);
 		add(btnVoltar);
 
 		if (pessoaParaEditar != null) {

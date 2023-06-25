@@ -28,6 +28,7 @@ import model.seletor.PedidoSeletor;
 import model.seletor.PessoaSeletor;
 import model.vo.Pedido;
 import model.vo.Pessoa;
+import java.awt.Font;
 
 public class PainelListagemPedido extends JPanel {
 	
@@ -89,7 +90,7 @@ public class PainelListagemPedido extends JPanel {
 	public PainelListagemPedido() {
 		this.setLayout(null);
 
-		btnBuscar = new JButton("Buscar COM FILTROS");
+		btnBuscar = new JButton("Buscar");
 		btnBuscar.setBackground(Color.GRAY);
 		btnBuscar.setForeground(new Color(0, 0, 0));
 		btnBuscar.addActionListener(new ActionListener() {
@@ -98,7 +99,7 @@ public class PainelListagemPedido extends JPanel {
 				atualizarTabelaClientes();
 			}
 		});
-		btnBuscar.setBounds(210, 110, 240, 35);
+		btnBuscar.setBounds(721, 151, 165, 37);
 		this.add(btnBuscar);
 
 		tblPedidos = new JTable();
@@ -119,27 +120,27 @@ public class PainelListagemPedido extends JPanel {
 				}
 			}
 		});
-		tblPedidos.setBounds(25, 164, 650, 133);
+		tblPedidos.setBounds(199, 210, 762, 188);
 		this.add(tblPedidos);
 
 		lblNome = new JLabel("Nome:");
-		lblNome.setBounds(10, 25, 61, 16);
+		lblNome.setBounds(211, 97, 61, 16);
 		this.add(lblNome);
 
 		txtNome = new JTextField();
-		txtNome.setBounds(160, 20, 240, 28);
+		txtNome.setBounds(255, 91, 240, 28);
 		this.add(txtNome);
 		txtNome.setColumns(10);
 
 		lblCpf = new JLabel("CPF:");
-		lblCpf.setBounds(410, 25, 40, 16);
+		lblCpf.setBounds(565, 97, 40, 16);
 		this.add(lblCpf);
 
 		try {
 			mascaraCpf = new MaskFormatter("###.###.###-##");
 			mascaraCpf.setValueContainsLiteralCharacters(false);
 			txtCPF = new JFormattedTextField(mascaraCpf);
-			txtCPF.setBounds(450, 19, 120, 28);
+			txtCPF.setBounds(601, 91, 171, 28);
 			this.add(txtCPF);
 			txtCPF.setColumns(10);
 		} catch (ParseException e1) {
@@ -165,17 +166,17 @@ public class PainelListagemPedido extends JPanel {
 				}
 			}
 		});
-		btnGerarPlanilha.setBounds(25, 375, 200, 45);
+		btnGerarPlanilha.setBounds(468, 554, 200, 45);
 		this.add(btnGerarPlanilha);
 
 		btnEditar = new JButton("Editar");
-		btnEditar.setBounds(250, 375, 200, 45);
+		btnEditar.setBounds(993, 244, 165, 45);
 		btnEditar.setEnabled(false);
 		this.add(btnEditar);
 
 		btnExcluir = new JButton("Excluir");
 		btnExcluir.setEnabled(false);
-		btnExcluir.setBounds(475, 375, 200, 45);
+		btnExcluir.setBounds(993, 322, 165, 45);
 		btnExcluir.addActionListener(new ActionListener() {
 
 			@Override
@@ -198,12 +199,12 @@ public class PainelListagemPedido extends JPanel {
 		this.add(btnExcluir);
 
 		btnVoltar = new JButton("Voltar");
-		btnVoltar.setBounds(250, 469, 200, 45);
+		btnVoltar.setBounds(468, 628, 200, 45);
 		add(btnVoltar);
 
 		lblPaginacao = new JLabel("1 / " + totalPaginas);
 		lblPaginacao.setHorizontalAlignment(SwingConstants.CENTER);
-		lblPaginacao.setBounds(283, 323, 105, 14);
+		lblPaginacao.setBounds(513, 458, 105, 14);
 		add(lblPaginacao);
 		atualizarQuantidadePaginas();
 
@@ -219,7 +220,7 @@ public class PainelListagemPedido extends JPanel {
 			}
 		});
 		btnVoltarPagina.setEnabled(false);
-		btnVoltarPagina.setBounds(175, 319, 111, 23);
+		btnVoltarPagina.setBounds(392, 454, 111, 23);
 		add(btnVoltarPagina);
 
 		btnAvancarPagina = new JButton("Avançar >>");
@@ -232,17 +233,22 @@ public class PainelListagemPedido extends JPanel {
 				btnAvancarPagina.setEnabled(paginaAtual < totalPaginas);
 			}
 		});
-		btnAvancarPagina.setBounds(386, 319, 111, 23);
+		btnAvancarPagina.setBounds(628, 454, 111, 23);
 		add(btnAvancarPagina);
 		
 		lblNDoPedido = new JLabel("N° do Pedido:");
-		lblNDoPedido.setBounds(10, 63, 88, 16);
+		lblNDoPedido.setBounds(317, 151, 88, 16);
 		add(lblNDoPedido);
 		
 		txtIdPedido = new JTextField();
 		txtIdPedido.setColumns(10);
-		txtIdPedido.setBounds(160, 58, 240, 28);
+		txtIdPedido.setBounds(392, 145, 240, 28);
 		add(txtIdPedido);
+		
+		JLabel lblTitulo = new JLabel("Listagem de pedidos");
+		lblTitulo.setFont(new Font("Tahoma", Font.PLAIN, 25));
+		lblTitulo.setBounds(441, 11, 240, 58);
+		add(lblTitulo);
 
 		
 
