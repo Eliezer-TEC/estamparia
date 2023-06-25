@@ -254,18 +254,24 @@ public class MenuEstamparia {
 			}
 		});
 	}
+	
+	protected void registrarCliqueBotaoVoltarDoPainelAtualizarPedido() {
+		if (painelAtualizarPedido == null) {
+			painelAtualizarPedido = new PainelAtualizarPedido(null);
+		}
 
-	protected void registrarCliqueBotaoEditarDoPainelListagemCliente() {
-		// Registro de ouvinte para o clique em um botão de um painel
-		painelListagemUsuario.getBtnEditar().addActionListener(new ActionListener() {
+		// Registrar o evento de clique no voltar do PainelCadastroCliente
+		painelAtualizarPedido.getBtnVoltar().addActionListener(new ActionListener() {
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				painelAtualizarUsuario = new PainelAtualizarUsuario(painelListagemUsuario.getUsuarioSelecionado());
-				painelAtualizarUsuario.setVisible(true);
-				registrarCliqueBotaoVoltarDoPainelAtualizarUsuario();
-
-				// Atualiza a tela principal
-				frmSistemaDeEstamparia.setContentPane(painelAtualizarUsuario);
+				// Lógica do clique no botão Voltar
+				// Mostra o painel de listagem de clientes
+				painelListagemPedido = new PainelListagemPedido();
+				painelListagemPedido.setVisible(true);
+				registrarCliqueBotaoEditarDoPainelListagemPedido();
+				registrarCliqueBotaoVoltarDoPainelListagemPedido();
+				frmSistemaDeEstamparia.setContentPane(painelListagemPedido);
 				frmSistemaDeEstamparia.revalidate();
 			}
 		});
@@ -278,10 +284,26 @@ public class MenuEstamparia {
 			public void actionPerformed(ActionEvent e) {
 				painelAtualizarPedido = new PainelAtualizarPedido(painelListagemPedido.getPedidoSelecionado());
 				painelAtualizarPedido.setVisible(true);
-				registrarCliqueBotaoVoltarDoPainelAtualizarUsuario();
+				registrarCliqueBotaoVoltarDoPainelAtualizarPedido();
 
 				// Atualiza a tela principal
 				frmSistemaDeEstamparia.setContentPane(painelAtualizarPedido);
+				frmSistemaDeEstamparia.revalidate();
+			}
+		});
+	}
+
+	protected void registrarCliqueBotaoEditarDoPainelListagemCliente() {
+		// Registro de ouvinte para o clique em um botão de um painel
+		painelListagemUsuario.getBtnEditar().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				painelAtualizarUsuario = new PainelAtualizarUsuario(painelListagemUsuario.getUsuarioSelecionado());
+				painelAtualizarUsuario.setVisible(true);
+				registrarCliqueBotaoVoltarDoPainelAtualizarUsuario();
+
+				// Atualiza a tela principal
+				frmSistemaDeEstamparia.setContentPane(painelAtualizarUsuario);
 				frmSistemaDeEstamparia.revalidate();
 			}
 		});

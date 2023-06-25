@@ -270,6 +270,7 @@ public class PainelListagemPedido extends JPanel {
 	}
 
 	protected void buscarPedidosComFiltros() {
+		
 		seletor = new PedidoSeletor();
 		seletor.setLimite(TAMANHO_PAGINA);
 		seletor.setPagina(paginaAtual);
