@@ -10,6 +10,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 
 import javax.swing.AbstractButton;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFormattedTextField;
@@ -29,6 +30,8 @@ import model.exception.CampoInvalidoException;
 import model.seletor.PessoaSeletor;
 import model.vo.Pessoa;
 import javax.swing.SwingConstants;
+import javax.swing.JRadioButton;
+import javax.swing.ImageIcon;
 
 public class PainelListagemUsuario extends JPanel {
 	private JTable tblUsuarios;
@@ -60,6 +63,9 @@ public class PainelListagemUsuario extends JPanel {
 	private JButton btnVoltarPagina;
 	private JButton btnAvancarPagina;
 	private JLabel lblPaginacao;
+	private JRadioButton rdnFuncionario;
+	private JRadioButton rdnCliente;
+	private JLabel iconRoupa;
 
 	private void limparTabelaClientes() {
 		tblUsuarios.setModel(new DefaultTableModel(new Object[][] { nomesColunas, }, nomesColunas));
@@ -85,7 +91,7 @@ public class PainelListagemUsuario extends JPanel {
 	public PainelListagemUsuario() {
 		this.setLayout(null);
 
-		btnBuscar = new JButton("Buscar COM FILTROS");
+		btnBuscar = new JButton("Buscar");
 		btnBuscar.setBackground(Color.GRAY);
 		btnBuscar.setForeground(new Color(0, 0, 0));
 		btnBuscar.addActionListener(new ActionListener() {
@@ -94,7 +100,7 @@ public class PainelListagemUsuario extends JPanel {
 				atualizarTabelaClientes();
 			}
 		});
-		btnBuscar.setBounds(209, 95, 240, 35);
+		btnBuscar.setBounds(475, 43, 200, 35);
 		this.add(btnBuscar);
 
 		tblUsuarios = new JTable();
@@ -128,14 +134,14 @@ public class PainelListagemUsuario extends JPanel {
 		txtNome.setColumns(10);
 
 		lblCpf = new JLabel("CPF:");
-		lblCpf.setBounds(410, 25, 40, 16);
+		lblCpf.setBounds(10, 52, 40, 16);
 		this.add(lblCpf);
 
 		try {
 			mascaraCpf = new MaskFormatter("###.###.###-##");
 			mascaraCpf.setValueContainsLiteralCharacters(false);
 			txtCPF = new JFormattedTextField(mascaraCpf);
-			txtCPF.setBounds(450, 19, 120, 28);
+			txtCPF.setBounds(160, 59, 240, 28);
 			this.add(txtCPF);
 			txtCPF.setColumns(10);
 		} catch (ParseException e1) {
@@ -165,13 +171,13 @@ public class PainelListagemUsuario extends JPanel {
 		this.add(btnGerarPlanilha);
 
 		btnEditar = new JButton("Editar");
-		btnEditar.setBounds(250, 375, 200, 45);
+		btnEditar.setBounds(700, 252, 200, 45);
 		btnEditar.setEnabled(false);
 		this.add(btnEditar);
 
 		btnExcluir = new JButton("Excluir");
 		btnExcluir.setEnabled(false);
-		btnExcluir.setBounds(475, 375, 200, 45);
+		btnExcluir.setBounds(700, 164, 200, 45);
 		btnExcluir.addActionListener(new ActionListener() {
 
 			@Override
@@ -194,7 +200,7 @@ public class PainelListagemUsuario extends JPanel {
 		this.add(btnExcluir);
 
 		btnVoltar = new JButton("Voltar");
-		btnVoltar.setBounds(250, 469, 200, 45);
+		btnVoltar.setBounds(475, 375, 200, 45);
 		add(btnVoltar);
 
 		lblPaginacao = new JLabel("1 / " + totalPaginas);
@@ -230,8 +236,23 @@ public class PainelListagemUsuario extends JPanel {
 		});
 		btnAvancarPagina.setBounds(386, 319, 111, 23);
 		add(btnAvancarPagina);
-
 		
+		rdnFuncionario = new JRadioButton("Funcionário");
+		rdnFuncionario.setBounds(160, 94, 109, 23);
+		add(rdnFuncionario);
+		
+		rdnCliente = new JRadioButton("Cliente");
+		rdnCliente.setBounds(283, 94, 109, 23);
+		add(rdnCliente);
+		
+		iconRoupa = new JLabel("");
+		iconRoupa.setIcon(new ImageIcon(PainelListagemUsuario.class.getResource("/icones/Roupas.png")));
+		iconRoupa.setBounds(777, 25, 61, 113);
+		add(iconRoupa);
+
+		ButtonGroup grupo = new ButtonGroup();
+		grupo.add(rdnCliente);
+		grupo.add(rdnFuncionario);
 
 
 	}
@@ -255,7 +276,16 @@ public class PainelListagemUsuario extends JPanel {
 		seletor.setLimite(TAMANHO_PAGINA);
 		seletor.setPagina(paginaAtual);
 		seletor.setNome(txtNome.getText());
-
+		
+		if(rdnCliente.isSelected()) {
+			seletor.setFuncionario(false);
+		}	
+		if(rdnFuncionario.isSelected()) {
+			seletor.setFuncionario(true);
+		}
+			
+			
+			
 		String cpfSemMascara;
 		try {
 			cpfSemMascara = (String) mascaraCpf.stringToValue(txtCPF.getText());

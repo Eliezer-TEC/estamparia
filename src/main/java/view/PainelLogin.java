@@ -105,6 +105,7 @@ public class PainelLogin extends JPanel {
 				painelLogin = new PainelLogin();
 				painelLogin.setVisible(true);
 				registrarCliqueBotaoVoltarDoPainelCadastroUsuario();
+				
 			}
 		});
 

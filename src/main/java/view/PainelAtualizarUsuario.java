@@ -22,7 +22,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JRadioButton;
 
 public class PainelAtualizarUsuario extends JPanel {
 	private JTextField textNome;
@@ -30,12 +32,13 @@ public class PainelAtualizarUsuario extends JPanel {
 	private JTextField textEmail;
 	private JLabel lblAtualizarCadastro;
 	private JLabel lblNome;
-	private JComboBox comboBoxTipo;
 	private JButton btnSalvar;
 	private Pessoa pessoa;
 	private JButton btnVoltar;
 	private MaskFormatter mascaraCpf;
 	private JPasswordField textSenha;
+	private JRadioButton rdnFuncionario;
+	private JRadioButton rdnCliente;
 
 	/**
 	 * Create the panel.
@@ -100,25 +103,31 @@ public class PainelAtualizarUsuario extends JPanel {
 		lblTipo.setBounds(72, 196, 70, 15);
 		add(lblTipo);
 
-		comboBoxTipo = new JComboBox(new String[] { "Funcionário", "Cliente" });
-		comboBoxTipo.setBounds(119, 191, 208, 24);
-		add(comboBoxTipo);
+		rdnFuncionario = new JRadioButton("Funcionário");
+		rdnFuncionario.setBounds(119, 192, 109, 23);
+		add(rdnFuncionario);
 
+		rdnCliente = new JRadioButton("Cliente");
+		rdnCliente.setBounds(230, 192, 109, 23);
+		add(rdnCliente);
+
+		ButtonGroup grupo = new ButtonGroup();
+		grupo.add(rdnCliente);
+		grupo.add(rdnFuncionario);
 		btnSalvar = new JButton("Salvar");
 		btnSalvar.addActionListener(new ActionListener() {
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
-				boolean tipo = false;
-				if (comboBoxTipo.getSelectedIndex() == 0) {
-					tipo = true;
-				} else {
-					tipo = false;
-				}
 
 				pessoa.setNome(textNome.getText());
-				pessoa.setFuncionario(tipo);
 				pessoa.setEmail(textEmail.getText());
 				pessoa.setSenha(textSenha.getText());
+				if (rdnCliente.isSelected()) {
+					pessoa.setFuncionario(false);
+				}
+				if (rdnFuncionario.isSelected()) {
+					pessoa.setFuncionario(true);
+				}
 
 				try {
 					String cpfSemMascara = (String) mascaraCpf.stringToValue(textCPF.getText());
@@ -130,7 +139,7 @@ public class PainelAtualizarUsuario extends JPanel {
 				try {
 
 					controller.atualizar(pessoa);
-					JOptionPane.showMessageDialog(null, "Cliente salvo com sucesso!", "Sucesso",
+					JOptionPane.showMessageDialog(null, "Usuário salvo com sucesso!", "Sucesso",
 							JOptionPane.INFORMATION_MESSAGE);
 
 				} catch (Exception excecao) {
@@ -145,6 +154,16 @@ public class PainelAtualizarUsuario extends JPanel {
 		btnVoltar.setBounds(222, 248, 117, 25);
 		add(btnVoltar);
 
+		if (pessoaParaEditar != null) {
+			this.pessoa = pessoaParaEditar;
+			pessoaParaEditar.isFuncionario();
+			textEmail.setText(pessoaParaEditar.getEmail());
+			textCPF.setText(pessoaParaEditar.getCpf());
+			textNome.setText(pessoaParaEditar.getNome());
+			textSenha.setText(pessoaParaEditar.getSenha());
+			rdnFuncionario.setSelected(pessoaParaEditar.isFuncionario() == true);
+			rdnCliente.setSelected(pessoaParaEditar.isFuncionario() == false);
+		}
 	}
 
 	public JButton getBtnVoltar() {

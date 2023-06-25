@@ -168,7 +168,7 @@ public class PessoaDAO {
 			} else {
 				sql += " AND ";
 			}
-			sql += " funcionario LIKE '%" + seletor.isFuncionario() + "%'";
+			sql += " funcionario LIKE " + seletor.isFuncionario() + "";
 			primeiro = false;
 		}
 		return sql;
