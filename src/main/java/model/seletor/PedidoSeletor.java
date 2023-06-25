@@ -21,6 +21,13 @@ public class PedidoSeletor extends BaseSeletor {
 
 	
 
+	public PedidoSeletor() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+
+
 	public PedidoSeletor(Integer id, Integer idPessoa, ArrayList<Camisa> camisas, SituacaoPedido situacaoPedido) {
 		super();
 		this.id = id;
@@ -60,5 +67,9 @@ public class PedidoSeletor extends BaseSeletor {
 	public void setSituacaoPedido(SituacaoPedido situacaoPedido) {
 		this.situacaoPedido = situacaoPedido;
 	}
+
+
+
+	
 
 }

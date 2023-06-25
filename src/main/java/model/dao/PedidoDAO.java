@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,27 +78,126 @@ public class PedidoDAO {
 
 	private String preencherFiltros(String sql, PedidoSeletor seletor) {
 
+		boolean primeiro = true;
 		if (seletor.getId() != null){
-			
+			if (primeiro) {
+				sql += " WHERE ";
+			} else {
+				sql += " AND ";
+			}
+
+			sql += " id LIKE '%" + seletor.getId() + "%'";
+			primeiro = false;
+		}
+		
+		if (seletor.getSituacaoPedido() != null) {
+			if (primeiro) {
+				sql += " WHERE ";
+			} else {
+				sql += " AND ";
+			}
+
+			sql += " STATUS_PEDIDO LIKE '%" + seletor.getIdPessoa() + "%'";
+			primeiro = false;
 		}
 		
 		if (seletor.getIdPessoa() != null) {
-			
+			if (primeiro) {
+				sql += " WHERE ";
+			} else {
+				sql += " AND ";
+			}
+
+			sql += " nome id '%" + seletor.getIdPessoa() + "%'";
+			primeiro = false;
 		}
 		
-		if(!seletor.getCamisas().isEmpty()) {
-			
-		}
 		
 		
 		return sql;
 	}
+	
+	public int contarTotalRegistrosComFiltros(PedidoSeletor seletor) {
+		int total = 0;
+		Connection conexao = Banco.getConnection();
+		String sql = " select count(*) from pedido ";
+		
+		if(seletor.temFiltro()) {
+			sql = preencherFiltros(sql, seletor);
+		}
+		
+		PreparedStatement query = Banco.getPreparedStatement(conexao, sql);
+		try {
+			ResultSet resultado = query.executeQuery();
+			
+			if(resultado.next()) {
+				total = resultado.getInt(1);
+			}
+		}catch (Exception e) {
+			System.out.println("Erro contar o total de pedidos" 
+					+ "\n Causa:" + e.getMessage());
+		}finally {
+			Banco.closePreparedStatement(query);
+			Banco.closeConnection(conexao);
+		}
+		
+		return total;
+	}
+	
+	
 
-	private Pedido montarPedidoComResultadoDoBanco(ResultSet resultado) {
-		// TODO Auto-generated method stub
-		return null;
+	private Pedido montarPedidoComResultadoDoBanco(ResultSet resultado) throws SQLException {
+	    Pedido pedidoBuscado = new Pedido();
+	    int statusPedido = resultado.getInt("status_pedido");
+	    SituacaoPedido situacaoPedido = SituacaoPedido.getSituacaoEntregaVOPorValor(statusPedido);
+	    pedidoBuscado.setId(resultado.getInt("id"));
+	    pedidoBuscado.setSituacaoPedido(situacaoPedido);
+	    pedidoBuscado.setIdPessoa(resultado.getInt("ID_PESSOA"));
+
+	    return pedidoBuscado;
 	}
 
-	
+	public boolean excluir(Integer id) {
+		Connection conn = Banco.getConnection();
+		String sql = "DELETE FROM PEDIDO WHERE ID= " + id;
+		Statement stmt = Banco.getStatement(conn);
+
+		int quantidadeLinhasAfetadas = 0;
+		try {
+			quantidadeLinhasAfetadas = stmt.executeUpdate(sql);
+		} catch (SQLException e) {
+			System.out.println("Erro ao excluir usuário.");
+			System.out.println("Erro: " + e.getMessage());
+		}
+
+		boolean excluiu = quantidadeLinhasAfetadas > 0;
+
+		return excluiu;
+	}
+
+	public ArrayList<Pedido> consultarTodos() {
+		ArrayList<Pedido> pedidos = new ArrayList<Pedido>();
+		Connection conexao = Banco.getConnection();
+		String sql = " select * from pessoa ";
+		
+		PreparedStatement query = Banco.getPreparedStatement(conexao, sql);
+		try {
+			ResultSet resultado = query.executeQuery();
+			
+			while(resultado.next()) {
+				Pedido pedidoBuscado = montarPedidoComResultadoDoBanco(resultado);
+				pedidos.add(pedidoBuscado);
+			}
+			
+		}catch (Exception e) {
+			System.out.println("Erro ao buscar todos os clientes. \n Causa:" + e.getMessage());
+		}finally {
+			Banco.closePreparedStatement(query);
+			Banco.closeConnection(conexao);
+		}
+		
+		return pedidos;
+
+	}
 
 }
