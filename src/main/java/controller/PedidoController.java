@@ -22,6 +22,7 @@ public class PedidoController {
 			PedidoDAO dao = new PedidoDAO();
 			dao.inserir(pedido);
 		}
+		
 	}
 	
 	public List<Pedido> consultarComFiltros(PedidoSeletor seletor) {

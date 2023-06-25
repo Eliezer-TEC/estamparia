@@ -43,7 +43,6 @@ public class PainelAtualizarPedido extends JPanel {
 	private String[] nomesColunas = {"Tamanho", "Cor", "Estampa"};
 	
 	
-	
 	private void limparTabela() {
 		tableCamisas.setModel(new DefaultTableModel(new Object[][] { nomesColunas, }, nomesColunas));
 	}
@@ -127,7 +126,8 @@ public class PainelAtualizarPedido extends JPanel {
 				PedidoController controller = new PedidoController();
 				try {
 
-					controller.atualizar(pedido);
+		
+		controller.atualizar(pedido);
 					JOptionPane.showMessageDialog(null, "Cliente salvo com sucesso!", "Sucesso",
 							JOptionPane.INFORMATION_MESSAGE);
 

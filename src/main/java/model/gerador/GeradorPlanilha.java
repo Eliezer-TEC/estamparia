@@ -11,6 +11,7 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
+import controller.PedidoController;
 import model.vo.Pedido;
 import model.vo.Pessoa;
 
@@ -36,11 +37,36 @@ public class GeradorPlanilha {
 			novaLinha.createCell(3).setCellValue(c.getSenha());
 			novaLinha.createCell(4).setCellValue(c.isFuncionario() ? "Sim" : "Não");
 			contadorLinhas++;
-		}
+	}
 		
 		return salvarNoDisco(arquivoExcel, destinoArquivo);
 	}
 	
+	public String gerarPlanilhaPedido(ArrayList<Pedido> pedido, String destinoArquivo) {
+		HSSFWorkbook arquivoExcel = new HSSFWorkbook();
+		HSSFSheet abaPlanilha = arquivoExcel.createSheet("Pedidos");
+		
+		HSSFRow linhaCabecalho = abaPlanilha.createRow(0);
+		linhaCabecalho.createCell(0).setCellValue("ID");
+		linhaCabecalho.createCell(1).setCellValue("Nome");
+		linhaCabecalho.createCell(2).setCellValue("Total_Camisas");
+		linhaCabecalho.createCell(3).setCellValue("Situação_Pedido");
+		
+		int contadorLinhas = 1;
+		for(Pedido p: pedido) {
+			PedidoController controller = new PedidoController();
+			Pessoa c = new Pessoa();
+			c = controller.consultarCliente(p.getIdPessoa());
+			HSSFRow novaLinha = abaPlanilha.createRow(contadorLinhas);
+			novaLinha.createCell(0).setCellValue(p.getId());
+			novaLinha.createCell(1).setCellValue(c.getNome());
+			novaLinha.createCell(2).setCellValue(p.getCamisas().size());
+			novaLinha.createCell(3).setCellValue(p.getSituacaoPedido().toString());
+			contadorLinhas++;
+		}
+		
+		return salvarNoDisco(arquivoExcel, destinoArquivo);
+	}
 	
 	private String salvarNoDisco(HSSFWorkbook planilha, String caminhoArquivo) {
 		String mensagem = "";
@@ -73,8 +99,5 @@ public class GeradorPlanilha {
 	}
 
 
-	public String gerarPlanilhaPedido(ArrayList<Pedido> pedido, String caminhoEscolhido) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 }
