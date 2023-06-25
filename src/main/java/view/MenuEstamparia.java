@@ -139,9 +139,10 @@ public class MenuEstamparia {
 		mntmListagemPedidos = new JMenuItem("Listagem Pedidos");
 		mntmListagemPedidos.addActionListener(new ActionListener() {
 
+		
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				painelListagemPedido = new PainelListagemPedido();
+				painelListagemPedido = new PainelListagemPedido(usuarioAutenticado);
 				painelListagemPedido.setVisible(true);
 				registrarCliqueBotaoEditarDoPainelListagemPedido();
 				registrarCliqueBotaoVoltarDoPainelListagemPedido();
@@ -238,7 +239,7 @@ public class MenuEstamparia {
 
 	protected void registrarCliqueBotaoVoltarDoPainelListagemPedido() {
 		if (painelListagemPedido == null) {
-			painelListagemPedido = new PainelListagemPedido();
+			painelListagemPedido = new PainelListagemPedido(usuarioAutenticado);
 		}
 		painelListagemPedido.getBtnVoltar().addActionListener(new ActionListener() {
 
@@ -267,7 +268,7 @@ public class MenuEstamparia {
 			public void actionPerformed(ActionEvent e) {
 				// Lógica do clique no botão Voltar
 				// Mostra o painel de listagem de clientes
-				painelListagemPedido = new PainelListagemPedido();
+				painelListagemPedido = new PainelListagemPedido(usuarioAutenticado);
 				painelListagemPedido.setVisible(true);
 				registrarCliqueBotaoEditarDoPainelListagemPedido();
 				registrarCliqueBotaoVoltarDoPainelListagemPedido();

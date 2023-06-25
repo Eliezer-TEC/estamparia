@@ -31,13 +31,12 @@ import model.vo.Pessoa;
 import java.awt.Font;
 
 public class PainelListagemPedido extends JPanel {
-	
+
 	private JTable tblPedidos;
 	private ArrayList<Pedido> pedidos;
-	private String[] nomesColunas = { "N° do Pedido", "Situação", "Cliente", "Qtd Itens"};
+	private String[] nomesColunas = { "N° do Pedido", "Situação", "Cliente", "Qtd Itens" };
 	private JTextField txtNome;
 	private MaskFormatter mascaraCpf;
-	private JFormattedTextField txtCPF;
 
 	// componentes externos -> dependência "LGoodDatePicker" foi adicionada no
 	// pom.xml
@@ -45,7 +44,6 @@ public class PainelListagemPedido extends JPanel {
 	private JButton btnBuscar;
 	private JButton btnGerarPlanilha;
 	private JButton btnExcluir;
-	private JLabel lblCpf;
 	private JLabel lblNome;
 
 	private PedidoController controller = new PedidoController();
@@ -54,7 +52,7 @@ public class PainelListagemPedido extends JPanel {
 	// Atributos para a PAGINAÇÃO
 
 	private PedidoSeletor seletor = new PedidoSeletor();
-	
+
 	private final int TAMANHO_PAGINA = 5;
 	private int paginaAtual = 1;
 	private int totalPaginas = 0;
@@ -63,6 +61,7 @@ public class PainelListagemPedido extends JPanel {
 	private JLabel lblPaginacao;
 	private JLabel lblNDoPedido;
 	private JTextField txtIdPedido;
+	private Pessoa usuarioAutenticado;
 
 	private void limparTabelaPedidos() {
 		tblPedidos.setModel(new DefaultTableModel(new Object[][] { nomesColunas, }, nomesColunas));
@@ -70,13 +69,13 @@ public class PainelListagemPedido extends JPanel {
 
 	private void atualizarTabelaPedidos() {
 		this.limparTabelaPedidos();
-		
+
 		DefaultTableModel model = (DefaultTableModel) tblPedidos.getModel();
 		for (Pedido p : pedidos) {
-			
+
 			Pessoa cliente = new Pessoa();
 			cliente = controller.consultarCliente(p.getIdPessoa());
-			
+
 			Object[] novaLinhaDaTabela = new Object[5];
 			novaLinhaDaTabela[0] = p.getId();
 			novaLinhaDaTabela[1] = p.getSituacaoPedido();
@@ -87,16 +86,23 @@ public class PainelListagemPedido extends JPanel {
 		}
 	}
 
-	public PainelListagemPedido() {
+	public PainelListagemPedido(final Pessoa usuarioAutenticado) {
+		this.usuarioAutenticado = usuarioAutenticado;
 		this.setLayout(null);
 
 		btnBuscar = new JButton("Buscar");
-		btnBuscar.setBackground(Color.GRAY);
+		btnBuscar.setBackground(Color.WHITE);
 		btnBuscar.setForeground(new Color(0, 0, 0));
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				buscarPedidosComFiltros();
+				if (usuarioAutenticado.isFuncionario() == true) {
+					buscarPedidosComFiltros();
+				}
+				if (usuarioAutenticado.isFuncionario() == false) {
+					buscarPedidosComFiltros();
+				}
 				atualizarTabelaPedidos();
+
 			}
 		});
 		btnBuscar.setBounds(721, 151, 165, 37);
@@ -110,7 +116,7 @@ public class PainelListagemPedido extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				int indiceSelecionado = tblPedidos.getSelectedRow();
 
-				if (indiceSelecionado > 0) {
+				if (indiceSelecionado > 0 && usuarioAutenticado.isFuncionario() == true) {
 					btnEditar.setEnabled(true);
 					btnExcluir.setEnabled(true);
 					pedidoSelecionado = pedidos.get(indiceSelecionado - 1);
@@ -124,25 +130,25 @@ public class PainelListagemPedido extends JPanel {
 		this.add(tblPedidos);
 
 		lblNome = new JLabel("Nome:");
-		lblNome.setBounds(211, 97, 61, 16);
+		lblNome.setEnabled(false);
+		lblNome.setBounds(317, 97, 61, 16);
 		this.add(lblNome);
 
 		txtNome = new JTextField();
-		txtNome.setBounds(255, 91, 240, 28);
+		txtNome.setEnabled(false);
+		txtNome.setBounds(392, 91, 240, 28);
 		this.add(txtNome);
 		txtNome.setColumns(10);
 
-		lblCpf = new JLabel("CPF:");
-		lblCpf.setBounds(565, 97, 40, 16);
-		this.add(lblCpf);
-
+		if (usuarioAutenticado != null && usuarioAutenticado.isFuncionario() == true) {
+			txtNome.setEnabled(true);
+			lblNome.setEnabled(true);
+		} 
+		
+		
 		try {
 			mascaraCpf = new MaskFormatter("###.###.###-##");
 			mascaraCpf.setValueContainsLiteralCharacters(false);
-			txtCPF = new JFormattedTextField(mascaraCpf);
-			txtCPF.setBounds(601, 91, 171, 28);
-			this.add(txtCPF);
-			txtCPF.setColumns(10);
 		} catch (ParseException e1) {
 			e1.printStackTrace();
 		}
@@ -188,7 +194,7 @@ public class PainelListagemPedido extends JPanel {
 					try {
 						controller.excluir(pedidoSelecionado.getId());
 						JOptionPane.showMessageDialog(null, "Pedido excluído com sucesso");
-						pedidos = (ArrayList<Pedido>)controller.consultarTodos();
+						pedidos = (ArrayList<Pedido>) controller.consultarTodos();
 						atualizarTabelaPedidos();
 					} catch (Exception e1) {
 						JOptionPane.showConfirmDialog(null, e1.getMessage(), "Atenção", JOptionPane.WARNING_MESSAGE);
@@ -208,7 +214,6 @@ public class PainelListagemPedido extends JPanel {
 		add(lblPaginacao);
 		atualizarQuantidadePaginas();
 
-		
 		btnVoltarPagina = new JButton("<< Voltar");
 		btnVoltarPagina.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -235,23 +240,20 @@ public class PainelListagemPedido extends JPanel {
 		});
 		btnAvancarPagina.setBounds(628, 454, 111, 23);
 		add(btnAvancarPagina);
-		
+
 		lblNDoPedido = new JLabel("N° do Pedido:");
 		lblNDoPedido.setBounds(317, 151, 88, 16);
 		add(lblNDoPedido);
-		
+
 		txtIdPedido = new JTextField();
 		txtIdPedido.setColumns(10);
 		txtIdPedido.setBounds(392, 145, 240, 28);
 		add(txtIdPedido);
-		
+
 		JLabel lblTitulo = new JLabel("Listagem de pedidos");
 		lblTitulo.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		lblTitulo.setBounds(441, 11, 240, 58);
 		add(lblTitulo);
-
-		
-
 
 	}
 
@@ -270,23 +272,26 @@ public class PainelListagemPedido extends JPanel {
 	}
 
 	protected void buscarPedidosComFiltros() {
-		
+
 		seletor = new PedidoSeletor();
 		seletor.setLimite(TAMANHO_PAGINA);
 		seletor.setPagina(paginaAtual);
-		//seletor.setNome(txtNome.getText());
-		if(txtIdPedido.getText().trim() != null && !txtIdPedido.getText().trim().isEmpty()) {
-			seletor.setId(Integer.parseInt(txtIdPedido.getText()));
+		// seletor.setNome(txtNome.getText());
+		if (txtIdPedido.getText().trim() != null && !txtIdPedido.getText().trim().isEmpty()) {
+				seletor.setId(Integer.parseInt(txtIdPedido.getText()));	
+		}
+		if (usuarioAutenticado.isFuncionario() == false) {
+			seletor.setIdPessoa(usuarioAutenticado.getId());
 		}
 
-		//String cpfSemMascara;
-		//try {
-		//	cpfSemMascara = (String) mascaraCpf.stringToValue(txtCPF.getText());
-		//	//seletor.setCpf(cpfSemMascara);
-		//} catch (ParseException e1) {
-			// TODO Auto-generated catch block
-			// e1.printStackTrace();
-		//}
+		// String cpfSemMascara;
+		// try {
+		// cpfSemMascara = (String) mascaraCpf.stringToValue(txtCPF.getText());
+		// //seletor.setCpf(cpfSemMascara);
+		// } catch (ParseException e1) {
+		// TODO Auto-generated catch block
+		// e1.printStackTrace();
+		// }
 
 		pedidos = (ArrayList<Pedido>) controller.consultarComFiltros(seletor);
 		atualizarTabelaPedidos();

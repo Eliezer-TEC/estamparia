@@ -25,6 +25,7 @@ public class PessoaDAO {
 			stmt.setBoolean(5, novoUsuario.isFuncionario());
 
 			stmt.execute();
+			
 
 			// Preencher o id gerado no banco no objeto
 			ResultSet resultado = stmt.getGeneratedKeys();
