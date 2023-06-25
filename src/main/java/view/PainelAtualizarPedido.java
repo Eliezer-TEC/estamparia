@@ -24,6 +24,9 @@ import model.vo.Camisa;
 import model.vo.Pedido;
 import model.vo.Pessoa;
 import model.vo.SituacaoPedido;
+
+import java.awt.Font;
+import javax.swing.ImageIcon;
 import javax.swing.JTable;
 
 public class PainelAtualizarPedido extends JPanel {
@@ -33,6 +36,8 @@ public class PainelAtualizarPedido extends JPanel {
 	private JButton btnSalvar;
 	private Pedido pedido;
 	private JButton btnVoltar;
+	private JLabel lblicon;
+
 	private ArrayList<Camisa> camisas;
 	private JTable tableCamisas;
 	private String[] nomesColunas = {"Tamanho", "Cor", "Estampa"};
@@ -73,27 +78,32 @@ public class PainelAtualizarPedido extends JPanel {
 		
 
 		lblAtualizarPedido = new JLabel("Atualizar pedido");
-		lblAtualizarPedido.setBounds(139, 12, 172, 15);
+		lblAtualizarPedido.setFont(new Font("Tahoma", Font.PLAIN, 25));
+		lblAtualizarPedido.setBounds(641, 48, 303, 62);
 		add(lblAtualizarPedido);
 
 		lblNPedido = new JLabel("N° do pedido: " + PedidoParaEditar.getId().toString());
-		lblNPedido.setBounds(59, 41, 117, 15);
+		lblNPedido.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNPedido.setBounds(584, 141, 266, 15);
 		add(lblNPedido);
 
 		PedidoController controller = new PedidoController();
 		Pessoa cliente = controller.consultarCliente(PedidoParaEditar.getIdPessoa());
 		JLabel lblCliente = new JLabel("Cliente: " + cliente.getNome());
-		lblCliente.setBounds(59, 80, 141, 15);
+		lblCliente.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblCliente.setBounds(584, 178, 303, 15);
 		add(lblCliente);
 
 		
 
 		JLabel lblQtdItens = new JLabel("Qtd Itens: " + PedidoParaEditar.getCamisas().size());
-		lblQtdItens.setBounds(59, 117, 70, 15);
+		lblQtdItens.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblQtdItens.setBounds(584, 221, 105, 15);
 		add(lblQtdItens);
 
 		JLabel lblSituacao = new JLabel("Situação:");
-		lblSituacao.setBounds(59, 157, 70, 15);
+		lblSituacao.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblSituacao.setBounds(584, 270, 70, 15);
 		add(lblSituacao);
 
 		comboBoxSituacao = new JComboBox(new String[] {  
@@ -101,7 +111,7 @@ public class PainelAtualizarPedido extends JPanel {
 				SituacaoPedido.PREPARANDO_PEDIDO.name(),
 				SituacaoPedido.PEDIDO_ENTREGUE.name() 
 				 });
-		comboBoxSituacao.setBounds(117, 152, 208, 24);
+		comboBoxSituacao.setBounds(664, 270, 208, 24);
 		add(comboBoxSituacao);
 
 		btnSalvar = new JButton("Salvar");
@@ -127,17 +137,22 @@ public class PainelAtualizarPedido extends JPanel {
 				atualizarTabela();
 			}
 		});
-		btnSalvar.setBounds(370, 152, 117, 25);
+		btnSalvar.setBounds(527, 537, 162, 48);
 		add(btnSalvar);
 
 		btnVoltar = new JButton("Voltar");
-		btnVoltar.setBounds(59, 446, 117, 25);
+		btnVoltar.setBounds(782, 537, 162, 48);
 		add(btnVoltar);
 		
-		tableCamisas = new JTable();
-		tableCamisas.setBounds(59, 215, 555, 191);
-		add(tableCamisas);
+		lblicon = new JLabel("");
+		lblicon.setIcon(new ImageIcon(PainelAtualizarPedido.class.getResource("/icones/icons8-comprar.png")));
+		lblicon.setBounds(840, 45, 70, 81);
+		add(lblicon);
 		
+		tableCamisas = new JTable();
+		tableCamisas.setBounds(450, 315, 555, 191);
+		add(tableCamisas);
+
 		atualizarTabela();
 	}
 

@@ -19,8 +19,8 @@ public class PedidoDAO {
 		String sql = " INSERT INTO PEDIDO(STATUS_PEDIDO, ID_PESSOA) " + " VALUES (?,?) ";
 		PreparedStatement stmt = Banco.getPreparedStatementWithPk(conexao, sql);
 		try {
-			stmt.setInt(1, novoPedido.getIdPessoa());
-			stmt.setInt(2, novoPedido.getSituacaoPedido().getValor());
+			stmt.setInt(1, novoPedido.getSituacaoPedido().getValor());
+			stmt.setInt(2, novoPedido.getIdPessoa());
 
 			stmt.execute();
 
@@ -213,7 +213,7 @@ public class PedidoDAO {
 		
 		try {
 			stmt.setInt(1, situacaoPedidoValue);
-			stmt.setInt(6, pedido.getId());
+			stmt.setInt(2, pedido.getId());
 			registrosAlterados = stmt.executeUpdate();
 
 		} catch (SQLException e) {
