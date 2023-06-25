@@ -50,42 +50,42 @@ public class PainelLogin extends JPanel {
 		this.setLayout(null);
 
 		lblEmailLogin = new JLabel("E-mail:");
-		lblEmailLogin.setBounds(116, 73, 70, 15);
+		lblEmailLogin.setBounds(841, 129, 70, 15);
 		this.add(lblEmailLogin);
 
 		txtEmailLogin = new JTextField();
-		txtEmailLogin.setBounds(129, 100, 162, 19);
+		txtEmailLogin.setBounds(841, 155, 204, 31);
 		this.add(txtEmailLogin);
 		txtEmailLogin.setColumns(10);
 
 		lblSenhaLogin = new JLabel("Senha:");
-		lblSenhaLogin.setBounds(116, 134, 70, 15);
+		lblSenhaLogin.setBounds(841, 210, 70, 15);
 		this.add(lblSenhaLogin);
 
 		passwordField = new JPasswordField();
 		passwordField.setColumns(10);
-		passwordField.setBounds(129, 161, 162, 19);
+		passwordField.setBounds(841, 236, 204, 31);
 		this.add(passwordField);
 
 		btnEntrarLogin = new JButton("Entrar");
-		btnEntrarLogin.setBounds(75, 203, 117, 25);
+		btnEntrarLogin.setBounds(777, 300, 134, 40);
 		this.add(btnEntrarLogin);
 
 		btnNovoUsuario = new JButton("Cadastrar-se");
-		btnNovoUsuario.setBounds(229, 203, 127, 25);
+		btnNovoUsuario.setBounds(979, 300, 127, 40);
 		this.add(btnNovoUsuario);
 
 		lblImagemLogin = new JLabel("");
 		lblImagemLogin.setIcon(new ImageIcon(PainelLogin.class.getResource("/icones/icons8-usuário.png")));
-		lblImagemLogin.setBounds(191, 12, 57, 54);
+		lblImagemLogin.setBounds(909, 44, 82, 74);
 		this.add(lblImagemLogin);
 
 		lblOu = new JLabel("ou");
-		lblOu.setBounds(200, 208, 31, 15);
+		lblOu.setBounds(938, 313, 31, 15);
 		this.add(lblOu);
 
 		lblErro = new JLabel("Erro ao validar usuário!");
-		lblErro.setBounds(150, 252, 190, 14);
+		lblErro.setBounds(892, 360, 190, 14);
 		this.add(lblErro);
 		lblErro.setVisible(false);
 
@@ -105,6 +105,7 @@ public class PainelLogin extends JPanel {
 				painelLogin = new PainelLogin();
 				painelLogin.setVisible(true);
 				registrarCliqueBotaoVoltarDoPainelCadastroUsuario();
+				
 			}
 		});
 

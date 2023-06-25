@@ -29,6 +29,7 @@ public class MenuEstamparia {
 	private PainelCadastroPessoa painelCadastroPessoa;
 	private PainelListagemPedido painelListagemPedido;
 	private PainelListagemUsuario painelListagemUsuario;
+	
 	private PainelLogin painelLogin;
 	private PainelHomeCliente painelHome;
 	private JMenuBar menuBar;
@@ -98,7 +99,7 @@ public class MenuEstamparia {
 		setUIFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 12));
 		frmSistemaDeEstamparia = new JFrame();
 		frmSistemaDeEstamparia.setTitle("Sistema de Estamparia");
-		frmSistemaDeEstamparia.setBounds(100, 100, 579, 300);
+		frmSistemaDeEstamparia.setBounds(100, 100, 1363, 1056);
 		frmSistemaDeEstamparia.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmSistemaDeEstamparia.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
@@ -152,7 +153,7 @@ public class MenuEstamparia {
 
 		mnUsuario = new JMenu("Usuário");
 		mnUsuario.setEnabled(false);
-		mnUsuario.setIcon(new ImageIcon(MenuEstamparia.class.getResource("/icones/icons8-hanging-up-man-48.png")));
+		mnUsuario.setIcon(new ImageIcon(MenuEstamparia.class.getResource("/icones/Roupas.png")));
 		menuBar.add(mnUsuario);
 
 		mntmListagemUsuario = new JMenuItem("Listagem Usuários");
@@ -172,8 +173,12 @@ public class MenuEstamparia {
 		mnUsuario.add(mntmListagemUsuario);
 
 		painelLogin = new PainelLogin();
-		painelLogin.getBtnNovoUsuario().setBounds(229, 203, 127, 25);
-		painelLogin.getBtnLogar().setBounds(75, 203, 117, 25);
+		painelLogin.getBtnNovoUsuario().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		painelLogin.getBtnNovoUsuario().setBounds(987, 301, 139, 33);
+		painelLogin.getBtnLogar().setBounds(762, 301, 139, 33);
 		frmSistemaDeEstamparia.setContentPane(painelLogin);
 		painelLogin.setLayout(null);
 		frmSistemaDeEstamparia.revalidate();
@@ -223,8 +228,26 @@ public class MenuEstamparia {
 			}
 
 		});
-
 		frmSistemaDeEstamparia.setContentPane(painelLogin);
+	}
+
+	protected void registrarCliqueBotaoVoltarDoPainelListagemPedido() {
+		if (painelListagemPedido == null) {
+			painelListagemPedido = new PainelListagemPedido();
+		}
+		painelListagemPedido.getBtnVoltar().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Lógica do clique no botão Voltar
+				// Mostra o painel de listagem de clientes
+				painelHome = new PainelHomeCliente();
+				painelHome.setVisible(true);
+
+				frmSistemaDeEstamparia.setContentPane(painelHome);
+				frmSistemaDeEstamparia.revalidate();
+			}
+		});
 	}
 
 	protected void registrarCliqueBotaoEditarDoPainelListagemCliente() {
@@ -271,10 +294,11 @@ public class MenuEstamparia {
 			public void actionPerformed(ActionEvent e) {
 				// Lógica do clique no botão Voltar
 				// Mostra o painel de listagem de clientes
-				painelHome = new PainelHomeCliente();
-				painelHome.setVisible(true);
+				painelListagemUsuario = new PainelListagemUsuario();
+				painelListagemUsuario.setVisible(true);
 				registrarCliqueBotaoEditarDoPainelListagemCliente();
-				frmSistemaDeEstamparia.setContentPane(painelHome);
+				registrarCliqueBotaoVoltarDoPainelListagemUsuario();
+				frmSistemaDeEstamparia.setContentPane(painelListagemUsuario);
 				frmSistemaDeEstamparia.revalidate();
 			}
 		});
@@ -293,7 +317,6 @@ public class MenuEstamparia {
 				// Mostra o painel de listagem de clientes
 				painelHome = new PainelHomeCliente();
 				painelHome.setVisible(true);
-				registrarCliqueBotaoVoltarDoPainelCadastroUsuario();
 
 				frmSistemaDeEstamparia.setContentPane(painelHome);
 				frmSistemaDeEstamparia.revalidate();
@@ -314,7 +337,6 @@ public class MenuEstamparia {
 				// Mostra o painel de listagem de clientes
 				painelHome = new PainelHomeCliente();
 				painelHome.setVisible(true);
-				registrarCliqueBotaoVoltarDoPainelCadastroUsuario();
 
 				frmSistemaDeEstamparia.setContentPane(painelHome);
 				frmSistemaDeEstamparia.revalidate();
@@ -336,8 +358,55 @@ public class MenuEstamparia {
 				painelLogin = new PainelLogin();
 
 				registrarCliqueBotaoVoltarDoPainelCadastroUsuario();
-
+				registrarCliqueBotaoCadastroDoPainelLogin();
+				registrarCliqueBotaoLogin();
 				frmSistemaDeEstamparia.setContentPane(painelLogin);
+				frmSistemaDeEstamparia.revalidate();
+			}
+		});
+	}
+
+	protected void registrarCliqueBotaoLogin() {
+		painelLogin.getBtnLogar().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					usuarioAutenticado = painelLogin.autenticar();
+					bloquearTodoMenu();
+					if (usuarioAutenticado != null && usuarioAutenticado.isFuncionario() == true) {
+						mnUsuario.setEnabled(true);
+						mnHome.setEnabled(true);
+						mnPedidos.setEnabled(true);
+						painelHome = new PainelHomeCliente();
+						frmSistemaDeEstamparia.setContentPane(painelHome);
+						frmSistemaDeEstamparia.revalidate();
+					}
+					if (usuarioAutenticado != null && usuarioAutenticado.isFuncionario() == false) {
+						mnUsuario.setEnabled(false);
+						mnHome.setEnabled(true);
+						mnPedidos.setEnabled(true);
+						painelHome = new PainelHomeCliente();
+						frmSistemaDeEstamparia.setContentPane(painelHome);
+						frmSistemaDeEstamparia.revalidate();
+					} else {
+					}
+
+				} catch (CampoInvalidoException exception) {
+					JOptionPane.showMessageDialog(null, exception.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+
+				}
+
+			}
+
+		});
+	}
+
+	protected void registrarCliqueBotaoCadastroDoPainelLogin() {
+		painelLogin.getBtnNovoUsuario().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				painelCadastroPessoa = new PainelCadastroPessoa(null);
+				painelCadastroPessoa.setVisible(true);
+				registrarCliqueBotaoVoltarDoPainelCadastroUsuario();
+				frmSistemaDeEstamparia.setContentPane(painelCadastroPessoa);
 				frmSistemaDeEstamparia.revalidate();
 			}
 		});
