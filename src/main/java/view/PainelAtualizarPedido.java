@@ -2,7 +2,10 @@ package view;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.text.ParseException;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -12,13 +15,16 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
 
 import controller.PedidoController;
 import controller.PessoaController;
+import model.vo.Camisa;
 import model.vo.Pedido;
 import model.vo.Pessoa;
 import model.vo.SituacaoPedido;
+import javax.swing.JTable;
 
 public class PainelAtualizarPedido extends JPanel {
 	private JLabel lblAtualizarPedido;
@@ -27,6 +33,29 @@ public class PainelAtualizarPedido extends JPanel {
 	private JButton btnSalvar;
 	private Pedido pedido;
 	private JButton btnVoltar;
+	private ArrayList<Camisa> camisas;
+	private JTable tableCamisas;
+	private String[] nomesColunas = {"Tamanho", "Cor", "Estampa"};
+	
+	
+	
+	private void limparTabela() {
+		tableCamisas.setModel(new DefaultTableModel(new Object[][] { nomesColunas, }, nomesColunas));
+	}
+
+	private void atualizarTabela() {
+		this.limparTabela();
+		DefaultTableModel model = (DefaultTableModel) tableCamisas.getModel();
+		for (Camisa c : this.camisas) {
+
+			Object[] novaLinhaDaTabela = new Object[3];
+			novaLinhaDaTabela[0] = c.getTamanho();
+			novaLinhaDaTabela[1] = c.getCor();
+			novaLinhaDaTabela[2] = c.getNomeArquivo();
+
+			model.addRow(novaLinhaDaTabela);
+		}
+	}
 
 	/**
 	 * Create the panel.
@@ -39,6 +68,9 @@ public class PainelAtualizarPedido extends JPanel {
 			this.pedido = PedidoParaEditar;
 		}
 		setLayout(null);
+		
+		camisas = PedidoParaEditar.getCamisas();
+		atualizarTabela();
 
 		lblAtualizarPedido = new JLabel("Atualizar pedido");
 		lblAtualizarPedido.setBounds(139, 12, 172, 15);
@@ -93,14 +125,19 @@ public class PainelAtualizarPedido extends JPanel {
 				} catch (Exception excecao) {
 					JOptionPane.showMessageDialog(null, excecao.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 				}
+				atualizarTabela();
 			}
 		});
-		btnSalvar.setBounds(83, 248, 117, 25);
+		btnSalvar.setBounds(370, 152, 117, 25);
 		add(btnSalvar);
 
 		btnVoltar = new JButton("Voltar");
-		btnVoltar.setBounds(222, 248, 117, 25);
+		btnVoltar.setBounds(59, 446, 117, 25);
 		add(btnVoltar);
+		
+		tableCamisas = new JTable();
+		tableCamisas.setBounds(59, 215, 555, 191);
+		add(tableCamisas);
 
 	}
 
