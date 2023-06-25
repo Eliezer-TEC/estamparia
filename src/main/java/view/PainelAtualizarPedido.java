@@ -70,7 +70,7 @@ public class PainelAtualizarPedido extends JPanel {
 		setLayout(null);
 		
 		camisas = PedidoParaEditar.getCamisas();
-		atualizarTabela();
+		
 
 		lblAtualizarPedido = new JLabel("Atualizar pedido");
 		lblAtualizarPedido.setBounds(139, 12, 172, 15);
@@ -99,7 +99,6 @@ public class PainelAtualizarPedido extends JPanel {
 		comboBoxSituacao = new JComboBox(new String[] {  
 				SituacaoPedido.PEDIDO_REALIZADO.name(), 
 				SituacaoPedido.PREPARANDO_PEDIDO.name(),
-				SituacaoPedido.EM_ROTA_DE_ENTREGA.name(),
 				SituacaoPedido.PEDIDO_ENTREGUE.name() 
 				 });
 		comboBoxSituacao.setBounds(117, 152, 208, 24);
@@ -138,7 +137,8 @@ public class PainelAtualizarPedido extends JPanel {
 		tableCamisas = new JTable();
 		tableCamisas.setBounds(59, 215, 555, 191);
 		add(tableCamisas);
-
+		
+		atualizarTabela();
 	}
 
 	public JButton getBtnVoltar() {

@@ -87,6 +87,9 @@ public class PessoaDAO {
 
 		if (seletor.temFiltro()) {
 			sql = preencherFiltros(sql, seletor);
+		}	
+		if (seletor.temPaginacao()) {
+			sql += " limit " + seletor.getLimite() + " offset " + seletor.getOffset();
 		}
 
 		PreparedStatement query = Banco.getPreparedStatement(conexao, sql);
