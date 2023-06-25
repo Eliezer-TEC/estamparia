@@ -162,14 +162,14 @@ public class PedidoDAO {
 
 	public boolean excluir(Integer id) {
 		Connection conn = Banco.getConnection();
-		String sql = "DELETE FROM PEDIDO WHERE ID= " + id;
+		String sql = "DELETE FROM PEDIDO WHERE ID = " + id;
 		Statement stmt = Banco.getStatement(conn);
 
 		int quantidadeLinhasAfetadas = 0;
 		try {
 			quantidadeLinhasAfetadas = stmt.executeUpdate(sql);
 		} catch (SQLException e) {
-			System.out.println("Erro ao excluir usuário.");
+			System.out.println("Erro ao excluir pedido.");
 			System.out.println("Erro: " + e.getMessage());
 		}
 

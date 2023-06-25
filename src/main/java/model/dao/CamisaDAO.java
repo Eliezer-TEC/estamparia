@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 
@@ -71,6 +72,42 @@ public class CamisaDAO {
 		camisaBuscada.setIdPedido(resultado.getInt("id_pedido"));
 
 		return camisaBuscada;
+	}
+	
+	public boolean excluirTodasCamisasDoPedido(int idPedido) {
+		Connection conn = Banco.getConnection();
+		String sql = "DELETE FROM CAMISA WHERE ID_PEDIDO = " + idPedido;
+		Statement stmt = Banco.getStatement(conn);
+
+		int quantidadeLinhasAfetadas = 0;
+		try {
+			quantidadeLinhasAfetadas = stmt.executeUpdate(sql);
+		} catch (SQLException e) {
+			System.out.println("Erro ao excluir camisas.");
+			System.out.println("Erro: " + e.getMessage());
+		}
+
+		boolean excluiu = quantidadeLinhasAfetadas > 0;
+
+		return excluiu;
+	}
+	
+	public boolean excluir(int id) {
+		Connection conn = Banco.getConnection();
+		String sql = "DELETE FROM CAMISA WHERE ID= " + id;
+		Statement stmt = Banco.getStatement(conn);
+
+		int quantidadeLinhasAfetadas = 0;
+		try {
+			quantidadeLinhasAfetadas = stmt.executeUpdate(sql);
+		} catch (SQLException e) {
+			System.out.println("Erro ao excluir usuário.");
+			System.out.println("Erro: " + e.getMessage());
+		}
+
+		boolean excluiu = quantidadeLinhasAfetadas > 0;
+
+		return excluiu;
 	}
 	
 	public Camisa consultarPorId(int id) {

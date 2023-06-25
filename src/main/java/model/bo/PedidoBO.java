@@ -3,6 +3,7 @@ package model.bo;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.dao.CamisaDAO;
 import model.dao.PedidoDAO;
 import model.seletor.PedidoSeletor;
 import model.seletor.PessoaSeletor;
@@ -29,6 +30,8 @@ public class PedidoBO {
 	}
 
 	public boolean excluir(Integer id) {
+		CamisaDAO camisaDao = new CamisaDAO();
+		camisaDao.excluirTodasCamisasDoPedido(id);
 		return dao.excluir(id);
 	}
 
