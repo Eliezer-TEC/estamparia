@@ -63,12 +63,12 @@ public class PainelListagemPedido extends JPanel {
 	private JLabel lblNDoPedido;
 	private JTextField txtIdPedido;
 
-	private void limparTabelaClientes() {
+	private void limparTabelaPedidos() {
 		tblPedidos.setModel(new DefaultTableModel(new Object[][] { nomesColunas, }, nomesColunas));
 	}
 
-	private void atualizarTabelaClientes() {
-		this.limparTabelaClientes();
+	private void atualizarTabelaPedidos() {
+		this.limparTabelaPedidos();
 		
 		DefaultTableModel model = (DefaultTableModel) tblPedidos.getModel();
 		for (Pedido p : pedidos) {
@@ -95,14 +95,14 @@ public class PainelListagemPedido extends JPanel {
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				buscarPedidosComFiltros();
-				atualizarTabelaClientes();
+				atualizarTabelaPedidos();
 			}
 		});
 		btnBuscar.setBounds(210, 110, 240, 35);
 		this.add(btnBuscar);
 
 		tblPedidos = new JTable();
-		this.limparTabelaClientes(); // Adicionei essa linha
+		this.limparTabelaPedidos(); // Adicionei essa linha
 
 		tblPedidos.addMouseListener(new MouseAdapter() {
 			@Override
@@ -188,7 +188,7 @@ public class PainelListagemPedido extends JPanel {
 						controller.excluir(pedidoSelecionado.getId());
 						JOptionPane.showMessageDialog(null, "Pedido excluído com sucesso");
 						pedidos = (ArrayList<Pedido>)controller.consultarTodos();
-						atualizarTabelaClientes();
+						atualizarTabelaPedidos();
 					} catch (Exception e1) {
 						JOptionPane.showConfirmDialog(null, e1.getMessage(), "Atenção", JOptionPane.WARNING_MESSAGE);
 					}
@@ -268,19 +268,21 @@ public class PainelListagemPedido extends JPanel {
 		seletor.setLimite(TAMANHO_PAGINA);
 		seletor.setPagina(paginaAtual);
 		//seletor.setNome(txtNome.getText());
-		seletor.setId(Integer.parseInt(txtIdPedido.getText()));
-
-		String cpfSemMascara;
-		try {
-			cpfSemMascara = (String) mascaraCpf.stringToValue(txtCPF.getText());
-			//seletor.setCpf(cpfSemMascara);
-		} catch (ParseException e1) {
-			// TODO Auto-generated catch block
-			// e1.printStackTrace();
+		if(txtIdPedido.getText().trim() != null && !txtIdPedido.getText().trim().isEmpty()) {
+			seletor.setId(Integer.parseInt(txtIdPedido.getText()));
 		}
 
+		//String cpfSemMascara;
+		//try {
+		//	cpfSemMascara = (String) mascaraCpf.stringToValue(txtCPF.getText());
+		//	//seletor.setCpf(cpfSemMascara);
+		//} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			// e1.printStackTrace();
+		//}
+
 		pedidos = (ArrayList<Pedido>) controller.consultarComFiltros(seletor);
-		atualizarTabelaClientes();
+		atualizarTabelaPedidos();
 		atualizarQuantidadePaginas();
 	}
 

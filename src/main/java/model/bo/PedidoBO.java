@@ -36,4 +36,8 @@ public class PedidoBO {
 		return dao.consultarTodos();
 	}
 
+	public boolean atualizar(Pedido pedido) {
+		return dao.atualizar(pedido);
+	}
+
 }

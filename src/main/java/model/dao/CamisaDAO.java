@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 
 import model.vo.Camisa;
+import model.vo.Pessoa;
 
 public class CamisaDAO {
 	public Camisa inserir(Camisa novaCamisa) {
@@ -59,7 +60,69 @@ public class CamisaDAO {
 
 		return estampaJaUtilizada;
 	}
+	
+	private Camisa montarCamisaComResultadoDoBanco(ResultSet resultado) throws SQLException {
+		Camisa camisaBuscada = new Camisa();
+		camisaBuscada.setId(resultado.getInt("id"));
+		camisaBuscada.setTamanho(resultado.getString("tamanho"));
+		camisaBuscada.setCor(resultado.getString("cor"));
+		camisaBuscada.setEstampa(resultado.getBytes("estampa"));
+		camisaBuscada.setNomeArquivo(resultado.getString("nomearquivo"));
+		camisaBuscada.setIdPedido(resultado.getInt("id_pedido"));
 
+		return camisaBuscada;
+	}
+	
+	public Camisa consultarPorId(int id) {
+		Camisa camisaConsultada = null;
+		Connection conexao = Banco.getConnection();
+		String sql =  " SELECT * FROM CAMISA "
+				    + " WHERE ID = ?";
+		PreparedStatement query = Banco.getPreparedStatement(conexao, sql);
+		
+		try {
+			query.setInt(1, id);
+			ResultSet resultado = query.executeQuery();
+			
+			if(resultado.next()) {
+				camisaConsultada = montarCamisaComResultadoDoBanco(resultado);
+			}
+		} catch (SQLException e) {
+			System.out.println("Erro ao buscar camisa com id: + " + id 
+								+ "\n Causa: " + e.getMessage());	
+		}finally {
+			Banco.closePreparedStatement(query);
+			Banco.closeConnection(conexao);
+		}
+		
+		return camisaConsultada;
+	}
+
+	public ArrayList<Camisa> cansultarCamisasDoPedido(int idPedido) {
+		ArrayList<Camisa> camisas = new ArrayList();
+		Connection conexao = Banco.getConnection();
+		String sql =  " SELECT * FROM CAMISA "
+				    + " WHERE ID_PEDIDO = ?";
+		PreparedStatement query = Banco.getPreparedStatement(conexao, sql);
+		
+		try {
+			query.setInt(1, idPedido);
+			ResultSet resultado = query.executeQuery();
+
+			while (resultado.next()) {
+				Camisa camisaBuscada = montarCamisaComResultadoDoBanco(resultado);
+				camisas.add(camisaBuscada);
+			}
+
+		} catch (Exception e) {
+			System.out.println("Erro ao buscar camisas do pedido " + idPedido +". \n Causa:" + e.getMessage());
+		} finally {
+			Banco.closePreparedStatement(query);
+			Banco.closeConnection(conexao);
+		}
+		
+	    return camisas;
+	}
 	
 
 	public void inserirCamisa(Integer id, ArrayList<Camisa> camisas) {

@@ -56,5 +56,9 @@ public class PedidoController {
 		return bo.consultarTodos();
 	}
 
+	public boolean atualizar(Pedido pedido) {
+		return bo.atualizar(pedido);
+	}
+
 	
 }

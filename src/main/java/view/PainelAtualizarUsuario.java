@@ -54,7 +54,7 @@ public class PainelAtualizarUsuario extends JPanel {
 		lblAtualizarCadastro.setBounds(139, 12, 172, 15);
 		add(lblAtualizarCadastro);
 
-		lblNome = new JLabel("Nome:");
+		lblNome = new JLabel("Nome: " + pessoaParaEditar.getNome());
 		lblNome.setBounds(59, 41, 70, 15);
 		add(lblNome);
 

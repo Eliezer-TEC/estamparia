@@ -27,8 +27,8 @@ public class MenuEstamparia {
 
 	private JFrame frmSistemaDeEstamparia;
 	private PainelCadastroPessoa painelCadastroPessoa;
+	private PainelListagemPedido painelListagemPedido;
 	private PainelListagemUsuario painelListagemUsuario;
-
 	private PainelLogin painelLogin;
 	private PainelHomeCliente painelHome;
 	private JMenuBar menuBar;
@@ -52,6 +52,7 @@ public class MenuEstamparia {
 
 	private PainelNovoPedido painelNovoPedido;
 	private PainelAtualizarUsuario painelAtualizarUsuario;
+	private PainelAtualizarPedido painelAtualizarPedido;
 
 	/**
 	 * Launch the application.
@@ -135,6 +136,18 @@ public class MenuEstamparia {
 		mnPedidos.add(mntmNovoPedido);
 
 		mntmListagemPedidos = new JMenuItem("Listagem Pedidos");
+		mntmListagemPedidos.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				painelListagemPedido = new PainelListagemPedido();
+				painelListagemPedido.setVisible(true);
+				registrarCliqueBotaoEditarDoPainelListagemPedido();
+				frmSistemaDeEstamparia.setContentPane(painelListagemPedido);
+				frmSistemaDeEstamparia.revalidate();
+			}
+
+		});
 		mnPedidos.add(mntmListagemPedidos);
 
 		mnUsuario = new JMenu("Usuário");
@@ -142,7 +155,7 @@ public class MenuEstamparia {
 		mnUsuario.setIcon(new ImageIcon(MenuEstamparia.class.getResource("/icones/icons8-hanging-up-man-48.png")));
 		menuBar.add(mnUsuario);
 
-		mntmListagemUsuario = new JMenuItem("Listagem Usuário");
+		mntmListagemUsuario = new JMenuItem("Listagem Usuários");
 		mntmListagemUsuario.addActionListener(new ActionListener() {
 
 			@Override
@@ -225,6 +238,22 @@ public class MenuEstamparia {
 
 				// Atualiza a tela principal
 				frmSistemaDeEstamparia.setContentPane(painelAtualizarUsuario);
+				frmSistemaDeEstamparia.revalidate();
+			}
+		});
+	}
+	
+	protected void registrarCliqueBotaoEditarDoPainelListagemPedido() {
+		// Registro de ouvinte para o clique em um botão de um painel
+		painelListagemPedido.getBtnEditar().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				painelAtualizarPedido = new PainelAtualizarPedido(painelListagemPedido.getPedidoSelecionado());
+				painelAtualizarPedido.setVisible(true);
+				registrarCliqueBotaoVoltarDoPainelAtualizarUsuario();
+
+				// Atualiza a tela principal
+				frmSistemaDeEstamparia.setContentPane(painelAtualizarPedido);
 				frmSistemaDeEstamparia.revalidate();
 			}
 		});
