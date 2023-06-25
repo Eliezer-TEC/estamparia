@@ -137,17 +137,23 @@ public class PainelAtualizarPedido extends JPanel {
 				atualizarTabela();
 			}
 		});
-		btnSalvar.setBounds(514, 344, 162, 48);
+		btnSalvar.setBounds(527, 537, 162, 48);
 		add(btnSalvar);
 
 		btnVoltar = new JButton("Voltar");
-		btnVoltar.setBounds(786, 344, 162, 48);
+		btnVoltar.setBounds(782, 537, 162, 48);
 		add(btnVoltar);
 		
 		lblicon = new JLabel("");
 		lblicon.setIcon(new ImageIcon(PainelAtualizarPedido.class.getResource("/icones/icons8-comprar.png")));
 		lblicon.setBounds(840, 45, 70, 81);
 		add(lblicon);
+		
+		tableCamisas = new JTable();
+		tableCamisas.setBounds(450, 315, 555, 191);
+		add(tableCamisas);
+
+		atualizarTabela();
 	}
 
 	public JButton getBtnVoltar() {
