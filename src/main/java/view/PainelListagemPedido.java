@@ -28,16 +28,17 @@ import model.seletor.PedidoSeletor;
 import model.seletor.PessoaSeletor;
 import model.vo.Pedido;
 import model.vo.Pessoa;
+import model.vo.SituacaoPedido;
+
 import java.awt.Font;
+import javax.swing.JComboBox;
 
 public class PainelListagemPedido extends JPanel {
 	
 	private JTable tblPedidos;
 	private ArrayList<Pedido> pedidos;
 	private String[] nomesColunas = { "N° do Pedido", "Situação", "Cliente", "Qtd Itens"};
-	private JTextField txtNome;
 	private MaskFormatter mascaraCpf;
-	private JFormattedTextField txtCPF;
 
 	// componentes externos -> dependência "LGoodDatePicker" foi adicionada no
 	// pom.xml
@@ -45,8 +46,7 @@ public class PainelListagemPedido extends JPanel {
 	private JButton btnBuscar;
 	private JButton btnGerarPlanilha;
 	private JButton btnExcluir;
-	private JLabel lblCpf;
-	private JLabel lblNome;
+	private JLabel lblSituacao;
 
 	private PedidoController controller = new PedidoController();
 	private Pedido pedidoSelecionado;
@@ -63,6 +63,7 @@ public class PainelListagemPedido extends JPanel {
 	private JLabel lblPaginacao;
 	private JLabel lblNDoPedido;
 	private JTextField txtIdPedido;
+	private JComboBox<SituacaoPedido> cbSituacao;
 
 	private void limparTabelaPedidos() {
 		tblPedidos.setModel(new DefaultTableModel(new Object[][] { nomesColunas, }, nomesColunas));
@@ -123,26 +124,13 @@ public class PainelListagemPedido extends JPanel {
 		tblPedidos.setBounds(199, 210, 762, 188);
 		this.add(tblPedidos);
 
-		lblNome = new JLabel("Nome:");
-		lblNome.setBounds(211, 97, 61, 16);
-		this.add(lblNome);
-
-		txtNome = new JTextField();
-		txtNome.setBounds(255, 91, 240, 28);
-		this.add(txtNome);
-		txtNome.setColumns(10);
-
-		lblCpf = new JLabel("CPF:");
-		lblCpf.setBounds(565, 97, 40, 16);
-		this.add(lblCpf);
+		lblSituacao = new JLabel("Situação:");
+		lblSituacao.setBounds(211, 97, 61, 16);
+		this.add(lblSituacao);
 
 		try {
 			mascaraCpf = new MaskFormatter("###.###.###-##");
 			mascaraCpf.setValueContainsLiteralCharacters(false);
-			txtCPF = new JFormattedTextField(mascaraCpf);
-			txtCPF.setBounds(601, 91, 171, 28);
-			this.add(txtCPF);
-			txtCPF.setColumns(10);
 		} catch (ParseException e1) {
 			e1.printStackTrace();
 		}
@@ -237,18 +225,34 @@ public class PainelListagemPedido extends JPanel {
 		add(btnAvancarPagina);
 		
 		lblNDoPedido = new JLabel("N° do Pedido:");
-		lblNDoPedido.setBounds(317, 151, 88, 16);
+		lblNDoPedido.setBounds(552, 97, 76, 16);
 		add(lblNDoPedido);
 		
 		txtIdPedido = new JTextField();
 		txtIdPedido.setColumns(10);
-		txtIdPedido.setBounds(392, 145, 240, 28);
+		txtIdPedido.setBounds(629, 92, 240, 28);
 		add(txtIdPedido);
 		
 		JLabel lblTitulo = new JLabel("Listagem de pedidos");
 		lblTitulo.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		lblTitulo.setBounds(441, 11, 240, 58);
 		add(lblTitulo);
+		
+		SituacaoPedido[] situacaoPedidoValues = new SituacaoPedido[SituacaoPedido.values().length + 1];
+		situacaoPedidoValues[0] = null; // Add null as the first element
+		System.arraycopy(SituacaoPedido.values(), 0, situacaoPedidoValues, 1, SituacaoPedido.values().length);
+
+		cbSituacao = new JComboBox<>(situacaoPedidoValues);
+		cbSituacao.setBounds(264, 95, 252, 21);
+		add(cbSituacao);
+		
+
+
+
+
+
+
+
 
 		
 
@@ -274,7 +278,13 @@ public class PainelListagemPedido extends JPanel {
 		seletor = new PedidoSeletor();
 		seletor.setLimite(TAMANHO_PAGINA);
 		seletor.setPagina(paginaAtual);
-		//seletor.setNome(txtNome.getText());
+		// seletor.setNome(txtNome.getText());
+		
+		if (cbSituacao != null && cbSituacao.getSelectedItem() != null) {
+		    SituacaoPedido selectedSituacao = (SituacaoPedido) cbSituacao.getSelectedItem();
+		    seletor.setSituacaoPedido(selectedSituacao);
+		}
+		
 		if(txtIdPedido.getText().trim() != null && !txtIdPedido.getText().trim().isEmpty()) {
 			seletor.setId(Integer.parseInt(txtIdPedido.getText()));
 		}

@@ -98,7 +98,7 @@ public class PedidoDAO {
 				sql += " AND ";
 			}
 
-			sql += " STATUS_PEDIDO LIKE '%" + seletor.getIdPessoa() + "%'";
+			sql += " STATUS_PEDIDO LIKE '%" + seletor.getSituacaoPedido() + "%'";
 			primeiro = false;
 		}
 		
