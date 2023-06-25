@@ -24,8 +24,8 @@ public class GeradorPlanilha {
 		linhaCabecalho.createCell(0).setCellValue("Nome");
 		linhaCabecalho.createCell(1).setCellValue("CPF");
 		linhaCabecalho.createCell(2).setCellValue("Email");
-		linhaCabecalho.createCell(4).setCellValue("Senha");
-		linhaCabecalho.createCell(5).setCellValue("Funcionario?");
+		linhaCabecalho.createCell(3).setCellValue("Senha");
+		linhaCabecalho.createCell(4).setCellValue("Funcionario?");
 		
 		int contadorLinhas = 1;
 		for(Pessoa c: pessoas) {
