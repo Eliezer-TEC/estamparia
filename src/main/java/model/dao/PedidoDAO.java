@@ -7,10 +7,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.seletor.PedidoSeletor;
 import model.seletor.PessoaSeletor;
 import model.vo.Camisa;
 import model.vo.Pedido;
 import model.vo.Pessoa;
+import model.vo.SituacaoPedido;
 
 public class PedidoDAO {
 	public Pedido inserir(Pedido novoPedido) {
@@ -30,7 +32,7 @@ public class PedidoDAO {
 			}
 
 			CamisaDAO camisaDao = new CamisaDAO();
-			if(!novoPedido.getCamisas().isEmpty()) {
+			if (!novoPedido.getCamisas().isEmpty()) {
 				camisaDao.inserirCamisa(novoPedido.getId(), novoPedido.getCamisas());
 			}
 		} catch (SQLException e) {
@@ -41,5 +43,61 @@ public class PedidoDAO {
 		return novoPedido;
 	}
 
+	public List<Pedido> consultarComFiltros(PedidoSeletor seletor) {
+		List<Pedido> pedido = new ArrayList<Pedido>();
+		Connection conexao = Banco.getConnection();
+		String sql = " select * from pedido ";
+
+		if (seletor.temFiltro()) {
+			sql = preencherFiltros(sql, seletor);
+		}
+
+		PreparedStatement query = Banco.getPreparedStatement(conexao, sql);
+		try {
+			ResultSet resultado = query.executeQuery();
+
+			while (resultado.next()) {
+				Pedido p = new Pedido();
+				p.setId(resultado.getInt("id"));
+				p.setIdPessoa(resultado.getInt("idPessoa"));
+				p.setSituacaoPedido(SituacaoPedido.getSituacaoEntregaVOPorValor(resultado.getInt("SituacaoPedido")));
+				p.setCamisas(null);
+				pedido.add(p);
+			}
+
+		} catch (Exception e) {
+			System.out.println("Erro ao buscar todos os clientes. \n Causa:" + e.getMessage());
+		} finally {
+			Banco.closePreparedStatement(query);
+			Banco.closeConnection(conexao);
+		}
+
+		return pedido;
+	}
+
+	private String preencherFiltros(String sql, PedidoSeletor seletor) {
+
+		if (seletor.getId() != null){
+			
+		}
+		
+		if (seletor.getIdPessoa() != null) {
+			
+		}
+		
+		if(!seletor.getCamisas().isEmpty()) {
+			
+		}
+		
+		
+		return sql;
+	}
+
+	private Pedido montarPedidoComResultadoDoBanco(ResultSet resultado) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
+
 }

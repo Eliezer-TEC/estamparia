@@ -49,11 +49,11 @@ public class PainelListagemUsuario extends JPanel {
 
 	private PessoaController controller = new PessoaController();
 	private Pessoa usuarioSelecionado;
-
+	private JButton btnVoltar;
 	// Atributos para a PAGINAÇÃO
 
 	private PessoaSeletor seletor = new PessoaSeletor();
-	private JButton btnVoltar;
+	
 	private final int TAMANHO_PAGINA = 5;
 	private int paginaAtual = 1;
 	private int totalPaginas = 0;
@@ -197,6 +197,13 @@ public class PainelListagemUsuario extends JPanel {
 		btnVoltar.setBounds(250, 469, 200, 45);
 		add(btnVoltar);
 
+		lblPaginacao = new JLabel("1 / " + totalPaginas);
+		lblPaginacao.setHorizontalAlignment(SwingConstants.CENTER);
+		lblPaginacao.setBounds(283, 323, 105, 14);
+		add(lblPaginacao);
+		atualizarQuantidadePaginas();
+
+		
 		btnVoltarPagina = new JButton("<< Voltar");
 		btnVoltarPagina.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -224,12 +231,8 @@ public class PainelListagemUsuario extends JPanel {
 		btnAvancarPagina.setBounds(386, 319, 111, 23);
 		add(btnAvancarPagina);
 
-		lblPaginacao = new JLabel("1 / " + totalPaginas);
-		lblPaginacao.setHorizontalAlignment(SwingConstants.CENTER);
-		lblPaginacao.setBounds(283, 323, 105, 14);
-		add(lblPaginacao);
+		
 
-		atualizarQuantidadePaginas();
 
 	}
 
@@ -249,7 +252,8 @@ public class PainelListagemUsuario extends JPanel {
 
 	protected void buscarClientesComFiltros() {
 		seletor = new PessoaSeletor();
-
+		seletor.setLimite(TAMANHO_PAGINA);
+		seletor.setPagina(paginaAtual);
 		seletor.setNome(txtNome.getText());
 
 		String cpfSemMascara;
@@ -263,6 +267,7 @@ public class PainelListagemUsuario extends JPanel {
 
 		pessoas = (ArrayList<Pessoa>) controller.consultarComFiltros(seletor);
 		atualizarTabelaClientes();
+		atualizarQuantidadePaginas();
 	}
 
 	// Torna o btnEditar acessível externamente à essa classe

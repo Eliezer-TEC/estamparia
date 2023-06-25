@@ -1,6 +1,6 @@
 package model.seletor;
 
-public class PessoaSeletor {
+public class PessoaSeletor extends BaseSeletor {
 
 	private String nome;
 	private String cpf;

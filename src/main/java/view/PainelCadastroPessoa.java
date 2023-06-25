@@ -118,10 +118,20 @@ public class PainelCadastroPessoa extends JPanel {
 						controller.inserir(pessoa);
 						JOptionPane.showMessageDialog(null, "Cliente salvo com sucesso!", "Sucesso",
 								JOptionPane.INFORMATION_MESSAGE);
+						limparTela();
 					}
 				} catch (CpfJaUtilizadoException | EmailJaUtilizadoException | CampoInvalidoException excecao) {
 					JOptionPane.showMessageDialog(null, excecao.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+				
 				}
+			}
+
+			private void limparTela() {
+				txtCPF.setText("");
+				txtEmail.setText("");
+				passwordField.setText("");
+				txtNome.setText("");
+				
 			}
 		});
 		add(btnSalvar, "8, 14, center, default");
