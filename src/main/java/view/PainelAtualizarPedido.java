@@ -45,13 +45,13 @@ public class PainelAtualizarPedido extends JPanel {
 		add(lblAtualizarPedido);
 
 		lblNPedido = new JLabel("N° do pedido: " + PedidoParaEditar.getId().toString());
-		lblNPedido.setBounds(59, 41, 70, 15);
+		lblNPedido.setBounds(59, 41, 117, 15);
 		add(lblNPedido);
 
 		PedidoController controller = new PedidoController();
 		Pessoa cliente = controller.consultarCliente(PedidoParaEditar.getIdPessoa());
 		JLabel lblCliente = new JLabel("Cliente: " + cliente.getNome());
-		lblCliente.setBounds(59, 80, 70, 15);
+		lblCliente.setBounds(59, 80, 141, 15);
 		add(lblCliente);
 
 		

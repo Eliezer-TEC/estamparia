@@ -60,7 +60,7 @@ public class PainelAtualizarUsuario extends JPanel {
 		add(lblAtualizarCadastro);
 
 
-		add(lblNome);
+		
 
 		textNome = new JTextField();
 		textNome.setBounds(518, 131, 232, 29);

@@ -123,7 +123,7 @@ public class PainelListagemUsuario extends JPanel {
 				}
 			}
 		});
-		tblUsuarios.setBounds(189, 229, 711, 191);
+		tblUsuarios.setBounds(189, 229, 711, 152);
 		this.add(tblUsuarios);
 
 		lblNome = new JLabel("Nome:");
