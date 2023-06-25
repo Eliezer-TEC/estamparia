@@ -32,6 +32,7 @@ import model.vo.Pessoa;
 import javax.swing.SwingConstants;
 import javax.swing.JRadioButton;
 import javax.swing.ImageIcon;
+import java.awt.Font;
 
 public class PainelListagemUsuario extends JPanel {
 	private JTable tblUsuarios;
@@ -66,6 +67,7 @@ public class PainelListagemUsuario extends JPanel {
 	private JRadioButton rdnFuncionario;
 	private JRadioButton rdnCliente;
 	private JLabel iconRoupa;
+	private JLabel lblTitle;
 
 	private void limparTabelaClientes() {
 		tblUsuarios.setModel(new DefaultTableModel(new Object[][] { nomesColunas, }, nomesColunas));
@@ -100,7 +102,7 @@ public class PainelListagemUsuario extends JPanel {
 				atualizarTabelaClientes();
 			}
 		});
-		btnBuscar.setBounds(475, 43, 200, 35);
+		btnBuscar.setBounds(745, 176, 155, 35);
 		this.add(btnBuscar);
 
 		tblUsuarios = new JTable();
@@ -121,27 +123,27 @@ public class PainelListagemUsuario extends JPanel {
 				}
 			}
 		});
-		tblUsuarios.setBounds(25, 164, 650, 133);
+		tblUsuarios.setBounds(189, 229, 711, 191);
 		this.add(tblUsuarios);
 
 		lblNome = new JLabel("Nome:");
-		lblNome.setBounds(10, 25, 61, 16);
+		lblNome.setBounds(407, 95, 61, 16);
 		this.add(lblNome);
 
 		txtNome = new JTextField();
-		txtNome.setBounds(160, 20, 240, 28);
+		txtNome.setBounds(457, 89, 240, 28);
 		this.add(txtNome);
 		txtNome.setColumns(10);
 
 		lblCpf = new JLabel("CPF:");
-		lblCpf.setBounds(10, 52, 40, 16);
+		lblCpf.setBounds(407, 134, 40, 16);
 		this.add(lblCpf);
 
 		try {
 			mascaraCpf = new MaskFormatter("###.###.###-##");
 			mascaraCpf.setValueContainsLiteralCharacters(false);
 			txtCPF = new JFormattedTextField(mascaraCpf);
-			txtCPF.setBounds(160, 59, 240, 28);
+			txtCPF.setBounds(457, 128, 240, 28);
 			this.add(txtCPF);
 			txtCPF.setColumns(10);
 		} catch (ParseException e1) {
@@ -167,17 +169,17 @@ public class PainelListagemUsuario extends JPanel {
 				}
 			}
 		});
-		btnGerarPlanilha.setBounds(25, 375, 200, 45);
+		btnGerarPlanilha.setBounds(471, 536, 200, 45);
 		this.add(btnGerarPlanilha);
 
 		btnEditar = new JButton("Editar");
-		btnEditar.setBounds(700, 252, 200, 45);
+		btnEditar.setBounds(939, 336, 159, 45);
 		btnEditar.setEnabled(false);
 		this.add(btnEditar);
 
 		btnExcluir = new JButton("Excluir");
 		btnExcluir.setEnabled(false);
-		btnExcluir.setBounds(700, 164, 200, 45);
+		btnExcluir.setBounds(939, 253, 159, 45);
 		btnExcluir.addActionListener(new ActionListener() {
 
 			@Override
@@ -200,12 +202,12 @@ public class PainelListagemUsuario extends JPanel {
 		this.add(btnExcluir);
 
 		btnVoltar = new JButton("Voltar");
-		btnVoltar.setBounds(475, 375, 200, 45);
+		btnVoltar.setBounds(471, 604, 200, 45);
 		add(btnVoltar);
 
 		lblPaginacao = new JLabel("1 / " + totalPaginas);
 		lblPaginacao.setHorizontalAlignment(SwingConstants.CENTER);
-		lblPaginacao.setBounds(283, 323, 105, 14);
+		lblPaginacao.setBounds(515, 444, 105, 49);
 		add(lblPaginacao);
 		atualizarQuantidadePaginas();
 
@@ -221,7 +223,7 @@ public class PainelListagemUsuario extends JPanel {
 			}
 		});
 		btnVoltarPagina.setEnabled(false);
-		btnVoltarPagina.setBounds(175, 319, 111, 23);
+		btnVoltarPagina.setBounds(407, 457, 111, 23);
 		add(btnVoltarPagina);
 
 		btnAvancarPagina = new JButton("Avançar >>");
@@ -234,25 +236,30 @@ public class PainelListagemUsuario extends JPanel {
 				btnAvancarPagina.setEnabled(paginaAtual < totalPaginas);
 			}
 		});
-		btnAvancarPagina.setBounds(386, 319, 111, 23);
+		btnAvancarPagina.setBounds(616, 457, 111, 23);
 		add(btnAvancarPagina);
 		
 		rdnFuncionario = new JRadioButton("Funcionário");
-		rdnFuncionario.setBounds(160, 94, 109, 23);
+		rdnFuncionario.setBounds(476, 182, 109, 23);
 		add(rdnFuncionario);
 		
 		rdnCliente = new JRadioButton("Cliente");
-		rdnCliente.setBounds(283, 94, 109, 23);
+		rdnCliente.setBounds(601, 182, 109, 23);
 		add(rdnCliente);
 		
 		iconRoupa = new JLabel("");
 		iconRoupa.setIcon(new ImageIcon(PainelListagemUsuario.class.getResource("/icones/Vilmarzin (1).png")));
-		iconRoupa.setBounds(778, 0, 61, 113);
+		iconRoupa.setBounds(961, 30, 61, 113);
 		add(iconRoupa);
 
 		ButtonGroup grupo = new ButtonGroup();
 		grupo.add(rdnCliente);
 		grupo.add(rdnFuncionario);
+		
+		lblTitle = new JLabel("Listagem de usuários");
+		lblTitle.setFont(new Font("Tahoma", Font.PLAIN, 25));
+		lblTitle.setBounds(457, 11, 240, 49);
+		add(lblTitle);
 
 
 	}

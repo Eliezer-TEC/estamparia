@@ -99,7 +99,7 @@ public class MenuEstamparia {
 		setUIFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 12));
 		frmSistemaDeEstamparia = new JFrame();
 		frmSistemaDeEstamparia.setTitle("Sistema de Estamparia");
-		frmSistemaDeEstamparia.setBounds(100, 100, 579, 300);
+		frmSistemaDeEstamparia.setBounds(100, 100, 1363, 1056);
 		frmSistemaDeEstamparia.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmSistemaDeEstamparia.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
@@ -141,7 +141,7 @@ public class MenuEstamparia {
 
 		mnUsuario = new JMenu("Usuário");
 		mnUsuario.setEnabled(false);
-		mnUsuario.setIcon(new ImageIcon(MenuEstamparia.class.getResource("/icones/icons8-hanging-up-man-48.png")));
+		mnUsuario.setIcon(new ImageIcon(MenuEstamparia.class.getResource("/icones/Roupas.png")));
 		menuBar.add(mnUsuario);
 
 		mntmListagemUsuario = new JMenuItem("Listagem Usuário");
@@ -161,8 +161,12 @@ public class MenuEstamparia {
 		mnUsuario.add(mntmListagemUsuario);
 
 		painelLogin = new PainelLogin();
-		painelLogin.getBtnNovoUsuario().setBounds(229, 203, 127, 25);
-		painelLogin.getBtnLogar().setBounds(75, 203, 117, 25);
+		painelLogin.getBtnNovoUsuario().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		painelLogin.getBtnNovoUsuario().setBounds(987, 301, 139, 33);
+		painelLogin.getBtnLogar().setBounds(762, 301, 139, 33);
 		frmSistemaDeEstamparia.setContentPane(painelLogin);
 		painelLogin.setLayout(null);
 		frmSistemaDeEstamparia.revalidate();
