@@ -144,6 +144,7 @@ public class MenuEstamparia {
 				painelListagemPedido = new PainelListagemPedido();
 				painelListagemPedido.setVisible(true);
 				registrarCliqueBotaoEditarDoPainelListagemPedido();
+				registrarCliqueBotaoVoltarDoPainelListagemPedido();
 				frmSistemaDeEstamparia.setContentPane(painelListagemPedido);
 				frmSistemaDeEstamparia.revalidate();
 			}
@@ -206,8 +207,10 @@ public class MenuEstamparia {
 						mnUsuario.setEnabled(true);
 						mnHome.setEnabled(true);
 						mnPedidos.setEnabled(true);
-						painelHome = new PainelHomeCliente();
+						painelHome = new PainelHomeCliente();		
+						frmSistemaDeEstamparia.setTitle("Bem-vindo, " + usuarioAutenticado.getNome() + " - " + " Funcionário");
 						frmSistemaDeEstamparia.setContentPane(painelHome);
+						
 						frmSistemaDeEstamparia.revalidate();
 					}
 					if (usuarioAutenticado != null && usuarioAutenticado.isFuncionario() == false) {
@@ -215,10 +218,12 @@ public class MenuEstamparia {
 						mnHome.setEnabled(true);
 						mnPedidos.setEnabled(true);
 						painelHome = new PainelHomeCliente();
+						frmSistemaDeEstamparia.setTitle("Bem-vindo, " + usuarioAutenticado.getNome() + " - " + " Cliente");
 						frmSistemaDeEstamparia.setContentPane(painelHome);
 						frmSistemaDeEstamparia.revalidate();
-					} else {
-					}
+					} 
+					
+					
 
 				} catch (CampoInvalidoException exception) {
 					JOptionPane.showMessageDialog(null, exception.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);

@@ -57,7 +57,7 @@ public class PainelNovoPedido extends JPanel {
 	private JTextField txtEmail;
 	private JLabel lblImg;
 	private JButton btnAdd;
-	private ArrayList<Camisa> camisas = new ArrayList<Camisa>();;
+	private ArrayList<Camisa> camisas = new ArrayList<Camisa>();
 	private JTable tableCamisas;
 	private String[] nomesColunas = {"Tamanho", "Cor", "Estampa"};
 

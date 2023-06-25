@@ -162,7 +162,7 @@ public class PedidoDAO {
 
 	public boolean excluir(Integer id) {
 		Connection conn = Banco.getConnection();
-		String sql = "DELETE FROM PEDIDO WHERE ID= " + id;
+		String sql = "DELETE FROM PEDIDO WHERE ID = " + id;
 		Statement stmt = Banco.getStatement(conn);
 
 		int quantidadeLinhasAfetadas = 0;

@@ -2,7 +2,10 @@ package view;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.text.ParseException;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -12,15 +15,19 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
 
 import controller.PedidoController;
 import controller.PessoaController;
+import model.vo.Camisa;
 import model.vo.Pedido;
 import model.vo.Pessoa;
 import model.vo.SituacaoPedido;
+
 import java.awt.Font;
 import javax.swing.ImageIcon;
+import javax.swing.JTable;
 
 public class PainelAtualizarPedido extends JPanel {
 	private JLabel lblAtualizarPedido;
@@ -30,6 +37,30 @@ public class PainelAtualizarPedido extends JPanel {
 	private Pedido pedido;
 	private JButton btnVoltar;
 	private JLabel lblicon;
+
+	private ArrayList<Camisa> camisas;
+	private JTable tableCamisas;
+	private String[] nomesColunas = {"Tamanho", "Cor", "Estampa"};
+	
+	
+	
+	private void limparTabela() {
+		tableCamisas.setModel(new DefaultTableModel(new Object[][] { nomesColunas, }, nomesColunas));
+	}
+
+	private void atualizarTabela() {
+		this.limparTabela();
+		DefaultTableModel model = (DefaultTableModel) tableCamisas.getModel();
+		for (Camisa c : this.camisas) {
+
+			Object[] novaLinhaDaTabela = new Object[3];
+			novaLinhaDaTabela[0] = c.getTamanho();
+			novaLinhaDaTabela[1] = c.getCor();
+			novaLinhaDaTabela[2] = c.getNomeArquivo();
+
+			model.addRow(novaLinhaDaTabela);
+		}
+	}
 
 	/**
 	 * Create the panel.
@@ -42,6 +73,9 @@ public class PainelAtualizarPedido extends JPanel {
 			this.pedido = PedidoParaEditar;
 		}
 		setLayout(null);
+		
+		camisas = PedidoParaEditar.getCamisas();
+		
 
 		lblAtualizarPedido = new JLabel("Atualizar pedido");
 		lblAtualizarPedido.setFont(new Font("Tahoma", Font.PLAIN, 25));
@@ -75,7 +109,6 @@ public class PainelAtualizarPedido extends JPanel {
 		comboBoxSituacao = new JComboBox(new String[] {  
 				SituacaoPedido.PEDIDO_REALIZADO.name(), 
 				SituacaoPedido.PREPARANDO_PEDIDO.name(),
-				SituacaoPedido.EM_ROTA_DE_ENTREGA.name(),
 				SituacaoPedido.PEDIDO_ENTREGUE.name() 
 				 });
 		comboBoxSituacao.setBounds(664, 270, 208, 24);
@@ -101,6 +134,7 @@ public class PainelAtualizarPedido extends JPanel {
 				} catch (Exception excecao) {
 					JOptionPane.showMessageDialog(null, excecao.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 				}
+				atualizarTabela();
 			}
 		});
 		btnSalvar.setBounds(514, 344, 162, 48);
@@ -114,7 +148,6 @@ public class PainelAtualizarPedido extends JPanel {
 		lblicon.setIcon(new ImageIcon(PainelAtualizarPedido.class.getResource("/icones/icons8-comprar.png")));
 		lblicon.setBounds(840, 45, 70, 81);
 		add(lblicon);
-
 	}
 
 	public JButton getBtnVoltar() {
