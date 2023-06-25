@@ -246,8 +246,8 @@ public class PainelListagemUsuario extends JPanel {
 		add(rdnCliente);
 		
 		iconRoupa = new JLabel("");
-		iconRoupa.setIcon(new ImageIcon(PainelListagemUsuario.class.getResource("/icones/Roupas.png")));
-		iconRoupa.setBounds(777, 25, 61, 113);
+		iconRoupa.setIcon(new ImageIcon(PainelListagemUsuario.class.getResource("/icones/Vilmarzin (1).png")));
+		iconRoupa.setBounds(778, 0, 61, 113);
 		add(iconRoupa);
 
 		ButtonGroup grupo = new ButtonGroup();
