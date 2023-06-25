@@ -88,7 +88,7 @@ public class PainelAtualizarPedido extends JPanel {
 
 		PedidoController controller = new PedidoController();
 		Pessoa cliente = controller.consultarCliente(PedidoParaEditar.getIdPessoa());
-		JLabel lblCliente = new JLabel("Cliente: " + cliente.getNome());
+		JLabel lblCliente = new JLabel("Pedido: " + cliente.getNome());
 		lblCliente.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblCliente.setBounds(584, 178, 303, 15);
 		add(lblCliente);
