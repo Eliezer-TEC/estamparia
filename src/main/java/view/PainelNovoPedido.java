@@ -60,6 +60,7 @@ public class PainelNovoPedido extends JPanel {
 	private ArrayList<Camisa> camisas = new ArrayList<Camisa>();
 	private JTable tableCamisas;
 	private String[] nomesColunas = {"Tamanho", "Cor", "Estampa"};
+	private JLabel lblTxt;
 
 	private void limparTabela() {
 		tableCamisas.setModel(new DefaultTableModel(new Object[][] { nomesColunas, }, nomesColunas));
@@ -95,41 +96,43 @@ public class PainelNovoPedido extends JPanel {
 				ColumnSpec.decode("max(200dlu;default):grow"),
 				FormSpecs.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("max(285dlu;default)"),},
-				new RowSpec[] {
-						FormSpecs.RELATED_GAP_ROWSPEC,
-						FormSpecs.DEFAULT_ROWSPEC,
-						FormSpecs.RELATED_GAP_ROWSPEC,
-						FormSpecs.DEFAULT_ROWSPEC,
-						FormSpecs.RELATED_GAP_ROWSPEC,
-						FormSpecs.DEFAULT_ROWSPEC,
-						FormSpecs.RELATED_GAP_ROWSPEC,
-						FormSpecs.DEFAULT_ROWSPEC,
-						FormSpecs.RELATED_GAP_ROWSPEC,
-						FormSpecs.DEFAULT_ROWSPEC,
-						FormSpecs.RELATED_GAP_ROWSPEC,
-						FormSpecs.DEFAULT_ROWSPEC,
-						FormSpecs.RELATED_GAP_ROWSPEC,
-						FormSpecs.DEFAULT_ROWSPEC,
-						FormSpecs.RELATED_GAP_ROWSPEC,
-						FormSpecs.DEFAULT_ROWSPEC,
-						FormSpecs.RELATED_GAP_ROWSPEC,
-						FormSpecs.DEFAULT_ROWSPEC,
-						FormSpecs.RELATED_GAP_ROWSPEC,
-						FormSpecs.DEFAULT_ROWSPEC,
-						FormSpecs.RELATED_GAP_ROWSPEC,
-						FormSpecs.DEFAULT_ROWSPEC,
-						FormSpecs.RELATED_GAP_ROWSPEC,
-						FormSpecs.DEFAULT_ROWSPEC,
-						FormSpecs.RELATED_GAP_ROWSPEC,
-						FormSpecs.DEFAULT_ROWSPEC,
-						FormSpecs.RELATED_GAP_ROWSPEC,
-						RowSpec.decode("default:grow"),}));
+			new RowSpec[] {
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("max(93dlu;default)"),
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("max(14dlu;default)"),
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("default:grow"),}));
 
 		lblNovoPedido = new JLabel("Novo Pedido");
 		add(lblNovoPedido, "4, 4");
 
-		lblImg = new JLabel("imagem de no máximo 300px X 300px");
-		add(lblImg, "8, 4, 1, 21");
+		lblImg = new JLabel("");
+		add(lblImg, "8, 2, 1, 25");
 
 		lblTamanho = new JLabel("Tamanho");
 		add(lblTamanho, "4, 6, right, default");
@@ -196,36 +199,39 @@ public class PainelNovoPedido extends JPanel {
 
 		btnVoltar = new JButton("Voltar");
 		add(btnVoltar, "4, 24");
-
-		btnSalvar = new JButton("Finalizar Pedido");
-		btnSalvar.setEnabled(false);
-		btnSalvar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Pedido pedido = new Pedido();
-
-				pedido.setCamisas(camisas);
-				pedido.setIdPessoa(usuarioAutenticado.getId());
-				pedido.setSituacaoPedido(SituacaoPedido.PEDIDO_REALIZADO);
-
-				PedidoController controller = new PedidoController();
-
-				try {
-					controller.inserir(pedido);
-					JOptionPane.showMessageDialog(null, "Camisa salva com sucesso!", "Sucesso",
-							JOptionPane.INFORMATION_MESSAGE);
-				camisas.clear();
-				atualizarTabela();
-				lblImg.setIcon(null);
-				} catch (Exception excecao) {
-					JOptionPane.showMessageDialog(null, excecao.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-				}
-
-			}
-		});
-		add(btnSalvar, "8, 26");
+		
+		lblTxt = new JLabel("imagem de no máximo 300px X 300px");
+		add(lblTxt, "8, 28");
 
 		tableCamisas = new JTable();
-		add(tableCamisas, "4, 28, 3, 1, fill, fill");
+		add(tableCamisas, "4, 30, 3, 1, fill, fill");
+		
+				btnSalvar = new JButton("Finalizar Pedido");
+				btnSalvar.setEnabled(false);
+				btnSalvar.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						Pedido pedido = new Pedido();
+
+						pedido.setCamisas(camisas);
+						pedido.setIdPessoa(usuarioAutenticado.getId());
+						pedido.setSituacaoPedido(SituacaoPedido.PEDIDO_REALIZADO);
+
+						PedidoController controller = new PedidoController();
+
+						try {
+							controller.inserir(pedido);
+							JOptionPane.showMessageDialog(null, "Camisa salva com sucesso!", "Sucesso",
+									JOptionPane.INFORMATION_MESSAGE);
+						camisas.clear();
+						atualizarTabela();
+						lblImg.setIcon(null);
+						} catch (Exception excecao) {
+							JOptionPane.showMessageDialog(null, excecao.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+						}
+
+					}
+				});
+				add(btnSalvar, "8, 30");
 
 	}
 

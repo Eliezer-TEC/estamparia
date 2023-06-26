@@ -68,6 +68,8 @@ public class PainelListagemUsuario extends JPanel {
 	private JRadioButton rdnCliente;
 	private JLabel iconRoupa;
 	private JLabel lblTitle;
+	private JRadioButton rdnTodos;
+	private JButton btnLimpar;
 
 	private void limparTabelaClientes() {
 		tblUsuarios.setModel(new DefaultTableModel(new Object[][] { nomesColunas, }, nomesColunas));
@@ -94,7 +96,7 @@ public class PainelListagemUsuario extends JPanel {
 		this.setLayout(null);
 
 		btnBuscar = new JButton("Buscar");
-		btnBuscar.setBackground(Color.GRAY);
+		btnBuscar.setBackground(Color.WHITE);
 		btnBuscar.setForeground(new Color(0, 0, 0));
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -102,7 +104,7 @@ public class PainelListagemUsuario extends JPanel {
 				atualizarTabelaClientes();
 			}
 		});
-		btnBuscar.setBounds(745, 176, 155, 35);
+		btnBuscar.setBounds(745, 125, 155, 35);
 		this.add(btnBuscar);
 
 		tblUsuarios = new JTable();
@@ -185,12 +187,12 @@ public class PainelListagemUsuario extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int opcaoSelecionada = JOptionPane.showConfirmDialog(null,
-						"Confirma a exclusão do usuário selecionado?");
+						"Usuário a exclusão do usuário selecionado?");
 
 				if (opcaoSelecionada == JOptionPane.YES_OPTION) {
 					try {
 						controller.excluir(usuarioSelecionado.getId());
-						JOptionPane.showMessageDialog(null, "Cliente excluído com sucesso");
+						JOptionPane.showMessageDialog(null, "Usuário excluído com sucesso");
 						pessoas = (ArrayList<Pessoa>) controller.consultarTodos();
 						atualizarTabelaClientes();
 					} catch (Exception e1) {
@@ -247,6 +249,10 @@ public class PainelListagemUsuario extends JPanel {
 		rdnCliente.setBounds(601, 182, 109, 23);
 		add(rdnCliente);
 		
+		rdnTodos = new JRadioButton("Todos");
+		rdnTodos.setBounds(359, 182, 109, 23);
+		add(rdnTodos);
+		
 		iconRoupa = new JLabel("");
 		iconRoupa.setIcon(new ImageIcon(PainelListagemUsuario.class.getResource("/icones/Vilmarzin (1).png")));
 		iconRoupa.setBounds(961, 30, 61, 113);
@@ -255,11 +261,25 @@ public class PainelListagemUsuario extends JPanel {
 		ButtonGroup grupo = new ButtonGroup();
 		grupo.add(rdnCliente);
 		grupo.add(rdnFuncionario);
+		grupo.add(rdnTodos);
 		
 		lblTitle = new JLabel("Listagem de usuários");
 		lblTitle.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		lblTitle.setBounds(457, 11, 240, 49);
 		add(lblTitle);
+		
+		btnLimpar = new JButton("Limpar");
+		btnLimpar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				txtCPF.setText("");
+				txtNome.setText("");
+			
+			}
+		});
+		btnLimpar.setBounds(746, 180, 89, 23);
+		add(btnLimpar);
+		
+		
 
 
 	}
@@ -289,6 +309,9 @@ public class PainelListagemUsuario extends JPanel {
 		}	
 		if(rdnFuncionario.isSelected()) {
 			seletor.setFuncionario(true);
+		}
+		if(rdnTodos.isSelected()) {
+			seletor.setFuncionario(null);
 		}
 			
 			

@@ -128,7 +128,7 @@ public class PainelAtualizarPedido extends JPanel {
 
 		
 		controller.atualizar(pedido);
-					JOptionPane.showMessageDialog(null, "Cliente salvo com sucesso!", "Sucesso",
+					JOptionPane.showMessageDialog(null, "Pedido salvo com sucesso!", "Sucesso",
 							JOptionPane.INFORMATION_MESSAGE);
 
 				} catch (Exception excecao) {
