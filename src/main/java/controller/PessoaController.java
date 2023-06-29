@@ -7,6 +7,7 @@ import model.bo.PessoaBO;
 import model.exception.CampoInvalidoException;
 import model.exception.CpfJaUtilizadoException;
 import model.exception.EmailJaUtilizadoException;
+import model.exception.UsuarioPossuiPedidosException;
 import model.gerador.GeradorPlanilha;
 import model.seletor.PessoaSeletor;
 import model.vo.Pessoa;
@@ -84,7 +85,7 @@ public class PessoaController {
 		return gerador.gerarPlanilhaClientes(pessoas, caminhoEscolhido);
 	}
 
-	public boolean excluir(Integer id) {
+	public boolean excluir(Integer id) throws UsuarioPossuiPedidosException {
 		return bo.excluir(id);
 
 	}

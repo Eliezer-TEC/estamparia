@@ -220,5 +220,33 @@ public class PedidoDAO {
 
 		return registrosAlterados > 0;
 	}
+	
+	
+	
+	public ArrayList<Pedido> cansultarPedidosDoUsuario(int idUsuario) {
+		ArrayList<Pedido> pedidos = new ArrayList();
+		Connection conexao = Banco.getConnection();
+		String sql =  " SELECT * FROM PEDIDO "
+				    + " WHERE ID_PESSOA = ?";
+		PreparedStatement query = Banco.getPreparedStatement(conexao, sql);
+		
+		try {
+			query.setInt(1, idUsuario);
+			ResultSet resultado = query.executeQuery();
+
+			while (resultado.next()) {
+				Pedido pedidoBuscado = montarPedidoComResultadoDoBanco(resultado);
+				pedidos.add(pedidoBuscado);
+			}
+
+		} catch (Exception e) {
+			System.out.println("Erro ao buscar pedidos do usuário " + idUsuario +". \n Causa:" + e.getMessage());
+		} finally {
+			Banco.closePreparedStatement(query);
+			Banco.closeConnection(conexao);
+		}
+		
+	    return pedidos;
+	}
 
 }

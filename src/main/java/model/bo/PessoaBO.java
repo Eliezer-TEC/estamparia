@@ -3,10 +3,12 @@ package model.bo;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.dao.PedidoDAO;
 import model.dao.PessoaDAO;
 import model.exception.CampoInvalidoException;
 import model.exception.CpfJaUtilizadoException;
 import model.exception.EmailJaUtilizadoException;
+import model.exception.UsuarioPossuiPedidosException;
 import model.seletor.PessoaSeletor;
 import model.vo.Pessoa;
 
@@ -41,9 +43,14 @@ public class PessoaBO {
 	}
 
 
-	public boolean excluir(Integer id) {
-		// TODO Auto-generated method stub
-		return dao.excluir(id);
+	public boolean excluir(Integer id) throws UsuarioPossuiPedidosException{
+		PedidoDAO pedidoDao = new PedidoDAO();
+		if(pedidoDao.cansultarPedidosDoUsuario(id).size() > 0) {
+			throw new UsuarioPossuiPedidosException("Usuário não pode ser excluido, pois possui pedidos.");
+		}else {
+			return dao.excluir(id);
+		}
+		
 	}
 
 
