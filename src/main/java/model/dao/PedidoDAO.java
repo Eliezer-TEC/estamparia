@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,11 +17,12 @@ import model.vo.SituacaoPedido;
 public class PedidoDAO {
 	public Pedido inserir(Pedido novoPedido) {
 		Connection conexao = Banco.getConnection();
-		String sql = " INSERT INTO PEDIDO(STATUS_PEDIDO, ID_PESSOA) " + " VALUES (?,?) ";
+		String sql = " INSERT INTO PEDIDO(STATUS_PEDIDO, ID_PESSOA, DATA) " + " VALUES (?,?,?) ";
 		PreparedStatement stmt = Banco.getPreparedStatementWithPk(conexao, sql);
 		try {
 			stmt.setInt(1, novoPedido.getSituacaoPedido().getValor());
 			stmt.setInt(2, novoPedido.getIdPessoa());
+			stmt.setString(3, novoPedido.getData().toString());
 
 			stmt.execute();
 
@@ -59,13 +61,16 @@ public class PedidoDAO {
 		PreparedStatement query = Banco.getPreparedStatement(conexao, sql);
 		try {
 			ResultSet resultado = query.executeQuery();
-
+			
 			while (resultado.next()) {
 				Pedido p = new Pedido();
+				String dateString = resultado.getString("data");
+				LocalDate date = LocalDate.parse(dateString);
 				p.setId(resultado.getInt("id"));
 				p.setIdPessoa(resultado.getInt("id_Pessoa"));
 				p.setSituacaoPedido(SituacaoPedido.getSituacaoEntregaVOPorValor(resultado.getInt("status_pedido")));
 				p.setCamisas(camisaDao.cansultarCamisasDoPedido(resultado.getInt("id")));
+				p.setData(date);
 				pedido.add(p);
 			}
 
@@ -147,12 +152,15 @@ public class PedidoDAO {
 	private Pedido montarPedidoComResultadoDoBanco(ResultSet resultado) throws SQLException {
 		Pedido pedidoBuscado = new Pedido();
 		CamisaDAO camisaDao = new CamisaDAO();
+		String dataString = resultado.getString("DATA");
+		LocalDate data = LocalDate.parse(dataString);
 		int statusPedido = resultado.getInt("status_pedido");
 		SituacaoPedido situacaoPedido = SituacaoPedido.getSituacaoEntregaVOPorValor(statusPedido);
 		pedidoBuscado.setId(resultado.getInt("id"));
 		pedidoBuscado.setSituacaoPedido(situacaoPedido);
 		pedidoBuscado.setIdPessoa(resultado.getInt("ID_PESSOA"));
 		pedidoBuscado.setCamisas(camisaDao.cansultarCamisasDoPedido(resultado.getInt("id")));
+		pedidoBuscado.setData(data);
 
 		return pedidoBuscado;
 	}
@@ -214,7 +222,7 @@ public class PedidoDAO {
 			registrosAlterados = stmt.executeUpdate();
 
 		} catch (SQLException e) {
-			System.out.println("Erro ao inserir novo Usuário.");
+			System.out.println("Erro ao atualizar pedido.");
 			System.out.println("Erro: " + e.getMessage());
 		}
 

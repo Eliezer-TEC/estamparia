@@ -13,6 +13,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -38,7 +40,7 @@ public class PainelListagemPedido extends JPanel {
 	private JTable tblPedidos;
 	private ArrayList<Pedido> pedidos;
 
-	private String[] nomesColunas = { "N° do Pedido", "Situação", "Cliente", "Qtd Itens"};
+	private String[] nomesColunas = { "N° do Pedido", "Situação", "Cliente", "Qtd Itens", "Data"};
 
 	private MaskFormatter mascaraCpf;
 
@@ -84,12 +86,16 @@ public class PainelListagemPedido extends JPanel {
 
 			Pessoa cliente = new Pessoa();
 			cliente = controller.consultarCliente(p.getIdPessoa());
+			LocalDate data = p.getData();
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy"); // Define the desired format
+			String dataFormatted = data.format(formatter);
 
 			Object[] novaLinhaDaTabela = new Object[5];
 			novaLinhaDaTabela[0] = p.getId();
 			novaLinhaDaTabela[1] = p.getSituacaoPedido();
 			novaLinhaDaTabela[2] = cliente.getNome();
 			novaLinhaDaTabela[3] = p.getCamisas().size();
+			novaLinhaDaTabela[4] = dataFormatted;
 
 			model.addRow(novaLinhaDaTabela);
 		}
@@ -251,7 +257,7 @@ public class PainelListagemPedido extends JPanel {
 		lblTitulo.setBounds(441, 11, 240, 58);
 		add(lblTitulo);
 		
-		cbSituacao = new JComboBox<>(SituacaoPedido.values());
+		cbSituacao = new JComboBox(SituacaoPedido.values());
 		cbSituacao.setSelectedIndex(-1);
 		cbSituacao.setBounds(264, 95, 252, 21);
 		add(cbSituacao);

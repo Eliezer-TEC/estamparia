@@ -1,5 +1,6 @@
 package model.bo;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,8 @@ public class PedidoBO {
 	public Pedido inserir(Pedido novoPedido) {
 		// validar array de camisas tem pelo menos 1 camisa
 		// o pedido deve possuir pessoa associada
+		LocalDate currentDate = LocalDate.now();
+		novoPedido.setData(currentDate);
 		return dao.inserir(novoPedido);
 	}
 
