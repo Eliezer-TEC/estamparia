@@ -251,22 +251,10 @@ public class PainelListagemPedido extends JPanel {
 		lblTitulo.setBounds(441, 11, 240, 58);
 		add(lblTitulo);
 		
-		SituacaoPedido[] situacaoPedidoValues = new SituacaoPedido[SituacaoPedido.values().length + 1];
-		situacaoPedidoValues[0] = null; // Add null as the first element
-		System.arraycopy(SituacaoPedido.values(), 0, situacaoPedidoValues, 1, SituacaoPedido.values().length);
-
-		cbSituacao = new JComboBox<>(situacaoPedidoValues);
+		cbSituacao = new JComboBox<>(SituacaoPedido.values());
+		cbSituacao.setSelectedIndex(-1);
 		cbSituacao.setBounds(264, 95, 252, 21);
 		add(cbSituacao);
-		
-
-
-
-
-
-
-
-
 	}
 
 	private void atualizarQuantidadePaginas() {

@@ -100,7 +100,7 @@ public class PedidoDAO {
 				sql += " AND ";
 			}
 
-			sql += " STATUS_PEDIDO LIKE '%" + seletor.getSituacaoPedido() + "%'";
+			sql += " STATUS_PEDIDO = " + seletor.getSituacaoPedido().getValor();
 			primeiro = false;
 		}
 
