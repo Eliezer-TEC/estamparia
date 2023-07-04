@@ -1,5 +1,6 @@
 package model.seletor;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import model.vo.Camisa;
@@ -11,29 +12,30 @@ public class PedidoSeletor extends BaseSeletor {
 	private Integer idPessoa;
 	private ArrayList<Camisa> camisas;
 	private SituacaoPedido situacaoPedido;
-	
+	private LocalDate dataInicial;
+	private LocalDate dataFinal;
+
 	@Override
 	public boolean temFiltro() {
 		// TODO Auto-generated method stub
 		return this.id != null || this.idPessoa != null
-				|| this.camisas != null || this.situacaoPedido != null;
+				|| this.camisas != null || this.situacaoPedido != null
+				|| this.dataInicial != null || this.dataFinal != null;
 	}
 
-	
-
-	public PedidoSeletor() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-
-
-	public PedidoSeletor(Integer id, Integer idPessoa, ArrayList<Camisa> camisas, SituacaoPedido situacaoPedido) {
+	public PedidoSeletor(Integer id, Integer idPessoa, ArrayList<Camisa> camisas, SituacaoPedido situacaoPedido,
+			LocalDate dataInicial, LocalDate dataFinal) {
 		super();
 		this.id = id;
 		this.idPessoa = idPessoa;
 		this.camisas = camisas;
 		this.situacaoPedido = situacaoPedido;
+		this.dataInicial = dataInicial;
+		this.dataFinal = dataFinal;
+	}
+
+	public PedidoSeletor() {
+		super();
 	}
 
 	public Integer getId() {
@@ -68,6 +70,24 @@ public class PedidoSeletor extends BaseSeletor {
 		this.situacaoPedido = situacaoPedido;
 	}
 
+	public LocalDate getDataInicial() {
+		return dataInicial;
+	}
+
+	public void setDataInicial(LocalDate dataInicial) {
+		this.dataInicial = dataInicial;
+	}
+
+	public LocalDate getDataFinal() {
+		return dataFinal;
+	}
+
+	public void setDataFinal(LocalDate dataFinal) {
+		this.dataFinal = dataFinal;
+	}
+	
+
+	
 
 
 	

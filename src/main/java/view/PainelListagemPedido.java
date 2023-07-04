@@ -23,6 +23,8 @@ import javax.swing.JFormattedTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
 
+import com.github.lgooddatepicker.components.DatePicker;
+
 import controller.PedidoController;
 import controller.PessoaController;
 import model.exception.CampoInvalidoException;
@@ -43,6 +45,9 @@ public class PainelListagemPedido extends JPanel {
 	private String[] nomesColunas = { "N° do Pedido", "Situação", "Cliente", "Qtd Itens", "Data"};
 
 	private MaskFormatter mascaraCpf;
+	
+	private DatePicker dtPedidoInicial;
+	private DatePicker dtPedidoFinal;
 
 	// componentes externos -> dependência "LGoodDatePicker" foi adicionada no
 	// pom.xml
@@ -72,6 +77,8 @@ public class PainelListagemPedido extends JPanel {
 	private JComboBox<SituacaoPedido> cbSituacao;
 
 	private Pessoa usuarioAutenticado;
+	private JLabel lblDataPedidoDe;
+	private JLabel lblAte;
 
 
 	private void limparTabelaPedidos() {
@@ -95,8 +102,8 @@ public class PainelListagemPedido extends JPanel {
 			novaLinhaDaTabela[1] = p.getSituacaoPedido();
 			novaLinhaDaTabela[2] = cliente.getNome();
 			novaLinhaDaTabela[3] = p.getCamisas().size();
-			novaLinhaDaTabela[4] = dataFormatted;
-
+			novaLinhaDaTabela[4] = p.getData().toString();
+			
 			model.addRow(novaLinhaDaTabela);
 		}
 	}
@@ -145,7 +152,7 @@ public class PainelListagemPedido extends JPanel {
 		this.add(tblPedidos);
 
 		lblSituacao = new JLabel("Situação:");
-		lblSituacao.setBounds(211, 97, 61, 16);
+		lblSituacao.setBounds(10, 161, 61, 16);
 		this.add(lblSituacao);
 
 		try {
@@ -154,6 +161,22 @@ public class PainelListagemPedido extends JPanel {
 		} catch (ParseException e1) {
 			e1.printStackTrace();
 		}
+		
+		lblDataPedidoDe = new JLabel("Data de pedido. De:");
+		lblDataPedidoDe.setBounds(10, 60, 154, 10);
+		this.add(lblDataPedidoDe);
+
+		dtPedidoInicial = new DatePicker();
+		dtPedidoInicial.setBounds(160, 55, 515, 30);
+		this.add(dtPedidoInicial);
+
+		lblAte = new JLabel("Até:");
+		lblAte.setBounds(10, 99, 175, 10);
+		this.add(lblAte);
+
+		dtPedidoFinal = new DatePicker();
+		dtPedidoFinal.setBounds(160, 90, 515, 30);
+		this.add(dtPedidoFinal);
 
 		btnGerarPlanilha = new JButton("Gerar Planilha ");
 		btnGerarPlanilha.addActionListener(new ActionListener() {
@@ -249,12 +272,12 @@ public class PainelListagemPedido extends JPanel {
 
 		txtIdPedido = new JTextField();
 		txtIdPedido.setColumns(10);
-		txtIdPedido.setBounds(629, 92, 240, 28);
+		txtIdPedido.setBounds(270, 155, 240, 28);
 		add(txtIdPedido);
 
 		JLabel lblTitulo = new JLabel("Listagem de pedidos");
 		lblTitulo.setFont(new Font("Tahoma", Font.PLAIN, 25));
-		lblTitulo.setBounds(441, 11, 240, 58);
+		lblTitulo.setBounds(444, 0, 240, 58);
 		add(lblTitulo);
 		
 		cbSituacao = new JComboBox(SituacaoPedido.values());
@@ -307,7 +330,8 @@ public class PainelListagemPedido extends JPanel {
 		// TODO Auto-generated catch block
 		// e1.printStackTrace();
 		// }
-
+		seletor.setDataInicial(dtPedidoInicial.getDate());
+		seletor.setDataFinal(dtPedidoFinal.getDate());
 		pedidos = (ArrayList<Pedido>) controller.consultarComFiltros(seletor);
 		atualizarTabelaPedidos();
 		atualizarQuantidadePaginas();

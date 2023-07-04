@@ -23,7 +23,7 @@ public class PedidoDAO {
 			stmt.setInt(1, novoPedido.getSituacaoPedido().getValor());
 			stmt.setInt(2, novoPedido.getIdPessoa());
 			stmt.setString(3, novoPedido.getData().toString());
-
+			
 			stmt.execute();
 
 			// Preencher o id gerado no banco no objeto
@@ -61,7 +61,7 @@ public class PedidoDAO {
 		PreparedStatement query = Banco.getPreparedStatement(conexao, sql);
 		try {
 			ResultSet resultado = query.executeQuery();
-			
+
 			while (resultado.next()) {
 				Pedido p = new Pedido();
 				String dateString = resultado.getString("data");
@@ -118,6 +118,38 @@ public class PedidoDAO {
 
 			sql += " id_pessoa like '%" + seletor.getIdPessoa() + "%'";
 			primeiro = false;
+		}
+		if (seletor.getDataInicial() != null && seletor.getDataInicial() != null) {
+			if (primeiro) {
+				sql += " WHERE ";
+			} else {
+				sql += " AND ";
+			}
+			sql += " data BETWEEN '" + seletor.getDataInicial() + "' " + " AND '"
+					+ seletor.getDataInicial() + "' ";
+			primeiro = false;
+		} else {
+			if (seletor.getDataFinal() != null) {
+				if (primeiro) {
+					sql += " WHERE ";
+				} else {
+					sql += " AND ";
+				}
+				// CLIENTES QUE FIZERAM O PEDIDO 'A PARTIR' DA DATA INICIAL
+				sql += " data >= '" + seletor.getDataFinal() + "' ";
+				primeiro = false;
+			}
+
+			if (seletor.getDataFinal() != null) {
+				if (primeiro) {
+					sql += " WHERE ";
+				} else {
+					sql += " AND ";
+				}
+				// CLIENTES QUE FIZERAM O PEDIDO 'ATÉ' A DATA FINAL
+				sql += " data <= '" + seletor.getDataFinal() + "' ";
+				primeiro = false;
+			}
 		}
 
 		return sql;
@@ -228,16 +260,13 @@ public class PedidoDAO {
 
 		return registrosAlterados > 0;
 	}
-	
-	
-	
+
 	public ArrayList<Pedido> cansultarPedidosDoUsuario(int idUsuario) {
 		ArrayList<Pedido> pedidos = new ArrayList();
 		Connection conexao = Banco.getConnection();
-		String sql =  " SELECT * FROM PEDIDO "
-				    + " WHERE ID_PESSOA = ?";
+		String sql = " SELECT * FROM PEDIDO " + " WHERE ID_PESSOA = ?";
 		PreparedStatement query = Banco.getPreparedStatement(conexao, sql);
-		
+
 		try {
 			query.setInt(1, idUsuario);
 			ResultSet resultado = query.executeQuery();
@@ -248,13 +277,13 @@ public class PedidoDAO {
 			}
 
 		} catch (Exception e) {
-			System.out.println("Erro ao buscar pedidos do usuário " + idUsuario +". \n Causa:" + e.getMessage());
+			System.out.println("Erro ao buscar pedidos do usuário " + idUsuario + ". \n Causa:" + e.getMessage());
 		} finally {
 			Banco.closePreparedStatement(query);
 			Banco.closeConnection(conexao);
 		}
-		
-	    return pedidos;
+
+		return pedidos;
 	}
 
 }

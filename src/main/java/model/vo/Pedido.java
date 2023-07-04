@@ -11,15 +11,6 @@ public class Pedido {
 	private SituacaoPedido situacaoPedido;
 	private LocalDate data;
 
-
-	public LocalDate getData() {
-		return data;
-	}
-
-	public void setData(LocalDate data) {
-		this.data = data;
-	}
-
 	public Pedido() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -65,6 +56,14 @@ public class Pedido {
 
 	public void setSituacaoPedido(SituacaoPedido situacaoPedido) {
 		this.situacaoPedido = situacaoPedido;
+	}
+
+	public LocalDate getData() {
+		return data;
+	}
+
+	public void setData(LocalDate data) {
+		this.data = data;
 	}
 
 }
