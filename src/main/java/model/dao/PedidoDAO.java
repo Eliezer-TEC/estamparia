@@ -119,24 +119,24 @@ public class PedidoDAO {
 			sql += " id_pessoa like '%" + seletor.getIdPessoa() + "%'";
 			primeiro = false;
 		}
-		if (seletor.getDataInicial() != null && seletor.getDataInicial() != null) {
+		if (seletor.getDataInicial() != null && seletor.getDataFinal() != null) {
 			if (primeiro) {
 				sql += " WHERE ";
 			} else {
 				sql += " AND ";
 			}
-			sql += " data BETWEEN '" + seletor.getDataInicial() + "' " + " AND '"
-					+ seletor.getDataInicial() + "' ";
+			sql += " DATA BETWEEN '" + seletor.getDataInicial() + "' " + " AND '"
+					+ seletor.getDataFinal() + "' ";
 			primeiro = false;
 		} else {
-			if (seletor.getDataFinal() != null) {
+			if (seletor.getDataInicial() != null) {
 				if (primeiro) {
 					sql += " WHERE ";
 				} else {
 					sql += " AND ";
 				}
 				// CLIENTES QUE FIZERAM O PEDIDO 'A PARTIR' DA DATA INICIAL
-				sql += " data >= '" + seletor.getDataFinal() + "' ";
+				sql += " data >= '" + seletor.getDataInicial() + "' ";
 				primeiro = false;
 			}
 

@@ -24,6 +24,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
 
 import com.github.lgooddatepicker.components.DatePicker;
+import com.github.lgooddatepicker.components.DatePickerSettings;
 
 import controller.PedidoController;
 import controller.PessoaController;
@@ -75,6 +76,7 @@ public class PainelListagemPedido extends JPanel {
 	private JTextField txtIdPedido;
 
 	private JComboBox<SituacaoPedido> cbSituacao;
+	private DatePickerSettings dateSettings;
 
 	private Pessoa usuarioAutenticado;
 	private JLabel lblDataPedidoDe;
@@ -166,7 +168,7 @@ public class PainelListagemPedido extends JPanel {
 		lblDataPedidoDe.setBounds(10, 60, 154, 10);
 		this.add(lblDataPedidoDe);
 
-		dtPedidoInicial = new DatePicker();
+		dtPedidoInicial = new DatePicker(dateSettings);
 		dtPedidoInicial.setBounds(160, 55, 515, 30);
 		this.add(dtPedidoInicial);
 
@@ -174,7 +176,7 @@ public class PainelListagemPedido extends JPanel {
 		lblAte.setBounds(10, 99, 175, 10);
 		this.add(lblAte);
 
-		dtPedidoFinal = new DatePicker();
+		dtPedidoFinal = new DatePicker(dateSettings);
 		dtPedidoFinal.setBounds(160, 90, 515, 30);
 		this.add(dtPedidoFinal);
 
@@ -197,7 +199,7 @@ public class PainelListagemPedido extends JPanel {
 				}
 			}
 		});
-		btnGerarPlanilha.setBounds(468, 554, 200, 45);
+		btnGerarPlanilha.setBounds(628, 554, 200, 45);
 		this.add(btnGerarPlanilha);
 
 		btnEditar = new JButton("Editar");
@@ -267,12 +269,12 @@ public class PainelListagemPedido extends JPanel {
 		add(btnAvancarPagina);
 
 		lblNDoPedido = new JLabel("N° do Pedido:");
-		lblNDoPedido.setBounds(552, 97, 76, 16);
+		lblNDoPedido.setBounds(276, 158, 76, 23);
 		add(lblNDoPedido);
 
 		txtIdPedido = new JTextField();
 		txtIdPedido.setColumns(10);
-		txtIdPedido.setBounds(270, 155, 240, 28);
+		txtIdPedido.setBounds(362, 155, 154, 28);
 		add(txtIdPedido);
 
 		JLabel lblTitulo = new JLabel("Listagem de pedidos");
@@ -282,8 +284,21 @@ public class PainelListagemPedido extends JPanel {
 		
 		cbSituacao = new JComboBox(SituacaoPedido.values());
 		cbSituacao.setSelectedIndex(-1);
-		cbSituacao.setBounds(264, 95, 252, 21);
+		cbSituacao.setBounds(64, 158, 175, 23);
 		add(cbSituacao);
+		
+		JButton btnLimpar = new JButton("Limpar");
+		btnLimpar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			cbSituacao.setSelectedIndex(-1);
+			txtIdPedido.setText("");
+			dtPedidoFinal.setText("");
+			dtPedidoInicial.setText("");
+			
+			}
+		});
+		btnLimpar.setBounds(338, 554, 165, 45);
+		add(btnLimpar);
 	}
 
 	private void atualizarQuantidadePaginas() {
@@ -332,6 +347,7 @@ public class PainelListagemPedido extends JPanel {
 		// }
 		seletor.setDataInicial(dtPedidoInicial.getDate());
 		seletor.setDataFinal(dtPedidoFinal.getDate());
+		
 		pedidos = (ArrayList<Pedido>) controller.consultarComFiltros(seletor);
 		atualizarTabelaPedidos();
 		atualizarQuantidadePaginas();
